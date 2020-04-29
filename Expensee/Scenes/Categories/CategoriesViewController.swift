@@ -61,6 +61,11 @@ final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, UITable
         }
     }
 
+    override var sorter: (CategoryCellModel, CategoryCellModel) -> Bool {
+        set {}
+        get { dataSource.sorter }
+    }
+
     private let dataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> = {
         let dataSource = SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell>()
 
@@ -73,8 +78,8 @@ final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, UITable
             let cell: CategoryTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             return cell
         }
-        //    dataSource.mergingRules = GroupingStyle.byName.mergingStrategy()
-        //    dataSource.filter = SuccessFilter.all.filter
+
+        dataSource.sorter = { $0.name < $1.name }
 
         return dataSource
     }()
