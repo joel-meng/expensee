@@ -16,5 +16,6 @@ class CategoryTableViewCell: UITableViewCell, Reusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         colorLabel.layer.cornerRadius = 4
+        colorLabel.clipsToBounds = true
     }
 }

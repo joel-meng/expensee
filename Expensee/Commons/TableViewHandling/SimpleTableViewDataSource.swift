@@ -67,5 +67,3 @@ class SimpleTableDataSource<Row, Cell>: NSObject, UITableViewDataSource, UITable
         tapAction?(selected)
     }
 }
-
-

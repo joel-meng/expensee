@@ -34,7 +34,6 @@ class CategoriesViewController: UIViewController {
 
         provider.updateData(tempDataSource)
         tableView.registerReuableCell(CategoryTableViewCell.self)
-//        tableView.register(UINib.default(from: <#T##T.Type#>), forCellReuseIdentifier: <#T##String#>)
     }
 
     private var tempDataSource: [CategoryCellModel] = [
@@ -49,32 +48,31 @@ class CategoriesViewController: UIViewController {
 final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, UITableViewCell> {
 
     override var cellProvider: ((UITableView, IndexPath) -> UITableViewCell) {
+        set {}
+        get { dataSource.cellProvider }
+    }
+    
+    override var binder: ((CategoryCellModel, UITableViewCell) -> Void)? {
+        set {}
         get {
-            return { tableView, indexPath in
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell") else {
-                    return UITableViewCell(style: .value1, reuseIdentifier: "CategoryTableViewCell")
-                }
-                return cell
+            return { (model: CategoryCellModel, cell: UITableViewCell) in
+                self.dataSource.binder?(model, cell as! CategoryTableViewCell)
             }
         }
-        set {}
     }
 
-    private let dataSource: SimpleTableDataSource<CategoryCellModel, UITableViewCell> = {
-        let dataSource = SimpleTableDataSource<CategoryCellModel, UITableViewCell>()
+    private let dataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> = {
+        let dataSource = SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell>()
 
-        dataSource.binder = { (row: CategoryCellModel, cell: UITableViewCell) in
-            cell.textLabel?.text = row.name
-            cell.detailTextLabel?.text = row.color
+        dataSource.binder = { (row: CategoryCellModel, cell: CategoryTableViewCell) in
+            cell.nameLabel.text = row.name
+            cell.colorLabel.text = row.color
         }
 
         dataSource.cellProvider = { tableView, indexPath in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell") else {
-                return UITableViewCell(style: .value1, reuseIdentifier: "CategoryTableViewCell")
-            }
+            let cell: CategoryTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             return cell
         }
-
         //    dataSource.mergingRules = GroupingStyle.byName.mergingStrategy()
         //    dataSource.filter = SuccessFilter.all.filter
 
