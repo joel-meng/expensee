@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
+		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
+		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
+		7EAA47812459A0F4005565C1 /* CategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47802459A0F4005565C1 /* CategoriesInteractor.swift */; };
+		7EAA47832459A296005565C1 /* CategoriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47822459A296005565C1 /* CategoriesUseCase.swift */; };
+		7EAA47852459A479005565C1 /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47842459A479005565C1 /* CoreDataStore.swift */; };
+		7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47862459A67A005565C1 /* CategoriesRepository.swift */; };
+		7EAA478A2459A71C005565C1 /* ManagedObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47892459A71C005565C1 /* ManagedObjectType.swift */; };
+		7EAA478D245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA478C245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -67,6 +76,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
+		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
+		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
+		7EAA47802459A0F4005565C1 /* CategoriesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesInteractor.swift; sourceTree = "<group>"; };
+		7EAA47822459A296005565C1 /* CategoriesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesUseCase.swift; sourceTree = "<group>"; };
+		7EAA47842459A479005565C1 /* CoreDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
+		7EAA47862459A67A005565C1 /* CategoriesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRepository.swift; sourceTree = "<group>"; };
+		7EAA47892459A71C005565C1 /* ManagedObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectType.swift; sourceTree = "<group>"; };
+		7EAA478C245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+CRUD.swift"; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -138,6 +156,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7EAA477924596078005565C1 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA477A2459609A005565C1 /* ExpenseCategory.swift */,
+				7EAA477C24596169005565C1 /* ManagedObject.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		7EAA47882459A702005565C1 /* Managed */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA47892459A71C005565C1 /* ManagedObjectType.swift */,
+			);
+			path = Managed;
+			sourceTree = "<group>";
+		};
+		7EAA478B245A3F27005565C1 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA478C245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		7ED5CE2224590A7C00E5D454 = {
 			isa = PBXGroup;
 			children = (
@@ -306,6 +349,9 @@
 				7ED5CECB2459125200E5D454 /* CategoriesViewController.swift */,
 				7ED5CECC2459125200E5D454 /* CategoriesViewController.xib */,
 				7ED5CED02459129A00E5D454 /* CategoriesPresenter.swift */,
+				7EAA47802459A0F4005565C1 /* CategoriesInteractor.swift */,
+				7EAA47822459A296005565C1 /* CategoriesUseCase.swift */,
+				7EAA47862459A67A005565C1 /* CategoriesRepository.swift */,
 				7ED5CEDA245916B600E5D454 /* CategoriesTableDataSource.swift */,
 			);
 			path = Categories;
@@ -366,7 +412,12 @@
 		7EFE70E024594B2F00BA3CAE /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				7EAA478B245A3F27005565C1 /* Extension */,
+				7EAA47882459A702005565C1 /* Managed */,
+				7EAA477924596078005565C1 /* DataModel */,
 				7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */,
+				7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */,
+				7EAA47842459A479005565C1 /* CoreDataStore.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -480,21 +531,30 @@
 				7ED5CEE0245920BF00E5D454 /* String+Emoji.swift in Sources */,
 				7ED5CE6B24590FD000E5D454 /* StringExtension+TypeName.swift in Sources */,
 				7ED5CECD2459125200E5D454 /* CategoriesViewController.swift in Sources */,
+				7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */,
 				7ED5CE5B24590FA300E5D454 /* LaunchViewController.swift in Sources */,
 				7ED5CEA4245910B400E5D454 /* Response.swift in Sources */,
+				7EAA47812459A0F4005565C1 /* CategoriesInteractor.swift in Sources */,
 				7ED5CEEA245927AD00E5D454 /* DescriptibleByType.swift in Sources */,
 				7ED5CEC1245910B400E5D454 /* RequestCreator.swift in Sources */,
+				7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */,
 				7ED5CEEC2459288800E5D454 /* NSObject+Descriptible.swift in Sources */,
 				7ED5CEE82459275B00E5D454 /* Reuable.swift in Sources */,
 				7ED5CEC8245910B400E5D454 /* URLSessionDataTaskProtocol.swift in Sources */,
 				7ED5CEC5245910B400E5D454 /* XRequest.swift in Sources */,
 				7ED5CEC4245910B400E5D454 /* RestRequestURLQueryDecorator.swift in Sources */,
 				7ED5CEA2245910B400E5D454 /* Rest.swift in Sources */,
+				7EAA47832459A296005565C1 /* CategoriesUseCase.swift in Sources */,
+				7EAA478A2459A71C005565C1 /* ManagedObjectType.swift in Sources */,
 				7ED5CE6824590FD000E5D454 /* Reader.swift in Sources */,
+				7EAA47852459A479005565C1 /* CoreDataStore.swift in Sources */,
+				7EAA478D245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift in Sources */,
 				7ED5CEDE24591E6E00E5D454 /* CategoryCellModel.swift in Sources */,
 				7ED5CE6F24590FD000E5D454 /* Atomic.swift in Sources */,
 				7ED5CEC6245910B400E5D454 /* RestRequest.swift in Sources */,
+				7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */,
 				7ED5CED7245915FD00E5D454 /* SimpleTableViewProvider.swift in Sources */,
+				7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */,
 				7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */,
 				7ED5CE5724590F5C00E5D454 /* LaunchDetailsInteractor.swift in Sources */,
 				7ED5CEA1245910B400E5D454 /* DateFormatter.swift in Sources */,

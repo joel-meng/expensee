@@ -30,6 +30,8 @@ class CategoriesViewController: UIViewController {
 
         provider.updateData(tempDataSource)
         tableView.registerReuableCell(CategoryTableViewCell.self)
+
+
     }
 
     private var tempDataSource: [CategoryCellModel] = [

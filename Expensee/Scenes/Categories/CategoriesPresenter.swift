@@ -14,6 +14,9 @@ protocol CategoriesPresenting {
 
 protocol CategoriesControlling {
 
+    func viewIsReady()
+
+    func didTapAddCategory()
 }
 
 final class CategoriesPresenter {
@@ -26,9 +29,11 @@ extension CategoriesPresenter: CategoriesPresenting {}
 
 extension CategoriesPresenter: CategoriesControlling {
 
-    func didLoadView() {
-        // initial view
+    func viewIsReady() {
+
     }
 
+    func didTapAddCategory() {
 
+    }
 }
