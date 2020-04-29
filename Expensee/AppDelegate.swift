@@ -25,15 +25,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            let screenBounds = UIScreen.main.bounds
            let window = UIWindow(frame: screenBounds)
            return window
-       }
+    }
 
-   private func createHomeViewController() -> UIViewController {
+    private func createHomeViewController() -> UIViewController {
 //       let launchInteractor = LaunchInteractor()
 //       let launchPresenter = LaunchPresenter(interactor: launchInteractor)
-//       let launchViewController = LaunchViewController(nibName: "LaunchViewController", bundle: nil)
+        let launchViewController = CategoriesViewController(nibName: nil, bundle: nil)
 //       launchViewController.presenter = launchPresenter
-       let navigationViewController = UINavigationController()
-       return navigationViewController
+        let navigationViewController = UINavigationController(rootViewController: launchViewController)
+        let tabBarViewController = UITabBarController()
+        tabBarViewController.setViewControllers([navigationViewController], animated: false)
+        navigationViewController.tabBarItem = UITabBarItem.init(title: "Categories",
+                                                                image: "👑".image(size: .init(width: 32, height: 32), fontSize: 32), tag: 1)
+        return tabBarViewController
    }
 
     // MARK: - Core Data stack

@@ -19,6 +19,13 @@ extension UINib {
     }
 }
 
+extension UINib {
+
+    static func fromReuable<T: Reusable>(reusable: T.Type, bundle: Bundle? = nil) -> UINib {
+        return UINib(nibName: T.reuseId, bundle: bundle)
+    }
+}
+
 extension Bundle {
     
     var mainBundle: Bundle {
