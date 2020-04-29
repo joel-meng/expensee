@@ -15,9 +15,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        window = createWindow()
+               window?.rootViewController = createHomeViewController()
+               window?.makeKeyAndVisible()
         return true
     }
+    
+    private func createWindow() -> UIWindow {
+           let screenBounds = UIScreen.main.bounds
+           let window = UIWindow(frame: screenBounds)
+           return window
+       }
+
+   private func createHomeViewController() -> UIViewController {
+//       let launchInteractor = LaunchInteractor()
+//       let launchPresenter = LaunchPresenter(interactor: launchInteractor)
+//       let launchViewController = LaunchViewController(nibName: "LaunchViewController", bundle: nil)
+//       launchViewController.presenter = launchPresenter
+       let navigationViewController = UINavigationController()
+       return navigationViewController
+   }
 
     // MARK: - Core Data stack
 
