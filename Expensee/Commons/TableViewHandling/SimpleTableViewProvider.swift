@@ -8,11 +8,11 @@
 
 import UIKit
 
-final class TableViewProvider<Row> {
+final class TableViewProvider<Row, C: UITableViewCell> {
 
     weak var tableView: UITableView?
 
-    var dataSource: SimpleTableDataSource<Row, UITableViewCell>? {
+    var dataSource: SimpleTableDataSource<Row, C>? {
         didSet {
             DispatchQueue.main.async {
                 self.tableView?.dataSource = self.dataSource

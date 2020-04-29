@@ -16,14 +16,10 @@ class CategoriesViewController: UIViewController {
 
     private lazy var dataSource: CategoryDataSource = CategoryDataSource()
 
-    private lazy var provider: TableViewProvider<CategoryCellModel> = { [weak dataSource] in
-        let provider = TableViewProvider<CategoryCellModel>(tableView: tableView)
+    private lazy var provider: TableViewProvider<CategoryCellModel, CategoryTableViewCell> = { [weak dataSource] in
+        let provider = TableViewProvider<CategoryCellModel, CategoryTableViewCell>(tableView: tableView)
         provider.dataSource = dataSource
-        provider.dataSource?.tapAction = { selected in
-//             self.controller.didSelect(selected).onSuccess { model in
-//                 self.navigateToDetails(from: model)
-//             }
-        }
+        provider.dataSource?.tapAction = { selected in }
 
         return provider
      }()
@@ -45,14 +41,14 @@ class CategoriesViewController: UIViewController {
     ]
 }
 
-final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, UITableViewCell> {
+final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> {
 
-    override var cellProvider: ((UITableView, IndexPath) -> UITableViewCell) {
+    override var cellProvider: ((UITableView, IndexPath) -> CategoryTableViewCell) {
         set {}
         get { dataSource.cellProvider }
     }
     
-    override var binder: ((CategoryCellModel, UITableViewCell) -> Void)? {
+    override var binder: ((CategoryCellModel, CategoryTableViewCell) -> Void)? {
         set {}
         get {
             return { (model: CategoryCellModel, cell: UITableViewCell) in
