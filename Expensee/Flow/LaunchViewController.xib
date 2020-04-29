@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LaunchViewController" customModule="SpaceXSpace" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="bCU-MR-Wlx" id="W5p-yk-FbN"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2Y6-1w-2lF">
+                    <rect key="frame" x="0.0" y="44" width="414" height="32"/>
+                    <segments>
+                        <segment title="Group By Name"/>
+                        <segment title="Group By Date"/>
+                    </segments>
+                    <connections>
+                        <action selector="didToggleGrouping:" destination="-1" eventType="valueChanged" id="ygg-1V-NLE"/>
+                    </connections>
+                </segmentedControl>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bCU-MR-Wlx">
+                    <rect key="frame" x="0.0" y="75" width="414" height="787"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="bCU-MR-Wlx" secondAttribute="bottom" id="2fi-bS-YPF"/>
+                <constraint firstItem="2Y6-1w-2lF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="AAU-o4-ITB"/>
+                <constraint firstItem="2Y6-1w-2lF" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="eS1-LT-d4B"/>
+                <constraint firstItem="bCU-MR-Wlx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="eUn-05-AsI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bCU-MR-Wlx" secondAttribute="trailing" id="hem-n7-4jZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2Y6-1w-2lF" secondAttribute="trailing" id="kmd-ud-HUA"/>
+                <constraint firstItem="bCU-MR-Wlx" firstAttribute="top" secondItem="2Y6-1w-2lF" secondAttribute="bottom" id="pO4-a1-rLy"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="139" y="153"/>
+        </view>
+    </objects>
+</document>
