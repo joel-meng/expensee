@@ -7,17 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoriesViewController: UIViewController {
 
     lazy var controller: CategoriesControlling = {
-        let presenter = CategoriesPresenter(interactor:
-                            CategoriesInteractor(repository:
-                                CategoriesRepository(store: CoreDataStore.shared)))
+        let repository = CategoriesRepository(store: CoreDataStore.shared)
+        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: repository)
+        let interactor = CategoriesInteractor(categoriesSavingUseCase: categoryUseCase)
+        let presenter = CategoriesPresenter(interactor: interactor)
         presenter.view = self
         return presenter
     }()
-
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -35,10 +36,14 @@ class CategoriesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        provider.updateData(tempDataSource)
         tableView.registerReuableCell(CategoryTableViewCell.self)
 
         createAddButton()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        controller.viewIsReady()
     }
 
     private func createAddButton() {
@@ -51,14 +56,6 @@ class CategoriesViewController: UIViewController {
     private func didTapAdd() {
         controller.didTapAddCategory()
     }
-
-    private var tempDataSource: [CategoryCellModel] = [
-        CategoryCellModel(name: "ABC", color: "#123123"),
-        CategoryCellModel(name: "BCD", color: "#123123"),
-        CategoryCellModel(name: "DEF", color: "#123123"),
-        CategoryCellModel(name: "GDF", color: "#123123"),
-        CategoryCellModel(name: "ERD", color: "#123123"),
-    ]
 }
 
 final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> {
@@ -102,6 +99,10 @@ final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, Categor
 }
 
 extension CategoriesViewController: CategoriesDisplaying {
+
+    func displayCategories(_ categories: [CategoryCellModel]) {
+        provider.updateData(categories)
+    }
 
     func displayInsertionError(_ errorMessage: String) {
         let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)

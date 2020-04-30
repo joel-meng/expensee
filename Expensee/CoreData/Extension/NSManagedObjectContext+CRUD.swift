@@ -30,8 +30,8 @@ extension NSManagedObjectContext {
         }
     }
 
-    func performChanges(block: @escaping () -> ()) {
-        perform {
+    func performChanges(block: @escaping () -> Void)  {
+        performAndWait {
             block()
             _ = self.saveOrRollback()
         }

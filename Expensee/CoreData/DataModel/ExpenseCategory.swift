@@ -21,6 +21,17 @@ class ExpenseCategory: NSManagedObject {
         category.color = categoryDTO.color
         return category
     }
+
+    static func fetchAll(from context: NSManagedObjectContext) throws -> [ExpenseCategory] {
+
+        let fetchRequest = ExpenseCategory.fetchRequest()
+
+        let fetched = try context.fetch(fetchRequest)
+
+        guard let fetchedCategories = fetched as? [ExpenseCategory] else { return [] }
+
+        return fetchedCategories
+    }
 }
 
 extension ExpenseCategory: Managed {

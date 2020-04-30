@@ -10,13 +10,25 @@ import Foundation
 
 protocol CategoriesSaveUseCaseProtocol {
 
-    func saveCategory(with request: CategoriesSaveUseCaseRequest)
+    func loadAllCategory() -> Future<[CategoryDTO]>
+
+    func saveCategory(with request: CategoriesSaveUseCaseRequest) -> Future<CategoryDTO>
 }
 
 final class CategoriesSaveUseCase: CategoriesSaveUseCaseProtocol {
 
-    func saveCategory(with request: CategoriesSaveUseCaseRequest) {
+    var categoriesRepository: CategoriesRepositoryProtocol
 
+    init(categoriesRepository: CategoriesRepositoryProtocol) {
+        self.categoriesRepository = categoriesRepository
+    }
+
+    func saveCategory(with request: CategoriesSaveUseCaseRequest) -> Future<CategoryDTO> {
+        return categoriesRepository.save(CategoryDTO(name: request.name, color: request.color))
+    }
+
+    func loadAllCategory() -> Future<[CategoryDTO]> {
+        return categoriesRepository.fetchAll()
     }
 }
 
