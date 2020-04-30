@@ -8,19 +8,25 @@
 
 import Foundation
 
-protocol CategoriesBusinessLogic {
+protocol CategoriesCreating {
 
-    func saveCategory(with reqeust: CategoriesBusinessLogicRequest)
+    func saveCategory(with reqeust: CategoriesSavingRequest) throws
 }
 
-final class CategoriesInteractor: CategoriesBusinessLogic {
+final class CategoriesInteractor: CategoriesCreating {
 
-    func saveCategory(with reqeust: CategoriesBusinessLogicRequest) {
+    private var repository: CategoriesRepositoryProtocol
 
+    init(repository: CategoriesRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    func saveCategory(with request: CategoriesSavingRequest) throws {
+        try repository.save(CategoryDTO(name: request.name, color: request.color))
     }
 }
 
-struct CategoriesBusinessLogicRequest {
+struct CategoriesSavingRequest {
 
     let name: String
 

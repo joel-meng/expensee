@@ -10,7 +10,14 @@ import UIKit
 
 class CategoriesViewController: UIViewController {
 
-    var controller: CategoriesControlling = CategoriesPresenter()
+    lazy var controller: CategoriesControlling = {
+        let presenter = CategoriesPresenter(interactor:
+                            CategoriesInteractor(repository:
+                                CategoriesRepository(store: CoreDataStore.shared)))
+        presenter.view = self
+        return presenter
+    }()
+
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -31,7 +38,18 @@ class CategoriesViewController: UIViewController {
         provider.updateData(tempDataSource)
         tableView.registerReuableCell(CategoryTableViewCell.self)
 
+        createAddButton()
+    }
 
+    private func createAddButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(didTapAdd))
+    }
+
+    @objc
+    private func didTapAdd() {
+        controller.didTapAddCategory()
     }
 
     private var tempDataSource: [CategoryCellModel] = [
@@ -81,4 +99,13 @@ final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, Categor
 
         return dataSource
     }()
+}
+
+extension CategoriesViewController: CategoriesDisplaying {
+
+    func displayInsertionError(_ errorMessage: String) {
+        let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
 }

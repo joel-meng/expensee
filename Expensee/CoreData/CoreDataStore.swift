@@ -15,6 +15,10 @@ final class CoreDataStore {
     
     static let shared = CoreDataStore()
     
+    static func initialize() {
+        _ = CoreDataStore.shared
+    }
+
     private init() {
         createContainer { (container) in
             self.container = container

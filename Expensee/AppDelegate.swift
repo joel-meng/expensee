@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = createWindow()
                window?.rootViewController = createHomeViewController()
                window?.makeKeyAndVisible()
+
+        CoreDataStore.initialize()
         return true
     }
     

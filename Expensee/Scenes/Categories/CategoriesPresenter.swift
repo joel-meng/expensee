@@ -8,8 +8,9 @@
 
 import Foundation
 
-protocol CategoriesPresenting {
+protocol CategoriesDisplaying: class {
 
+    func displayInsertionError(_ errorMessage: String)
 }
 
 protocol CategoriesControlling {
@@ -20,12 +21,15 @@ protocol CategoriesControlling {
 }
 
 final class CategoriesPresenter {
-    init() {
 
+    private let interactor: CategoriesCreating
+
+    weak var view: CategoriesDisplaying?
+
+    init(interactor: CategoriesCreating) {
+        self.interactor = interactor
     }
 }
-
-extension CategoriesPresenter: CategoriesPresenting {}
 
 extension CategoriesPresenter: CategoriesControlling {
 
@@ -34,6 +38,15 @@ extension CategoriesPresenter: CategoriesControlling {
     }
 
     func didTapAddCategory() {
+        let request = CategoriesSavingRequest(name: "\(Date())", color: "#989343")
+        do {
+            try interactor.saveCategory(with: request)
+        } catch {
+            view?.displayInsertionError(translatingError(error))
+        }
+    }
 
+    private func translatingError(_ error: Error) -> String {
+        "Error happend"
     }
 }

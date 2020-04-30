@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-final class ExpenseCategory: NSManagedObject {
+class ExpenseCategory: NSManagedObject {
 
     @NSManaged private(set) var name: String
     @NSManaged private(set) var color: String
