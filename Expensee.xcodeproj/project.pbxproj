@@ -16,6 +16,9 @@
 		7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47862459A67A005565C1 /* CategoriesRepository.swift */; };
 		7EAA478A2459A71C005565C1 /* ManagedObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47892459A71C005565C1 /* ManagedObjectType.swift */; };
 		7EAA478D245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA478C245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift */; };
+		7EAA478F245AD11B005565C1 /* ExpenseBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA478E245AD11B005565C1 /* ExpenseBudget.swift */; };
+		7EAA4792245AD179005565C1 /* CategoryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4791245AD179005565C1 /* CategoryDTO.swift */; };
+		7EAA4794245AD189005565C1 /* BudgetDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4793245AD189005565C1 /* BudgetDTO.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -85,6 +88,9 @@
 		7EAA47862459A67A005565C1 /* CategoriesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRepository.swift; sourceTree = "<group>"; };
 		7EAA47892459A71C005565C1 /* ManagedObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectType.swift; sourceTree = "<group>"; };
 		7EAA478C245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+CRUD.swift"; sourceTree = "<group>"; };
+		7EAA478E245AD11B005565C1 /* ExpenseBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseBudget.swift; sourceTree = "<group>"; };
+		7EAA4791245AD179005565C1 /* CategoryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTO.swift; sourceTree = "<group>"; };
+		7EAA4793245AD189005565C1 /* BudgetDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDTO.swift; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -159,8 +165,9 @@
 		7EAA477924596078005565C1 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				7EAA477A2459609A005565C1 /* ExpenseCategory.swift */,
 				7EAA477C24596169005565C1 /* ManagedObject.swift */,
+				7EAA477A2459609A005565C1 /* ExpenseCategory.swift */,
+				7EAA478E245AD11B005565C1 /* ExpenseBudget.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -179,6 +186,15 @@
 				7EAA478C245A3F3F005565C1 /* NSManagedObjectContext+CRUD.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		7EAA4790245AD163005565C1 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA4791245AD179005565C1 /* CategoryDTO.swift */,
+				7EAA4793245AD189005565C1 /* BudgetDTO.swift */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		7ED5CE2224590A7C00E5D454 = {
@@ -202,6 +218,7 @@
 		7ED5CE2D24590A7C00E5D454 /* Expensee */ = {
 			isa = PBXGroup;
 			children = (
+				7EAA4790245AD163005565C1 /* Domain */,
 				7EFE70E024594B2F00BA3CAE /* CoreData */,
 				7ED5CEC92459122E00E5D454 /* Scenes */,
 				7ED5CE5E24590FD000E5D454 /* Commons */,
@@ -534,11 +551,13 @@
 				7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */,
 				7ED5CE5B24590FA300E5D454 /* LaunchViewController.swift in Sources */,
 				7ED5CEA4245910B400E5D454 /* Response.swift in Sources */,
+				7EAA4794245AD189005565C1 /* BudgetDTO.swift in Sources */,
 				7EAA47812459A0F4005565C1 /* CategoriesInteractor.swift in Sources */,
 				7ED5CEEA245927AD00E5D454 /* DescriptibleByType.swift in Sources */,
 				7ED5CEC1245910B400E5D454 /* RequestCreator.swift in Sources */,
 				7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */,
 				7ED5CEEC2459288800E5D454 /* NSObject+Descriptible.swift in Sources */,
+				7EAA478F245AD11B005565C1 /* ExpenseBudget.swift in Sources */,
 				7ED5CEE82459275B00E5D454 /* Reuable.swift in Sources */,
 				7ED5CEC8245910B400E5D454 /* URLSessionDataTaskProtocol.swift in Sources */,
 				7ED5CEC5245910B400E5D454 /* XRequest.swift in Sources */,
@@ -565,6 +584,7 @@
 				7ED5CE6A24590FD000E5D454 /* UIView+Stateful.swift in Sources */,
 				7ED5CED92459164600E5D454 /* TableSection.swift in Sources */,
 				7ED5CE6D24590FD000E5D454 /* UIImageView+Rest.swift in Sources */,
+				7EAA4792245AD179005565C1 /* CategoryDTO.swift in Sources */,
 				7ED5CEDB245916B600E5D454 /* CategoriesTableDataSource.swift in Sources */,
 				7ED5CE6E24590FD000E5D454 /* Fn.swift in Sources */,
 				7ED5CEE42459238500E5D454 /* CategoryTableViewCell.swift in Sources */,

@@ -38,10 +38,3 @@ struct CategoriesSaveUseCaseRequest {
 
     let color: String
 }
-
-struct CategoryDTO {
-
-    let name: String
-
-    let color: String
-}
