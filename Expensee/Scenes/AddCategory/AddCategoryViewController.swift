@@ -21,7 +21,9 @@ class AddCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        presenter.viewIsReady()
     }
 
     private let dataSource: SimpleTableDataSource<ColorCellModel, UITableViewCell> = {
@@ -30,10 +32,12 @@ class AddCategoryViewController: UIViewController {
 
         dataSource.binder = { (row: ColorCellModel, cell: UITableViewCell) in
             cell.textLabel?.text = row.color
+            cell.accessoryType = row.isChecked ? .checkmark : .none
         }
 
         dataSource.cellProvider = { tableView, indexPath in
-            let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ??
+                UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
             return cell
         }
 
@@ -58,12 +62,13 @@ final class ColorDataSource: SimpleTableDataSource<ColorCellModel, UITableViewCe
 
 struct ColorCellModel {
     let color: String
+    let isChecked: Bool
 }
 
 extension AddCategoryViewController: AddCategoryPresenting {
     
-    func displayColors(colors: [String]) {
-        provider.updateData(colors.map(ColorCellModel.init))
+    func displayColors(colors: [(String, Bool)]) {
+        provider.updateData(colors.map { ColorCellModel.init(color: $0.0, isChecked: $0.1) })
     }
     
     func setSaveButtonEnable(_ enabled: Bool) {
@@ -73,7 +78,7 @@ extension AddCategoryViewController: AddCategoryPresenting {
 
 protocol AddCategoryPresenting: class {
     
-    func displayColors(colors: [String])
+    func displayColors(colors: [(String, Bool)])
     
     func setSaveButtonEnable(_ enabled: Bool)
 }
@@ -95,7 +100,7 @@ final class AddCategoryPresenter {
 extension AddCategoryPresenter: AddCategoryControlling {
     
     func viewIsReady() {
-        view?.displayColors(colors: [])
+        view?.displayColors(colors: [("A", true), ("B", false), ("C", true)])
         view?.setSaveButtonEnable(false)
     }
     
