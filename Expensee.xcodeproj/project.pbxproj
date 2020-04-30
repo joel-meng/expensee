@@ -19,6 +19,7 @@
 		7EAA478F245AD11B005565C1 /* ExpenseBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA478E245AD11B005565C1 /* ExpenseBudget.swift */; };
 		7EAA4792245AD179005565C1 /* CategoryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4791245AD179005565C1 /* CategoryDTO.swift */; };
 		7EAA4794245AD189005565C1 /* BudgetDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4793245AD189005565C1 /* BudgetDTO.swift */; };
+		7EAA4796245ADBAC005565C1 /* BudgetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4795245ADBAC005565C1 /* BudgetRepository.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -91,6 +92,7 @@
 		7EAA478E245AD11B005565C1 /* ExpenseBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseBudget.swift; sourceTree = "<group>"; };
 		7EAA4791245AD179005565C1 /* CategoryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTO.swift; sourceTree = "<group>"; };
 		7EAA4793245AD189005565C1 /* BudgetDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDTO.swift; sourceTree = "<group>"; };
+		7EAA4795245ADBAC005565C1 /* BudgetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetRepository.swift; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				7ED5CED02459129A00E5D454 /* CategoriesPresenter.swift */,
 				7EAA47802459A0F4005565C1 /* CategoriesInteractor.swift */,
 				7EAA47822459A296005565C1 /* CategoriesUseCase.swift */,
+				7EAA4795245ADBAC005565C1 /* BudgetRepository.swift */,
 				7EAA47862459A67A005565C1 /* CategoriesRepository.swift */,
 				7ED5CEDA245916B600E5D454 /* CategoriesTableDataSource.swift */,
 			);
@@ -564,6 +567,7 @@
 				7ED5CEC4245910B400E5D454 /* RestRequestURLQueryDecorator.swift in Sources */,
 				7ED5CEA2245910B400E5D454 /* Rest.swift in Sources */,
 				7EAA47832459A296005565C1 /* CategoriesUseCase.swift in Sources */,
+				7EAA4796245ADBAC005565C1 /* BudgetRepository.swift in Sources */,
 				7EAA478A2459A71C005565C1 /* ManagedObjectType.swift in Sources */,
 				7ED5CE6824590FD000E5D454 /* Reader.swift in Sources */,
 				7EAA47852459A479005565C1 /* CoreDataStore.swift in Sources */,

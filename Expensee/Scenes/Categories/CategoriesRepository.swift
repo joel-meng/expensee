@@ -9,32 +9,50 @@
 import Foundation
 import CoreData
 
-protocol CategoriesRepositoryProtocol {
+protocol RepositoryProtocol {
 
-    func save(_ category: CategoryDTO) -> Future<CategoryDTO>
+    var context: NSManagedObjectContext? { get }
+
+    func perform(action: @escaping () -> Void)
+}
+
+extension RepositoryProtocol {
+
+    func perform(action: @escaping () -> Void) {
+        context?.performChanges(block: action)
+    }
+
+    func save() throws {
+        try context?.save()
+    }
+}
+
+protocol CategoriesRepositoryProtocol: RepositoryProtocol {
+
+    func save(_ category: CategoryDTO) -> Future<ExpenseCategory>
 
     func fetchAll() -> Future<[CategoryDTO]>
 }
 
 final class CategoriesRepository: CategoriesRepositoryProtocol {
 
-    private let store: CoreDataStore
+    let context: NSManagedObjectContext?
 
-    init(store: CoreDataStore) {
-        self.store = store
+    init(context: NSManagedObjectContext?) {
+        self.context = context
     }
 
-    func save(_ category: CategoryDTO) -> Future<CategoryDTO> {
-        let future = Future<CategoryDTO>()
+    func save(_ category: CategoryDTO) -> Future<ExpenseCategory> {
+        let future = Future<ExpenseCategory>()
 
-        guard let context = store.context else {
+        guard let context = context else {
             future.reject(with: NSError())
             return future
         }
 
-        context.performChanges {
+        perform {
             let inserted = try! ExpenseCategory.insert(category: category, into: context)
-            future.resolve(with: CategoryDTO(name: inserted.name, color: inserted.color))
+            future.resolve(with: inserted)
         }
 
         return future
@@ -43,14 +61,19 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
     func fetchAll() -> Future<[CategoryDTO]> {
         let future = Future<[CategoryDTO]>()
 
-        guard let context = store.context else {
+        guard let context = context else {
             future.reject(with: NSError())
             return future
         }
 
         do {
             let fetched = try ExpenseCategory.fetchAll(from: context)
-            let categoriesDTO = fetched.map { CategoryDTO(name: $0.name, color: $0.color) }
+            let categoriesDTO = fetched.map {
+                CategoryDTO(name: $0.name, color: $0.color,
+                            budget: $0.budget.map {
+                                BudgetDTO(currency: $0.currency, limit: $0.limit)
+                            })
+            }
             future.resolve(with: categoriesDTO)
         } catch {
             future.reject(with: error)

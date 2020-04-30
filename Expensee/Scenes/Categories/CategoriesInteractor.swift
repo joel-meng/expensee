@@ -28,16 +28,23 @@ final class CategoriesInteractor: CategoriesInteracting {
 
         return future.map { (categories) -> CategoriesLoadResponse in
             CategoriesLoadResponse(categories: categories.map {
-                CategoriesLoadResponse.Category(name: $0.name, color: $0.color)
+                CategoriesLoadResponse.Category(name: $0.name, color: $0.color, budget: $0.budget.map({
+                    CategoriesLoadResponse.Budget(currency: $0.currency, limit: $0.limit)
+                }))
             })
         }
     }
 
     func saveCategory(with request: CategoriesSavingRequest) -> Future<CategoriesSavingRequest.Category> {
         categoriesSavingUseCase.saveCategory(with:
-            CategoriesSaveUseCaseRequest(name: request.category.name, color: request.category.color)
+            CategoriesSaveUseCaseRequest(name: request.category.name,
+                                         color: request.category.color,
+                                         limit: request.category.budget?.limit,
+                                         currency: request.category.budget?.currency)
         ).map {
-            CategoriesSavingRequest.Category(name: $0.name, color: $0.color)
+            CategoriesSavingRequest.Category(name: $0.name, color: $0.color, budget: $0.budget.map {
+                CategoriesSavingRequest.Budget(currency: $0.currency, limit: $0.limit)
+            })
         }
     }
 }
@@ -49,6 +56,12 @@ struct CategoriesSavingRequest {
     struct Category {
         let name: String
         let color: String
+        let budget: Budget?
+    }
+
+    struct Budget {
+        let currency: String
+        let limit: Double
     }
 }
 
@@ -59,5 +72,11 @@ struct CategoriesLoadResponse {
     struct Category {
         let name: String
         let color: String
+        let budget: Budget?
+    }
+
+    struct Budget {
+        let currency: String
+        let limit: Double
     }
 }

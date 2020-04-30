@@ -13,4 +13,6 @@ struct CategoryDTO {
     let name: String
 
     let color: String
+
+    let budget: BudgetDTO?
 }

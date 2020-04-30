@@ -18,13 +18,26 @@ protocol CategoriesSaveUseCaseProtocol {
 final class CategoriesSaveUseCase: CategoriesSaveUseCaseProtocol {
 
     var categoriesRepository: CategoriesRepositoryProtocol
+    var budgetRepository: BudgetRepositoryProtocol
 
-    init(categoriesRepository: CategoriesRepositoryProtocol) {
+    init(categoriesRepository: CategoriesRepositoryProtocol,
+         budgetRepository: BudgetRepositoryProtocol) {
         self.categoriesRepository = categoriesRepository
+        self.budgetRepository = budgetRepository
     }
 
     func saveCategory(with request: CategoriesSaveUseCaseRequest) -> Future<CategoryDTO> {
-        return categoriesRepository.save(CategoryDTO(name: request.name, color: request.color))
+        var budgetDTO: BudgetDTO? = nil
+        if let limit = request.limit, let currency = request.currency {
+            budgetDTO = BudgetDTO(currency: currency, limit: limit)
+        }
+
+        let category = categoriesRepository.save(CategoryDTO(name: request.name,
+                                                             color: request.color,
+                                                             budget: budgetDTO))
+        return category.map { CategoryDTO(name: $0.name, color: $0.color, budget: $0.budget.map {
+            BudgetDTO(currency: $0.currency, limit: $0.limit)
+        })}
     }
 
     func loadAllCategory() -> Future<[CategoryDTO]> {
@@ -37,4 +50,8 @@ struct CategoriesSaveUseCaseRequest {
     let name: String
 
     let color: String
+
+    let limit: Double?
+
+    let currency: String?
 }

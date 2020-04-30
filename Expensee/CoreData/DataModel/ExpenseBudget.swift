@@ -13,6 +13,7 @@ class ExpenseBudget: NSManagedObject {
 
     @NSManaged private(set) var limit: Double
     @NSManaged private(set) var currency: String
+    @NSManaged private(set) var category: ExpenseCategory
 
     static func insert(budget budgetDTO: BudgetDTO,
                        into context: NSManagedObjectContext) throws -> ExpenseBudget {

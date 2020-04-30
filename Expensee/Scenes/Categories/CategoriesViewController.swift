@@ -12,8 +12,10 @@ import CoreData
 class CategoriesViewController: UIViewController {
 
     lazy var controller: CategoriesControlling = {
-        let repository = CategoriesRepository(store: CoreDataStore.shared)
-        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: repository)
+        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared.context)
+        let budgetRepository = BudgetRepository(context: CoreDataStore.shared.context)
+        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: categoryRepository,
+                                                    budgetRepository: budgetRepository)
         let interactor = CategoriesInteractor(categoriesSavingUseCase: categoryUseCase)
         let presenter = CategoriesPresenter(interactor: interactor)
         presenter.view = self

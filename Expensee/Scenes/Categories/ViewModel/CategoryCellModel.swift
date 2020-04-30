@@ -10,5 +10,8 @@ import Foundation
 
 struct CategoryCellModel {
     let name: String
+
     let color: String
+
+    let limit: Double?
 }

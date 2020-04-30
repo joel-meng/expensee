@@ -43,7 +43,7 @@ extension CategoriesPresenter: CategoriesControlling {
         let future = interactor.loadCategories()
         future.on(success: { [weak view] (loadResonse) in
             view?.displayCategories(loadResonse.categories.map {
-                CategoryCellModel(name: $0.name, color: $0.color)
+                CategoryCellModel(name: $0.name, color: $0.color, limit: $0.budget?.limit)
             })
         }, failure: {  [weak self] error in
             guard let self = self else { return }
@@ -52,7 +52,9 @@ extension CategoriesPresenter: CategoriesControlling {
     }
 
     func didTapAddCategory() {
-        let request = CategoriesSavingRequest(category: CategoriesSavingRequest.Category(name: "\(Date())", color: "#989343"))
+        let request = CategoriesSavingRequest(category: CategoriesSavingRequest.Category(name: "\(Date())",
+            color: "#989343",
+            budget: CategoriesSavingRequest.Budget(currency: "USD", limit: 222)))
 
         interactor.saveCategory(with: request).on(success: { [weak self] _ in
             self?.loadCategories()
