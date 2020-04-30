@@ -37,6 +37,12 @@ class ExpenseCategory: NSManagedObject {
 
         return fetchedCategories
     }
+
+    static func delete(form context: NSManagedObjectContext) throws {
+        let fetchAll = ExpenseCategory.fetchRequest()
+        let delete = NSBatchDeleteRequest(fetchRequest: fetchAll)
+        try context.execute(delete)
+    }
 }
 
 extension ExpenseCategory: Managed {

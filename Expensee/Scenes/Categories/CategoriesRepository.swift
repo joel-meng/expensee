@@ -42,6 +42,12 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         self.context = context
     }
 
+    func delete() {
+        context?.performChanges {
+            try! ExpenseCategory.delete(form: self.context!)
+        }
+    }
+
     func save(_ category: CategoryDTO) -> Future<ExpenseCategory> {
         let future = Future<ExpenseCategory>()
 

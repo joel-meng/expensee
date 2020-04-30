@@ -14,8 +14,6 @@ protocol DescriptibleByType {
 
 extension DescriptibleByType {
     static func typeDescription() -> String {
-        let desc = String.name(of: type(of: self))
-        print(desc)
-        return desc
+        return String.name(of: type(of: self))
     }
 }

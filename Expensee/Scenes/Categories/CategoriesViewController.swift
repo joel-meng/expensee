@@ -37,7 +37,7 @@ class CategoriesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "Categories"
         tableView.registerReuableCell(CategoryTableViewCell.self)
 
         createAddButton()

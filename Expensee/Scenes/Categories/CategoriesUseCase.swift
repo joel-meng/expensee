@@ -26,6 +26,10 @@ final class CategoriesSaveUseCase: CategoriesSaveUseCaseProtocol {
         self.budgetRepository = budgetRepository
     }
 
+    func deleteAll() {
+        (categoriesRepository as! CategoriesRepository).delete()
+    }
+
     func saveCategory(with request: CategoriesSaveUseCaseRequest) -> Future<CategoryDTO> {
         var budgetDTO: BudgetDTO? = nil
         if let limit = request.limit, let currency = request.currency {

@@ -3,12 +3,12 @@
     <entity name="ExpenseBudget" representedClassName=".ExpenseBudget" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="String"/>
         <attribute name="limit" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="category" maxCount="1" deletionRule="Cascade" destinationEntity="ExpenseCategory" inverseName="budget" inverseEntity="ExpenseCategory"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseCategory" inverseName="budget" inverseEntity="ExpenseCategory"/>
     </entity>
     <entity name="ExpenseCategory" representedClassName=".ExpenseCategory" syncable="YES">
         <attribute name="color" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="budget" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseBudget" inverseName="category" inverseEntity="ExpenseBudget"/>
+        <relationship name="budget" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ExpenseBudget" inverseName="category" inverseEntity="ExpenseBudget"/>
     </entity>
     <elements>
         <element name="ExpenseCategory" positionX="-269.8828125" positionY="22.94921875" width="128" height="88"/>
