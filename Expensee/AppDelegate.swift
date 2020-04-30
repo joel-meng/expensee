@@ -16,8 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = createWindow()
-               window?.rootViewController = createHomeViewController()
-               window?.makeKeyAndVisible()
+//               window?.rootViewController = createHomeViewController()
+            window?.rootViewController = createAddCategoryScene()
+            window?.makeKeyAndVisible()
 
         CoreDataStore.initialize()
         return true
@@ -30,17 +31,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func createHomeViewController() -> UIViewController {
-//       let launchInteractor = LaunchInteractor()
-//       let launchPresenter = LaunchPresenter(interactor: launchInteractor)
+    //       let launchInteractor = LaunchInteractor()
+    //       let launchPresenter = LaunchPresenter(interactor: launchInteractor)
         let launchViewController = CategoriesViewController(nibName: nil, bundle: nil)
-//       launchViewController.presenter = launchPresenter
+    //       launchViewController.presenter = launchPresenter
         let navigationViewController = UINavigationController(rootViewController: launchViewController)
         let tabBarViewController = UITabBarController()
         tabBarViewController.setViewControllers([navigationViewController], animated: false)
         navigationViewController.tabBarItem = UITabBarItem.init(title: "Categories",
                                                                 image: "👑".image(size: .init(width: 32, height: 32), fontSize: 32), tag: 1)
         return tabBarViewController
-   }
+    }
+    
+    private func createAddCategoryScene() -> UIViewController {
+        let addCategoryViewController = AddCategoryViewController(nibName: nil, bundle: nil)
+        
+        let presenter = AddCategoryPresenter(view: addCategoryViewController)
+        addCategoryViewController.presenter = presenter
+        
+        
+        let navigationViewController = UINavigationController(rootViewController: addCategoryViewController)
+        let tabBarViewController = UITabBarController()
+        tabBarViewController.setViewControllers([navigationViewController], animated: false)
+        navigationViewController.tabBarItem = UITabBarItem.init(title: "Categories",
+                                                                image: "👑".image(size: .init(width: 32, height: 32), fontSize: 32), tag: 1)
+        return tabBarViewController
+    }
+    
 
     // MARK: - Core Data stack
 
