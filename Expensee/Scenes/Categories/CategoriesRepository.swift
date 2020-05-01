@@ -29,7 +29,7 @@ extension RepositoryProtocol {
 
 protocol CategoriesRepositoryProtocol: RepositoryProtocol {
 
-    func save(_ category: CategoryDTO) -> Future<ExpenseCategory>
+    func save(_ category: CategoryDTO) -> Future<CategoryDTO>
 
     func fetchAll() -> Future<[CategoryDTO]>
 }
@@ -48,8 +48,8 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         }
     }
 
-    func save(_ category: CategoryDTO) -> Future<ExpenseCategory> {
-        let future = Future<ExpenseCategory>()
+    func save(_ category: CategoryDTO) -> Future<CategoryDTO> {
+        let future = Future<CategoryDTO>()
 
         guard let context = context else {
             future.reject(with: NSError())
@@ -58,7 +58,10 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
 
         perform {
             let inserted = try! ExpenseCategory.insert(category: category, into: context)
-            future.resolve(with: inserted)
+            let categoryDTO = CategoryDTO(name: inserted.name, color: inserted.color, budget: inserted.budget.map {
+                BudgetDTO(currency: $0.currency, limit: $0.limit)
+            })
+            future.resolve(with: categoryDTO)
         }
 
         return future

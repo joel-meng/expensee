@@ -13,15 +13,16 @@ final class CoreDataStore {
     
     private var container: NSPersistentContainer?
     
-    static let shared = CoreDataStore()
+    static var shared: CoreDataStore?
     
-    static func initialize() {
-        _ = CoreDataStore.shared
+    static func initialize(completion: @escaping () -> Void) {
+        shared = CoreDataStore(completion)
     }
 
-    private init() {
+    private init(_ completion: @escaping () -> Void) {
         createContainer { (container) in
             self.container = container
+            completion()
         }
     }
 

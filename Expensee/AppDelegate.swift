@@ -15,12 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = createWindow()
-//               window?.rootViewController = createHomeViewController()
-            window?.rootViewController = createAddCategoryScene()
-            window?.makeKeyAndVisible()
 
-        CoreDataStore.initialize()
+
+
+        CoreDataStore.initialize() { [weak self] in
+            self?.window = self?.createWindow()
+            //               window?.rootViewController = createHomeViewController()
+            self?.window?.rootViewController = self?.createAddCategoryScene()
+            self?.window?.makeKeyAndVisible()
+        }
         return true
     }
     
@@ -31,10 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func createHomeViewController() -> UIViewController {
-    //       let launchInteractor = LaunchInteractor()
-    //       let launchPresenter = LaunchPresenter(interactor: launchInteractor)
+        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
+        let budgetRepository = BudgetRepository(context: CoreDataStore.shared?.context)
+        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: categoryRepository,
+                                                    budgetRepository: budgetRepository)
+        let interactor = CategoriesInteractor(categoriesSavingUseCase: categoryUseCase)
+        let presenter = CategoriesPresenter(interactor: interactor)
+
+
         let launchViewController = CategoriesViewController(nibName: nil, bundle: nil)
-    //       launchViewController.presenter = launchPresenter
+        presenter.view = launchViewController
+
         let navigationViewController = UINavigationController(rootViewController: launchViewController)
         let tabBarViewController = UITabBarController()
         tabBarViewController.setViewControllers([navigationViewController], animated: false)
@@ -44,8 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func createAddCategoryScene() -> UIViewController {
-        let addCategoryUseCase = CategoryColorUseCase()
-        let addCategoryInteractor = AddCategoryInteractor(colorsUseCase: addCategoryUseCase)
+        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
+        let colorsUseCase = CategoryColorUseCase()
+        let addCategoryUseCase = AddCategoryUseCase(categoryRepositoy: categoryRepository)
+        let addCategoryInteractor = AddCategoryInteractor(colorsUseCase: colorsUseCase,
+                                                          saveCategoryUseCase: addCategoryUseCase)
         let addCategoryViewController = AddCategoryViewController(nibName: nil, bundle: nil)
         let presenter = AddCategoryPresenter(view: addCategoryViewController, interactor: addCategoryInteractor)
         addCategoryViewController.presenter = presenter

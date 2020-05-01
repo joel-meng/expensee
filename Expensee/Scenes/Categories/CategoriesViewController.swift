@@ -11,16 +11,7 @@ import CoreData
 
 class CategoriesViewController: UIViewController {
 
-    lazy var controller: CategoriesControlling = {
-        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared.context)
-        let budgetRepository = BudgetRepository(context: CoreDataStore.shared.context)
-        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: categoryRepository,
-                                                    budgetRepository: budgetRepository)
-        let interactor = CategoriesInteractor(categoriesSavingUseCase: categoryUseCase)
-        let presenter = CategoriesPresenter(interactor: interactor)
-        presenter.view = self
-        return presenter
-    }()
+    var controller: CategoriesControlling!
 
     @IBOutlet weak var tableView: UITableView!
 

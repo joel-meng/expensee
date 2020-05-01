@@ -24,11 +24,12 @@ class AddCategoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Create Category"
 
         limitTextField.delegate = amountTextFieldDelegate
         amountTextFieldDelegate.updateAction = { [weak presenter] _, result in
             result.do(ifLeft: { (amount) in
-                presenter?.didSelectMonthlyLimit(amount?.floatValue)
+                presenter?.didSelectMonthlyLimit(amount?.doubleValue)
             }, ifRight: { error in
                 print("\(error)")
             })
@@ -43,10 +44,15 @@ class AddCategoryViewController: UIViewController {
             })
         }
         
-        currencySegmentControl.addTarget(self, action: #selector(updateCurrencySelection), for: .valueChanged)
+        currencySegmentControl.addTarget(self, action: #selector(updateCurrencySelection(sender:)), for: .valueChanged)
         updateCurrencySelection(sender: currencySegmentControl)
-
+        saveButton.addTarget(self, action: #selector(saveButtonTapped(sender:)), for: .touchUpInside)
         presenter.viewIsReady()
+    }
+
+    @objc
+    private func saveButtonTapped(sender: UIButton) {
+        presenter.didTapSave()
     }
 
     @objc
@@ -118,13 +124,15 @@ protocol AddCategoryControlling: class {
     
     func viewIsReady()
 
-    func didSelectMonthlyLimit(_ limit: Float?)
+    func didSelectMonthlyLimit(_ limit: Double?)
 
     func didSelectMonthlyLimitCurrency(_ currency: String?)
 
     func didSelectCategoryName(_ name: String?)
 
     func didSelectCategoryColor(_ color: UUID?)
+
+    func didTapSave()
 }
 
 final class AddCategoryPresenter {
@@ -159,7 +167,7 @@ final class AddCategoryPresenter {
     }
 
     struct MonthlyLimit {
-        let limit: Float?
+        let limit: Double?
         let currency: String?
     }
 
@@ -171,19 +179,12 @@ final class AddCategoryPresenter {
 
 extension AddCategoryPresenter: AddCategoryControlling {
     
-    private func colorsCellModels(withSelection selection: UUID?) -> [ColorCellModel] {
-        let categoriesColor = interactor.listColors(request: ListColorsRequest())
-        return categoriesColor.colors.map {
-            ColorCellModel(color: $0.color, isChecked: selection != nil ? selection == $0.uuid : false, id: $0.uuid)
-        }
-    }
-
     func viewIsReady() {
         view?.displayColors(colors: colorsCellModels(withSelection: nil))
         view?.setSaveButtonEnable(false)
     }
     
-    func didSelectMonthlyLimit(_ limit: Float?) {
+    func didSelectMonthlyLimit(_ limit: Double?) {
         self.monthlyLimit = MonthlyLimit(limit: limit, currency: monthlyLimit?.currency)
     }
     
@@ -199,5 +200,34 @@ extension AddCategoryPresenter: AddCategoryControlling {
         category = Category(name: category?.name, color: color)
         let cellModel = colorsCellModels(withSelection: color)
         view?.displayColors(colors: cellModel)
+    }
+
+    func didTapSave() {
+        guard let name = category?.name, let color = category?.color else {
+            // TODO: - display error
+            return
+        }
+
+        let monthlyLimit = self.monthlyLimit.flatMap { monthlyLimit -> SaveCategoryRequest.MontlyLimit? in
+            guard let limit = monthlyLimit.limit, let currency = monthlyLimit.currency else { return nil }
+            return SaveCategoryRequest.MontlyLimit(limitAmount: limit, limitCurrency: currency)
+        }
+
+        let category = SaveCategoryRequest.Category(name: name, color: color, monthlyLimit: monthlyLimit)
+        let savedFuture = interactor.saveCategory(request: SaveCategoryRequest(category: category))
+        savedFuture.on(success: { (response) in
+            print(response.category)
+        }, failure: { error in
+//            print(error)
+        })
+    }
+
+    // MARK: - Color Cells
+
+    private func colorsCellModels(withSelection selection: UUID?) -> [ColorCellModel] {
+        let categoriesColor = interactor.listColors(request: ListColorsRequest())
+        return categoriesColor.colors.map {
+            ColorCellModel(color: $0.color, isChecked: selection != nil ? selection == $0.uuid : false, id: $0.uuid)
+        }
     }
 }
