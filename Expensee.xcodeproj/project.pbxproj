@@ -22,6 +22,11 @@
 		7EAA4796245ADBAC005565C1 /* BudgetRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4795245ADBAC005565C1 /* BudgetRepository.swift */; };
 		7EAA479A245B8B08005565C1 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA4798245B8B08005565C1 /* AddCategoryViewController.swift */; };
 		7EAA479B245B8B08005565C1 /* AddCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAA4799245B8B08005565C1 /* AddCategoryViewController.xib */; };
+		7EAA479E245B9B4B005565C1 /* CurrencyTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA479D245B9B4B005565C1 /* CurrencyTextFieldDelegate.swift */; };
+		7EAA47A0245B9B84005565C1 /* TextFieldDelegation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA479F245B9B84005565C1 /* TextFieldDelegation.swift */; };
+		7EAA47A3245B9BBE005565C1 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A2245B9BBE005565C1 /* Either.swift */; };
+		7EAA47A5245B9C22005565C1 /* LimitValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A4245B9C22005565C1 /* LimitValidator.swift */; };
+		7EAA47A7245BB6D4005565C1 /* DecimalValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A6245BB6D4005565C1 /* DecimalValidator.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -97,6 +102,11 @@
 		7EAA4795245ADBAC005565C1 /* BudgetRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetRepository.swift; sourceTree = "<group>"; };
 		7EAA4798245B8B08005565C1 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		7EAA4799245B8B08005565C1 /* AddCategoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCategoryViewController.xib; sourceTree = "<group>"; };
+		7EAA479D245B9B4B005565C1 /* CurrencyTextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextFieldDelegate.swift; sourceTree = "<group>"; };
+		7EAA479F245B9B84005565C1 /* TextFieldDelegation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegation.swift; sourceTree = "<group>"; };
+		7EAA47A2245B9BBE005565C1 /* Either.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Either.swift; sourceTree = "<group>"; };
+		7EAA47A4245B9C22005565C1 /* LimitValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitValidator.swift; sourceTree = "<group>"; };
+		7EAA47A6245BB6D4005565C1 /* DecimalValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalValidator.swift; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -203,6 +213,26 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		7EAA479C245B9B36005565C1 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA47A4245B9C22005565C1 /* LimitValidator.swift */,
+				7EAA47A6245BB6D4005565C1 /* DecimalValidator.swift */,
+				7EAA479F245B9B84005565C1 /* TextFieldDelegation.swift */,
+				7EAA479D245B9B4B005565C1 /* CurrencyTextFieldDelegate.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		7EAA47A1245B9BB2005565C1 /* Functional */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA47A2245B9BBE005565C1 /* Either.swift */,
+				7ED5CE5F24590FD000E5D454 /* Reader.swift */,
+			);
+			path = Functional;
+			sourceTree = "<group>";
+		};
 		7ED5CE2224590A7C00E5D454 = {
 			isa = PBXGroup;
 			children = (
@@ -262,8 +292,9 @@
 		7ED5CE5E24590FD000E5D454 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				7EAA47A1245B9BB2005565C1 /* Functional */,
+				7EAA479C245B9B36005565C1 /* Helper */,
 				7ED5CED52459156600E5D454 /* TableViewHandling */,
-				7ED5CE5F24590FD000E5D454 /* Reader.swift */,
 				7ED5CED42459155700E5D454 /* Future */,
 				7ED5CE6124590FD000E5D454 /* Extensions */,
 			);
@@ -553,6 +584,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ED5CEC3245910B400E5D454 /* RestRequestMethodDecorator.swift in Sources */,
+				7EAA479E245B9B4B005565C1 /* CurrencyTextFieldDelegate.swift in Sources */,
+				7EAA47A7245BB6D4005565C1 /* DecimalValidator.swift in Sources */,
 				7ED5CEC2245910B400E5D454 /* RestRequestAuthorizationDecorator.swift in Sources */,
 				7ED5CEA3245910B400E5D454 /* HTTPMethod.swift in Sources */,
 				7ED5CEE0245920BF00E5D454 /* String+Emoji.swift in Sources */,
@@ -573,7 +606,9 @@
 				7ED5CEC5245910B400E5D454 /* XRequest.swift in Sources */,
 				7ED5CEC4245910B400E5D454 /* RestRequestURLQueryDecorator.swift in Sources */,
 				7ED5CEA2245910B400E5D454 /* Rest.swift in Sources */,
+				7EAA47A3245B9BBE005565C1 /* Either.swift in Sources */,
 				7EAA479A245B8B08005565C1 /* AddCategoryViewController.swift in Sources */,
+				7EAA47A0245B9B84005565C1 /* TextFieldDelegation.swift in Sources */,
 				7EAA47832459A296005565C1 /* CategoriesUseCase.swift in Sources */,
 				7EAA4796245ADBAC005565C1 /* BudgetRepository.swift in Sources */,
 				7EAA478A2459A71C005565C1 /* ManagedObjectType.swift in Sources */,
@@ -592,6 +627,7 @@
 				7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */,
 				7ED5CEF024592C3D00E5D454 /* UITableView+Reuable.swift in Sources */,
 				7ED5CEA0245910B400E5D454 /* HTTPURLResponse+Status.swift in Sources */,
+				7EAA47A5245B9C22005565C1 /* LimitValidator.swift in Sources */,
 				7ED5CEEE24592B1F00E5D454 /* UIView+DefaultNib.swift in Sources */,
 				7ED5CE6A24590FD000E5D454 /* UIView+Stateful.swift in Sources */,
 				7ED5CED92459164600E5D454 /* TableSection.swift in Sources */,

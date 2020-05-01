@@ -13,17 +13,32 @@ class AddCategoryViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var saveButton: UIButton!
-    
     @IBOutlet weak var limitTextField: UITextField!
     @IBOutlet weak var currencySegmentControl: UISegmentedControl!
+
     var presenter: AddCategoryControlling!
     
+    private lazy var amountTextFieldDelegate = CurrencyRangeTextFieldDelegation()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        limitTextField.delegate = amountTextFieldDelegate
+        amountTextFieldDelegate.updateAction = { [weak presenter] _, result in
+            result.do(ifLeft: { (result) in
+                print("\(result)")
+//                if passed { presenter?.setMonthlyLimit(<#T##limit: Float##Float#>)}
+            }, ifRight: { error in
+                print("\(error)")
+            })
+        }
         
         presenter.viewIsReady()
+    }
+
+    private func currency(ofSegment segmentControl: UISegmentedControl) -> String {
+        if segmentControl.selectedSegmentIndex == 0 { return "NZD" }
+        return "USD"
     }
 
     private let dataSource: SimpleTableDataSource<ColorCellModel, UITableViewCell> = {
@@ -81,19 +96,42 @@ protocol AddCategoryPresenting: class {
     func displayColors(colors: [(String, Bool)])
     
     func setSaveButtonEnable(_ enabled: Bool)
+
 }
 
-protocol AddCategoryControlling {
+protocol AddCategoryControlling: class {
     
     func viewIsReady()
+
+    func setMonthlyLimit(_ limit: Float)
+
+    func setMonthlyLimitCurrency(_ currency: String)
+
+    func setCategoryName(_ name: String)
+
+    func setCategoryColor(_ color: String)
 }
 
 final class AddCategoryPresenter {
     
     private weak var view: AddCategoryPresenting?
     
+    private var monthlyLimit: MonthlyLimit?
+
+    private var category: Category?
+
     init(view: AddCategoryPresenting) {
         self.view = view
+    }
+
+    struct MonthlyLimit {
+        let limit: Float?
+        let currency: String?
+    }
+
+    struct Category {
+        let name: String?
+        let color: String?
     }
 }
 
@@ -104,5 +142,19 @@ extension AddCategoryPresenter: AddCategoryControlling {
         view?.setSaveButtonEnable(false)
     }
     
+    func setMonthlyLimit(_ limit: Float) {
+        self.monthlyLimit = MonthlyLimit(limit: limit, currency: monthlyLimit?.currency)
+    }
     
+    func setMonthlyLimitCurrency(_ currency: String) {
+        self.monthlyLimit = MonthlyLimit(limit: monthlyLimit?.limit, currency: currency)
+    }
+
+    func setCategoryName(_ name: String) {
+        category = Category(name: name, color: category?.color)
+    }
+
+    func setCategoryColor(_ color: String) {
+        category = Category(name: category?.name, color: color)
+    }
 }
