@@ -27,6 +27,8 @@
 		7EAA47A3245B9BBE005565C1 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A2245B9BBE005565C1 /* Either.swift */; };
 		7EAA47A5245B9C22005565C1 /* LimitValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A4245B9C22005565C1 /* LimitValidator.swift */; };
 		7EAA47A7245BB6D4005565C1 /* DecimalValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A6245BB6D4005565C1 /* DecimalValidator.swift */; };
+		7EAA47A9245BD2D0005565C1 /* AnyTextFieldDelegation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47A8245BD2D0005565C1 /* AnyTextFieldDelegation.swift */; };
+		7EAA47AB245BD318005565C1 /* AnyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47AA245BD318005565C1 /* AnyValidator.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -107,6 +109,8 @@
 		7EAA47A2245B9BBE005565C1 /* Either.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Either.swift; sourceTree = "<group>"; };
 		7EAA47A4245B9C22005565C1 /* LimitValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitValidator.swift; sourceTree = "<group>"; };
 		7EAA47A6245BB6D4005565C1 /* DecimalValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalValidator.swift; sourceTree = "<group>"; };
+		7EAA47A8245BD2D0005565C1 /* AnyTextFieldDelegation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTextFieldDelegation.swift; sourceTree = "<group>"; };
+		7EAA47AA245BD318005565C1 /* AnyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidator.swift; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -217,9 +221,11 @@
 			isa = PBXGroup;
 			children = (
 				7EAA47A4245B9C22005565C1 /* LimitValidator.swift */,
+				7EAA47AA245BD318005565C1 /* AnyValidator.swift */,
 				7EAA47A6245BB6D4005565C1 /* DecimalValidator.swift */,
 				7EAA479F245B9B84005565C1 /* TextFieldDelegation.swift */,
 				7EAA479D245B9B4B005565C1 /* CurrencyTextFieldDelegate.swift */,
+				7EAA47A8245BD2D0005565C1 /* AnyTextFieldDelegation.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -597,6 +603,7 @@
 				7EAA4794245AD189005565C1 /* BudgetDTO.swift in Sources */,
 				7EAA47812459A0F4005565C1 /* CategoriesInteractor.swift in Sources */,
 				7ED5CEEA245927AD00E5D454 /* DescriptibleByType.swift in Sources */,
+				7EAA47AB245BD318005565C1 /* AnyValidator.swift in Sources */,
 				7ED5CEC1245910B400E5D454 /* RequestCreator.swift in Sources */,
 				7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */,
 				7ED5CEEC2459288800E5D454 /* NSObject+Descriptible.swift in Sources */,
@@ -620,6 +627,7 @@
 				7ED5CEC6245910B400E5D454 /* RestRequest.swift in Sources */,
 				7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */,
 				7ED5CED7245915FD00E5D454 /* SimpleTableViewProvider.swift in Sources */,
+				7EAA47A9245BD2D0005565C1 /* AnyTextFieldDelegation.swift in Sources */,
 				7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */,
 				7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */,
 				7ED5CE5724590F5C00E5D454 /* LaunchDetailsInteractor.swift in Sources */,

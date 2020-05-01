@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RangeValidator {
+final class RangeValidator {
 
     private let lowerLimit: Float
     private let upperLimit: Float
