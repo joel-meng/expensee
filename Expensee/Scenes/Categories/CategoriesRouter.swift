@@ -39,7 +39,7 @@ final class CategoriesRouter: CategoriesRouting {
 }
 
 struct AddCategorySceneModel {
-    let categories: Category?
+    let category: Category?
 
     struct Category {
         let uid: UUID

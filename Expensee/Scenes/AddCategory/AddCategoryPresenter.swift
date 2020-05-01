@@ -13,6 +13,8 @@ protocol AddCategoryPresenting: class {
     func displayColors(colors: [ColorCellModel])
 
     func setSaveButtonEnable(_ enabled: Bool)
+    
+    
 }
 
 protocol AddCategoryControlling: class {

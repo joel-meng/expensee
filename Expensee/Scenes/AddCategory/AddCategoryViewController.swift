@@ -96,12 +96,6 @@ class AddCategoryViewController: UIViewController {
     }()
 }
 
-struct ColorCellModel {
-    let color: String
-    let isChecked: Bool
-    let id: UUID
-}
-
 extension AddCategoryViewController: AddCategoryPresenting {
     
     func displayColors(colors: [ColorCellModel]) {
@@ -110,5 +104,27 @@ extension AddCategoryViewController: AddCategoryPresenting {
     
     func setSaveButtonEnable(_ enabled: Bool) {
         saveButton.isEnabled = enabled
+    }
+}
+
+struct ColorCellModel {
+    let color: String
+    let isChecked: Bool
+    let id: UUID
+}
+
+struct CategoryModel {
+    let category: Category?
+
+    struct Category {
+        let uid: UUID
+        let name: String
+        let color: String
+        let budget: Budget?
+    }
+
+    struct Budget {
+        let currency: String
+        let limit: Double
     }
 }
