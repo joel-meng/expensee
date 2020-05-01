@@ -69,7 +69,7 @@ extension CategoriesPresenter: CategoriesControlling {
                 return
             }
             
-            self?.router.routeToAddCategory(with:
+            self?.router.routeToUpdateCategory(with:
                 AddCategorySceneModel(category: AddCategorySceneModel.Category(uid: category.uid,
                                                                                  name: category.name,
                                                                                  color: category.color,

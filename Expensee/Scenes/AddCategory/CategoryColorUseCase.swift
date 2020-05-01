@@ -18,23 +18,23 @@ protocol CategoryColorUseCaseProtocol {
 final class CategoryColorUseCase: CategoryColorUseCaseProtocol {
 
     private let colors = [
-        CategoryColor(color: "#ff71ce", uuid: UUID()),
-        CategoryColor(color: "#01cdfe", uuid: UUID()),
-        CategoryColor(color: "#05ffa1", uuid: UUID()),
-        CategoryColor(color: "#b967ff", uuid: UUID()),
-        CategoryColor(color: "#fffb96", uuid: UUID()),
-        CategoryColor(color: "#fffeb3", uuid: UUID()),
-        CategoryColor(color: "#666547", uuid: UUID()),
+        CategoryColor(color: "#ff71ce"),
+        CategoryColor(color: "#01cdfe"),
+        CategoryColor(color: "#05ffa1"),
+        CategoryColor(color: "#b967ff"),
+        CategoryColor(color: "#fffb96"),
+        CategoryColor(color: "#fffeb3"),
+        CategoryColor(color: "#666547"),
     ]
 
     func listCategoryColors(request: ListCategoryUseCaseRequest) -> ListCategoryUseCaseResponse {
         return ListCategoryUseCaseResponse(colors:
-            colors.map {ListCategoryUseCaseResponse.CategoryColor(color: $0.color, uuid: $0.uuid) })
+            colors.map {ListCategoryUseCaseResponse.CategoryColor(color: $0.color) })
     }
 
     func findCategoryColors(request: FindCategoryUseCaseRequest) -> FindCategoryUseCaseResponse {
-        let foundColor = colors.filter { $0.uuid == request.color }.first.map {
-            FindCategoryUseCaseResponse.CategoryColor(color: $0.color, uuid: $0.uuid)
+        let foundColor = colors.filter { $0.color == request.color }.first.map {
+            FindCategoryUseCaseResponse.CategoryColor(color: $0.color)
         }
         return FindCategoryUseCaseResponse(color: foundColor)
     }
@@ -42,7 +42,6 @@ final class CategoryColorUseCase: CategoryColorUseCaseProtocol {
 
 struct CategoryColor {
     let color: String
-    let uuid: UUID
 }
 
 struct ListCategoryUseCaseRequest {}
@@ -51,12 +50,11 @@ struct ListCategoryUseCaseResponse {
 
     struct CategoryColor {
         let color: String
-        let uuid: UUID
     }
 }
 
 struct FindCategoryUseCaseRequest {
-    let color: UUID
+    let color: String
 }
 
 struct FindCategoryUseCaseResponse {
@@ -64,6 +62,5 @@ struct FindCategoryUseCaseResponse {
 
     struct CategoryColor {
         let color: String
-        let uuid: UUID
     }
 }

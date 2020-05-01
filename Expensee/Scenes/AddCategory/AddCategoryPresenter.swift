@@ -14,7 +14,7 @@ protocol AddCategoryPresenting: class {
 
     func setSaveButtonEnable(_ enabled: Bool)
     
-    
+    func displayCategory(name: String, monthlyBudget: (Double, String)?)
 }
 
 protocol AddCategoryControlling: class {
@@ -27,7 +27,7 @@ protocol AddCategoryControlling: class {
 
     func didSelectCategoryName(_ name: String?)
 
-    func didSelectCategoryColor(_ color: UUID?)
+    func didSelectCategoryColor(_ color: String?)
 
     func didTapSave()
 }
@@ -48,7 +48,13 @@ final class AddCategoryPresenter {
         didSet { update(category: category, limit: monthlyLimit) }
     }
 
-    init(view: AddCategoryPresenting, interactor: AddCategoryInteracting, router: AddCategoriesRouting) {
+    init(view: AddCategoryPresenting,
+         interactor: AddCategoryInteracting,
+         router: AddCategoriesRouting,
+         category: Category?,
+         monthlyLimit: MonthlyLimit?) {
+        self.category = category
+        self.monthlyLimit = monthlyLimit
         self.view = view
         self.interactor = interactor
         self.router = router
@@ -74,14 +80,21 @@ final class AddCategoryPresenter {
 
     struct Category {
         let name: String?
-        let color: UUID?
+        let color: String?
     }
 }
 
 extension AddCategoryPresenter: AddCategoryControlling {
 
     func viewIsReady() {
-        view?.displayColors(colors: colorsCellModels(withSelection: nil))
+        if let name = category?.name {
+            if let budget = monthlyLimit?.limit, let currency = monthlyLimit?.currency {
+                view?.displayCategory(name: name, monthlyBudget: (budget, currency) )
+            } else {
+                view?.displayCategory(name: name, monthlyBudget: nil)
+            }
+        }
+        view?.displayColors(colors: colorsCellModels(withSelection: category?.color))
         view?.setSaveButtonEnable(false)
     }
 
@@ -97,7 +110,7 @@ extension AddCategoryPresenter: AddCategoryControlling {
         category = Category(name: name, color: category?.color)
     }
 
-    func didSelectCategoryColor(_ color: UUID?) {
+    func didSelectCategoryColor(_ color: String?) {
         category = Category(name: category?.name, color: color)
         let cellModel = colorsCellModels(withSelection: color)
         view?.displayColors(colors: cellModel)
@@ -125,10 +138,10 @@ extension AddCategoryPresenter: AddCategoryControlling {
 
     // MARK: - Color Cells
 
-    private func colorsCellModels(withSelection selection: UUID?) -> [ColorCellModel] {
+    private func colorsCellModels(withSelection selection: String?) -> [ColorCellModel] {
         let categoriesColor = interactor.listColors(request: ListColorsRequest())
         return categoriesColor.colors.map {
-            ColorCellModel(color: $0.color, isChecked: selection != nil ? selection == $0.uuid : false, id: $0.uuid)
+            ColorCellModel(color: $0.color, isChecked: selection != nil ? selection == $0.color : false)
         }
     }
 }

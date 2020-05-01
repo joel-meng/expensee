@@ -13,6 +13,7 @@ protocol DependencyInjecting {
     func createCategoryScene(from navigation: UINavigationController) -> UIViewController
 
     func createAddCategoryScene(from navigation: UINavigationController,
+                                sceneModel: AddCategorySceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController
 }
 
@@ -35,7 +36,15 @@ final class DependencyInjection: DependencyInjecting {
     }
 
     func createAddCategoryScene(from navigation: UINavigationController,
+                                sceneModel: AddCategorySceneModel? = nil,
                                 completion: @escaping () -> Void) -> UIViewController {
+        let category = sceneModel.map {
+            AddCategoryPresenter.Category(name: $0.category?.name, color: $0.category?.color)
+        }
+        let monthlyLimit = sceneModel.map {
+            AddCategoryPresenter.MonthlyLimit(limit: $0.category?.budget?.limit, currency: $0.category?.budget?.currency)
+        }
+
         let router = AddCategoriesRouter(navigationController: navigation, completion: completion)
         let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
 
@@ -48,7 +57,8 @@ final class DependencyInjection: DependencyInjecting {
         let addCategoryViewController = AddCategoryViewController(nibName: nil, bundle: nil)
         let presenter = AddCategoryPresenter(view: addCategoryViewController,
                                              interactor: addCategoryInteractor,
-                                             router: router)
+                                             router: router, category: category,
+                                             monthlyLimit: monthlyLimit)
         addCategoryViewController.presenter = presenter
 
         return addCategoryViewController

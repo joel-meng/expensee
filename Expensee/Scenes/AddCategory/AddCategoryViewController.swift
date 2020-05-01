@@ -65,6 +65,14 @@ class AddCategoryViewController: UIViewController {
         return "USD"
     }
 
+    private func segmentIndex(ofCurrency currency: String) -> Int {
+        switch currency {
+        case "USD": return 1
+        case "NZD": return 0
+        default: fatalError()
+        }
+    }
+
     private let dataSource: SimpleTableDataSource<ColorCellModel, UITableViewCell> = {
         
         let dataSource = SimpleTableDataSource<ColorCellModel, UITableViewCell>()
@@ -89,7 +97,7 @@ class AddCategoryViewController: UIViewController {
         let provider = TableViewProvider<ColorCellModel, UITableViewCell>(tableView: tableView)
         provider.dataSource = dataSource
         provider.dataSource?.tapAction = { [weak self] selected in
-            self?.presenter.didSelectCategoryColor(selected.id)
+            self?.presenter.didSelectCategoryColor(selected.color)
         }
 
         return provider
@@ -98,6 +106,14 @@ class AddCategoryViewController: UIViewController {
 
 extension AddCategoryViewController: AddCategoryPresenting {
     
+    func displayCategory(name: String, monthlyBudget: (Double, String)?) {
+        nameTextField.text = name
+        if let monthly = monthlyBudget {
+            limitTextField.text = String(describing: monthly.0)
+            currencySegmentControl.selectedSegmentIndex = segmentIndex(ofCurrency: monthly.1)
+        }
+    }
+
     func displayColors(colors: [ColorCellModel]) {
         provider.updateData(colors)
     }
@@ -110,7 +126,6 @@ extension AddCategoryViewController: AddCategoryPresenting {
 struct ColorCellModel {
     let color: String
     let isChecked: Bool
-    let id: UUID
 }
 
 struct CategoryModel {

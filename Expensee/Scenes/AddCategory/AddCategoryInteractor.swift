@@ -31,27 +31,18 @@ final class AddCategoryInteractor: AddCategoryInteracting {
         let response = colorsUseCase.listCategoryColors(request: ListCategoryUseCaseRequest())
         return ListColorsResponse(colors:
             response.colors.map {
-                ListColorsResponse.CategoryColor(color: $0.color, uuid: $0.uuid)
+                ListColorsResponse.CategoryColor(color: $0.color)
             }
         )
     }
 
     func saveCategory(request: SaveCategoryRequest) -> Future<SaveCategoryResponse> {
-        let future = Future<SaveCategoryResponse>()
-
-        guard let colorUUID = request.category.color,
-            let foundColor = colorsUseCase.findCategoryColors(request:
-                FindCategoryUseCaseRequest(color: colorUUID)).color else {
-            future.reject(with: NSError())
-            return future
-        }
-
         var budget: BudgetDTO? = nil
         if let monthlyBudget = request.category.monthlyLimit {
             budget = BudgetDTO(currency: monthlyBudget.limitCurrency, limit: monthlyBudget.limitAmount)
         }
 
-        let category = CategoryDTO(name: request.category.name, color: foundColor.color, budget: budget, uid: UUID())
+        let category = CategoryDTO(name: request.category.name, color: request.category.color, budget: budget, uid: UUID())
         let request = AddCategoryUseCaseRequest(category: category)
         let savedCategoryFuture = saveCategoryUseCase.addCategory(request: request)
 
@@ -76,7 +67,6 @@ struct ListColorsResponse {
 
     struct CategoryColor {
         let color: String
-        let uuid: UUID
     }
 }
 
@@ -88,7 +78,7 @@ struct SaveCategoryRequest {
 
         let name: String
 
-        let color: UUID?
+        let color: String
 
         let monthlyLimit: MontlyLimit?
     }

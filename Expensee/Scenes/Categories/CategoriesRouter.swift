@@ -13,7 +13,7 @@ protocol CategoriesRouting: class {
 
     func routeToAddCategory(completion: @escaping () -> Void)
 
-    func routeToAddCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void)
+    func routeToUpdateCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void)
 }
 
 final class CategoriesRouter: CategoriesRouting {
@@ -28,12 +28,12 @@ final class CategoriesRouter: CategoriesRouting {
     }
 
     func routeToAddCategory(completion: @escaping () -> Void) {
-        let nextViewController = factory.createAddCategoryScene(from: navigationController, completion: completion)
+        let nextViewController = factory.createAddCategoryScene(from: navigationController, sceneModel: nil, completion: completion)
         navigationController.show(nextViewController, sender: nil)
     }
 
-    func routeToAddCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void) {
-        let nextViewController = factory.createAddCategoryScene(from: navigationController, completion: completion)
+    func routeToUpdateCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void) {
+        let nextViewController = factory.createAddCategoryScene(from: navigationController, sceneModel: sceneModel, completion: completion)
         navigationController.show(nextViewController, sender: nil)
     }
 }
