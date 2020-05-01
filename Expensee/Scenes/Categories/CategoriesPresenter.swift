@@ -64,8 +64,20 @@ extension CategoriesPresenter: CategoriesControlling {
     }
 
     func didSelectCategory(id: UUID) {
-        interactor.loadCategory(request: CategoryLoadRequest(uid: id)).on(success: { (response) in
+        interactor.loadCategory(request: CategoryLoadRequest(uid: id)).on(success: { [weak self] (response) in
+            guard let category = response.categories else { // TODO: - Error throw
+                return
+            }
             
+            self?.router.routeToAddCategory(with:
+                AddCategorySceneModel(categories: AddCategorySceneModel.Category(uid: category.uid,
+                                                                                 name: category.name,
+                                                                                 color: category.color,
+                                                                                 budget: category.budget.map({
+                    AddCategorySceneModel.Budget(currency: $0.currency, limit: $0.limit)
+            })))) {
+                self?.loadCategories()
+            }
         }, failure: { error in
             
         })

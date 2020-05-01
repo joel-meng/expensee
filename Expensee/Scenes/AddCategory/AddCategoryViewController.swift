@@ -88,8 +88,8 @@ class AddCategoryViewController: UIViewController {
     private lazy var provider: TableViewProvider<ColorCellModel, UITableViewCell> = { [weak dataSource] in
         let provider = TableViewProvider<ColorCellModel, UITableViewCell>(tableView: tableView)
         provider.dataSource = dataSource
-        provider.dataSource?.tapAction = { selected in
-            self.presenter.didSelectCategoryColor(selected.id)
+        provider.dataSource?.tapAction = { [weak self] selected in
+            self?.presenter.didSelectCategoryColor(selected.id)
         }
 
         return provider

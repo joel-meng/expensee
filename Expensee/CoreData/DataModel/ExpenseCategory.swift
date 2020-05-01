@@ -18,13 +18,13 @@ class ExpenseCategory: NSManagedObject {
 
     static func insert(category categoryDTO: CategoryDTO,
                        into context: NSManagedObjectContext) throws -> ExpenseCategory {
-        let category: ExpenseCategory = try context.insertObject()
+        let category: ExpenseCategory = context.insertObject()
         category.name = categoryDTO.name
         category.color = categoryDTO.color
         category.uid = categoryDTO.uid
 
         if let budget = categoryDTO.budget {
-            category.budget = try ExpenseBudget.insert(budget: budget, into: context)
+            category.budget = ExpenseBudget.insert(budget: budget, into: context)
         }
         return category
     }
@@ -40,10 +40,15 @@ class ExpenseCategory: NSManagedObject {
         return fetchedCategories
     }
 
-    static func delete(form context: NSManagedObjectContext) throws {
+    static func delete(from context: NSManagedObjectContext) throws {
         let fetchAll = ExpenseCategory.fetchRequest()
         let delete = NSBatchDeleteRequest(fetchRequest: fetchAll)
         try context.execute(delete)
+    }
+
+    static func find(by id: UUID, in context: NSManagedObjectContext) -> ExpenseCategory? {
+        let predicate = NSPredicate(format:"%K == %@", #keyPath(uid), id as CVarArg)
+        return findOrFetch(in: context, matching: predicate)
     }
 }
 

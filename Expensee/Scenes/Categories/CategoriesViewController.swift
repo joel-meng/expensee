@@ -37,7 +37,7 @@ class CategoriesViewController: UIViewController {
         let provider = TableViewProvider<CategoryCellModel, CategoryTableViewCell>(tableView: tableView)
         provider.dataSource = dataSource
         provider.dataSource?.tapAction = { [weak presenter] selected in
-            print(selected.id)
+            presenter?.didSelectCategory(id: selected.id)
         }
 
         return provider

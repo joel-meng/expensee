@@ -36,7 +36,19 @@ final class CategoriesInteractor: CategoriesInteracting {
     }
     
     func loadCategory(request: CategoryLoadRequest) -> Future<CategoryLoadResponse> {
-        categoriesUseCase
+        categoriesUseCase.loadCategory(by: request.uid).map { (categoryDTO) -> CategoryLoadResponse in
+            guard let category: CategoryDTO = categoryDTO else { return CategoryLoadResponse(categories: nil) }
+            return CategoryLoadResponse(categories:
+                CategoryLoadResponse.Category(uid: category.uid,
+                                              name: category.name,
+                                              color: category.color,
+                                              budget: category.budget.map {
+                                                CategoryLoadResponse.Budget(currency: $0.currency,
+                                                                            limit: $0.limit)
+                    }
+                )
+            )
+        }
     }
 }
 

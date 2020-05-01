@@ -16,8 +16,8 @@ class ExpenseBudget: NSManagedObject {
     @NSManaged private(set) var category: ExpenseCategory
 
     static func insert(budget budgetDTO: BudgetDTO,
-                       into context: NSManagedObjectContext) throws -> ExpenseBudget {
-        let budget: ExpenseBudget = try context.insertObject()
+                       into context: NSManagedObjectContext) -> ExpenseBudget {
+        let budget: ExpenseBudget = context.insertObject()
         budget.limit = budgetDTO.limit
         budget.currency = budgetDTO.currency
         return budget

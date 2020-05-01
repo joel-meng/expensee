@@ -12,7 +12,7 @@ protocol CategoriesLoadUseCaseProtocol {
 
     func loadAllCategory() -> Future<[CategoryDTO]>
     
-    func loadCategory(by id: UUID) -> Future<CategoryDTO>
+    func loadCategory(by id: UUID) -> Future<CategoryDTO?>
 }
 
 final class CategoriesLoadUseCase: CategoriesLoadUseCaseProtocol {
@@ -30,7 +30,8 @@ final class CategoriesLoadUseCase: CategoriesLoadUseCaseProtocol {
         return categoriesRepository.fetchAll()
     }
     
-    func loadCategory(by id: UUID) -> Future<CategoryDTO> {
-        
+    func loadCategory(by id: UUID) -> Future<CategoryDTO?> {
+            // todo: remove budget repo
+        return categoriesRepository.fetch(by: id)
     }
 }

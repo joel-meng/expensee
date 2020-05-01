@@ -32,6 +32,8 @@ protocol CategoriesRepositoryProtocol: RepositoryProtocol {
     func save(_ category: CategoryDTO) -> Future<CategoryDTO>
 
     func fetchAll() -> Future<[CategoryDTO]>
+
+    func fetch(by id: UUID) -> Future<CategoryDTO?>
 }
 
 final class CategoriesRepository: CategoriesRepositoryProtocol {
@@ -40,12 +42,6 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
 
     init(context: NSManagedObjectContext?) {
         self.context = context
-    }
-
-    func delete() {
-        context?.performChanges {
-            try! ExpenseCategory.delete(form: self.context!)
-        }
     }
 
     func save(_ category: CategoryDTO) -> Future<CategoryDTO> {
@@ -88,6 +84,24 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
             future.reject(with: error)
         }
 
+        return future
+    }
+
+    func fetch(by id: UUID) -> Future<CategoryDTO?> {
+        let future = Future<CategoryDTO?>()
+
+        guard let context = context else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        let fetched = ExpenseCategory.find(by: id, in: context).map {
+            CategoryDTO(name: $0.name, color: $0.color, budget: $0.budget.map {
+                BudgetDTO(currency: $0.currency, limit: $0.limit)
+            }, uid: $0.uid)
+        }
+
+        future.resolve(with: fetched)
         return future
     }
 }
