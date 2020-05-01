@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol CategoriesRouting {
+protocol CategoriesRouting: class {
 
     func routeToAddCategory(completion: @escaping () -> Void)
 }

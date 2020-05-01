@@ -36,6 +36,7 @@
 		7EAA47B5245C3F5A005565C1 /* CategoriesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B4245C3F5A005565C1 /* CategoriesRouter.swift */; };
 		7EAA47B7245C4991005565C1 /* AddCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B6245C4991005565C1 /* AddCategoryRouter.swift */; };
 		7EAA47BA245C4C1B005565C1 /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B9245C4C1B005565C1 /* DependencyInjection.swift */; };
+		7EAA47BC245C4E3C005565C1 /* AddCategoryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47BB245C4E3C005565C1 /* AddCategoryPresenter.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -125,6 +126,7 @@
 		7EAA47B4245C3F5A005565C1 /* CategoriesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRouter.swift; sourceTree = "<group>"; };
 		7EAA47B6245C4991005565C1 /* AddCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryRouter.swift; sourceTree = "<group>"; };
 		7EAA47B9245C4C1B005565C1 /* DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
+		7EAA47BB245C4E3C005565C1 /* AddCategoryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryPresenter.swift; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 			isa = PBXGroup;
 			children = (
 				7EAA4798245B8B08005565C1 /* AddCategoryViewController.swift */,
+				7EAA47BB245C4E3C005565C1 /* AddCategoryPresenter.swift */,
 				7EAA47B6245C4991005565C1 /* AddCategoryRouter.swift */,
 				7EAA47AC245BDA45005565C1 /* AddCategoryInteractor.swift */,
 				7EAA47AE245BDC40005565C1 /* CategoryColorUseCase.swift */,
@@ -660,6 +663,7 @@
 				7EAA47AF245BDC40005565C1 /* CategoryColorUseCase.swift in Sources */,
 				7ED5CEC6245910B400E5D454 /* RestRequest.swift in Sources */,
 				7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */,
+				7EAA47BC245C4E3C005565C1 /* AddCategoryPresenter.swift in Sources */,
 				7EAA47AD245BDA45005565C1 /* AddCategoryInteractor.swift in Sources */,
 				7ED5CED7245915FD00E5D454 /* SimpleTableViewProvider.swift in Sources */,
 				7EAA47A9245BD2D0005565C1 /* AnyTextFieldDelegation.swift in Sources */,
