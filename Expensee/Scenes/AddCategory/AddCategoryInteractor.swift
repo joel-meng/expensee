@@ -51,7 +51,7 @@ final class AddCategoryInteractor: AddCategoryInteracting {
             budget = BudgetDTO(currency: monthlyBudget.limitCurrency, limit: monthlyBudget.limitAmount)
         }
 
-        let category = CategoryDTO(name: request.category.name, color: foundColor.color, budget: budget)
+        let category = CategoryDTO(name: request.category.name, color: foundColor.color, budget: budget, uid: UUID())
         let request = AddCategoryUseCaseRequest(category: category)
         let savedCategoryFuture = saveCategoryUseCase.addCategory(request: request)
 

@@ -60,7 +60,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
             let inserted = try! ExpenseCategory.insert(category: category, into: context)
             let categoryDTO = CategoryDTO(name: inserted.name, color: inserted.color, budget: inserted.budget.map {
                 BudgetDTO(currency: $0.currency, limit: $0.limit)
-            })
+            }, uid: category.uid)
             future.resolve(with: categoryDTO)
         }
 
@@ -81,7 +81,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
                 CategoryDTO(name: $0.name, color: $0.color,
                             budget: $0.budget.map {
                                 BudgetDTO(currency: $0.currency, limit: $0.limit)
-                            })
+                }, uid: $0.uid)
             }
             future.resolve(with: categoriesDTO)
         } catch {

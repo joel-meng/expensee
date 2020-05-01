@@ -8,18 +8,20 @@
 
 import Foundation
 
-protocol CategoriesDisplaying: class {
+protocol CategoriesPresenting: class {
 
     func displayInsertionError(_ errorMessage: String)
 
     func displayCategories(_ categories: [CategoryCellModel])
 }
 
-protocol CategoriesControlling {
+protocol CategoriesControlling: class {
 
     func viewIsReady()
 
     func didTapAddCategory()
+    
+    func didSelectCategory(id: UUID)
 }
 
 final class CategoriesPresenter {
@@ -28,7 +30,7 @@ final class CategoriesPresenter {
 
     private let router: CategoriesRouting
 
-    weak var view: CategoriesDisplaying?
+    weak var view: CategoriesPresenting?
 
     init(interactor: CategoriesInteracting, router: CategoriesRouting) {
         self.interactor = interactor
@@ -37,16 +39,16 @@ final class CategoriesPresenter {
 }
 
 extension CategoriesPresenter: CategoriesControlling {
-
+    
     func viewIsReady() {
         loadCategories()
     }
 
     private func loadCategories() {
-        let future = interactor.loadCategories()
+        let future = interactor.loadCategories(request: CategoriesLoadRequest())
         future.on(success: { [weak view] (loadResonse) in
             view?.displayCategories(loadResonse.categories.map {
-                CategoryCellModel(name: $0.name, color: $0.color, limit: $0.budget?.limit)
+                CategoryCellModel(name: $0.name, color: $0.color, limit: $0.budget?.limit, id: $0.uid)
             })
         }, failure: {  [weak self] error in
             guard let self = self else { return }
@@ -61,6 +63,14 @@ extension CategoriesPresenter: CategoriesControlling {
         }
     }
 
+    func didSelectCategory(id: UUID) {
+        interactor.loadCategory(request: CategoryLoadRequest(uid: id)).on(success: { (response) in
+            
+        }, failure: { error in
+            
+        })
+    }
+    
     private func translatingError(_ error: Error) -> String {
         "Error happend"
     }

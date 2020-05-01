@@ -27,7 +27,7 @@ final class AddCategoryUseCase: AddCategoryUseCaseProtocol {
 }
 
 struct AddCategoryUseCaseRequest {
-
+    
     let category: CategoryDTO
 }
 

@@ -15,4 +15,6 @@ struct CategoryDTO {
     let color: String
 
     let budget: BudgetDTO?
+    
+    let uid: UUID
 }

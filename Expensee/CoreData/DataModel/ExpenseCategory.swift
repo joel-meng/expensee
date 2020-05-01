@@ -13,6 +13,7 @@ class ExpenseCategory: NSManagedObject {
 
     @NSManaged private(set) var name: String
     @NSManaged private(set) var color: String
+    @NSManaged private(set) var uid: UUID
     @NSManaged private(set) var budget: ExpenseBudget?
 
     static func insert(category categoryDTO: CategoryDTO,
@@ -20,6 +21,7 @@ class ExpenseCategory: NSManagedObject {
         let category: ExpenseCategory = try context.insertObject()
         category.name = categoryDTO.name
         category.color = categoryDTO.color
+        category.uid = categoryDTO.uid
 
         if let budget = categoryDTO.budget {
             category.budget = try ExpenseBudget.insert(budget: budget, into: context)

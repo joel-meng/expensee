@@ -8,10 +8,11 @@
     <entity name="ExpenseCategory" representedClassName=".ExpenseCategory" syncable="YES">
         <attribute name="color" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="uid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="budget" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ExpenseBudget" inverseName="category" inverseEntity="ExpenseBudget"/>
     </entity>
     <elements>
-        <element name="ExpenseCategory" positionX="-269.8828125" positionY="22.94921875" width="128" height="88"/>
         <element name="ExpenseBudget" positionX="-60.84375" positionY="21.0546875" width="128" height="88"/>
+        <element name="ExpenseCategory" positionX="-269.8828125" positionY="22.94921875" width="128" height="103"/>
     </elements>
 </model>

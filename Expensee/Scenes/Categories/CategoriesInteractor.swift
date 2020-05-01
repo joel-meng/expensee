@@ -10,53 +10,46 @@ import Foundation
 
 protocol CategoriesInteracting {
 
-    func loadCategories() -> Future<CategoriesLoadResponse>
-
-    func saveCategory(with reqeust: CategoriesSavingRequest) -> Future<CategoriesSavingRequest.Category>
+    func loadCategories(request: CategoriesLoadRequest) -> Future<CategoriesLoadResponse>
+    
+    func loadCategory(request: CategoryLoadRequest) -> Future<CategoryLoadResponse>
 }
 
 final class CategoriesInteractor: CategoriesInteracting {
+    
+    private var categoriesUseCase: CategoriesLoadUseCaseProtocol
 
-    private var categoriesSavingUseCase: CategoriesSaveUseCaseProtocol
-
-    init(categoriesSavingUseCase: CategoriesSaveUseCaseProtocol) {
-        self.categoriesSavingUseCase = categoriesSavingUseCase
+    init(categoriesUseCase: CategoriesLoadUseCaseProtocol) {
+        self.categoriesUseCase = categoriesUseCase
     }
 
-    func loadCategories() -> Future<CategoriesLoadResponse> {
-        let future = categoriesSavingUseCase.loadAllCategory()
+    func loadCategories(request: CategoriesLoadRequest) -> Future<CategoriesLoadResponse> {
+        let future = categoriesUseCase.loadAllCategory()
 
         return future.map { (categories) -> CategoriesLoadResponse in
             CategoriesLoadResponse(categories: categories.map {
                 CategoriesLoadResponse.Category(name: $0.name, color: $0.color, budget: $0.budget.map({
                     CategoriesLoadResponse.Budget(currency: $0.currency, limit: $0.limit)
-                }))
+                }), uid: $0.uid)
             })
         }
     }
-
-    func saveCategory(with request: CategoriesSavingRequest) -> Future<CategoriesSavingRequest.Category> {
-        categoriesSavingUseCase.saveCategory(with:
-            CategoriesSaveUseCaseRequest(name: request.category.name,
-                                         color: request.category.color,
-                                         limit: request.category.budget?.limit,
-                                         currency: request.category.budget?.currency)
-        ).map {
-            CategoriesSavingRequest.Category(name: $0.name, color: $0.color, budget: $0.budget.map {
-                CategoriesSavingRequest.Budget(currency: $0.currency, limit: $0.limit)
-            })
-        }
+    
+    func loadCategory(request: CategoryLoadRequest) -> Future<CategoryLoadResponse> {
+        categoriesUseCase
     }
 }
 
-struct CategoriesSavingRequest {
+struct CategoriesLoadRequest {}
+struct CategoriesLoadResponse {
 
-    let category: Category
+    let categories: [Category]
 
     struct Category {
         let name: String
         let color: String
         let budget: Budget?
+        let uid: UUID
     }
 
     struct Budget {
@@ -65,11 +58,15 @@ struct CategoriesSavingRequest {
     }
 }
 
-struct CategoriesLoadResponse {
+struct CategoryLoadRequest {
+    let uid: UUID
+}
+struct CategoryLoadResponse {
 
-    let categories: [Category]
+    let categories: Category?
 
     struct Category {
+        let uid: UUID
         let name: String
         let color: String
         let budget: Budget?

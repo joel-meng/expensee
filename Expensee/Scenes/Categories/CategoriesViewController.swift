@@ -36,7 +36,9 @@ class CategoriesViewController: UIViewController {
     private lazy var provider: TableViewProvider<CategoryCellModel, CategoryTableViewCell> = { [weak dataSource] in
         let provider = TableViewProvider<CategoryCellModel, CategoryTableViewCell>(tableView: tableView)
         provider.dataSource = dataSource
-        provider.dataSource?.tapAction = { selected in }
+        provider.dataSource?.tapAction = { [weak presenter] selected in
+            print(selected.id)
+        }
 
         return provider
      }()
@@ -66,7 +68,7 @@ class CategoriesViewController: UIViewController {
     }
 }
 
-extension CategoriesViewController: CategoriesDisplaying {
+extension CategoriesViewController: CategoriesPresenting {
 
     func displayCategories(_ categories: [CategoryCellModel]) {
         provider.updateData(categories)

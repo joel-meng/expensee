@@ -22,9 +22,9 @@ final class DependencyInjection: DependencyInjecting {
         let router = CategoriesRouter(navigationController: navigation, factory: self)
         let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
         let budgetRepository = BudgetRepository(context: CoreDataStore.shared?.context)
-        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: categoryRepository,
+        let categoryUseCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository,
                                                     budgetRepository: budgetRepository)
-        let interactor = CategoriesInteractor(categoriesSavingUseCase: categoryUseCase)
+        let interactor = CategoriesInteractor(categoriesUseCase: categoryUseCase)
         let presenter = CategoriesPresenter(interactor: interactor, router: router)
 
         let categoriesViewController = CategoriesViewController(nibName: nil, bundle: nil)

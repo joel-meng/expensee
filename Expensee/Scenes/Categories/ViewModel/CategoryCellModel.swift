@@ -14,4 +14,6 @@ struct CategoryCellModel {
     let color: String
 
     let limit: Double?
+    
+    let id: UUID
 }
