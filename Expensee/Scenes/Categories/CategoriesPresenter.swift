@@ -26,10 +26,13 @@ final class CategoriesPresenter {
 
     private let interactor: CategoriesInteracting
 
+    private let router: CategoriesRouting
+
     weak var view: CategoriesDisplaying?
 
-    init(interactor: CategoriesInteracting) {
+    init(interactor: CategoriesInteracting, router: CategoriesRouting) {
         self.interactor = interactor
+        self.router = router
     }
 }
 

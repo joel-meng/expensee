@@ -11,7 +11,7 @@ import CoreData
 
 class CategoriesViewController: UIViewController {
 
-    var controller: CategoriesControlling!
+    var presenter: CategoriesControlling!
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -36,7 +36,7 @@ class CategoriesViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        controller.viewIsReady()
+        presenter.viewIsReady()
     }
 
     private func createAddButton() {
@@ -47,7 +47,7 @@ class CategoriesViewController: UIViewController {
 
     @objc
     private func didTapAdd() {
-        controller.didTapAddCategory()
+        presenter.didTapAddCategory()
     }
 }
 

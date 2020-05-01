@@ -20,36 +20,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         CoreDataStore.initialize() { [weak self] in
             self?.window = self?.createWindow()
-            //               window?.rootViewController = createHomeViewController()
-            self?.window?.rootViewController = self?.createAddCategoryScene()
+            self?.window?.rootViewController = self?.createHomeViewController()
+//            self?.window?.rootViewController = self?.createAddCategoryScene()
             self?.window?.makeKeyAndVisible()
         }
         return true
     }
     
     private func createWindow() -> UIWindow {
-           let screenBounds = UIScreen.main.bounds
-           let window = UIWindow(frame: screenBounds)
-           return window
+        let screenBounds = UIScreen.main.bounds
+        let window = UIWindow(frame: screenBounds)
+        return window
     }
 
     private func createHomeViewController() -> UIViewController {
-        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
-        let budgetRepository = BudgetRepository(context: CoreDataStore.shared?.context)
-        let categoryUseCase = CategoriesSaveUseCase(categoriesRepository: categoryRepository,
-                                                    budgetRepository: budgetRepository)
-        let interactor = CategoriesInteractor(categoriesSavingUseCase: categoryUseCase)
-        let presenter = CategoriesPresenter(interactor: interactor)
+        let factory = DependencyInjection()
+
+        let navigationViewController = UINavigationController()
+        let viewController = factory.createCategoryScene(from: navigationViewController)
+        navigationViewController.viewControllers = [viewController]
 
 
-        let launchViewController = CategoriesViewController(nibName: nil, bundle: nil)
-        presenter.view = launchViewController
-
-        let navigationViewController = UINavigationController(rootViewController: launchViewController)
         let tabBarViewController = UITabBarController()
         tabBarViewController.setViewControllers([navigationViewController], animated: false)
-        navigationViewController.tabBarItem = UITabBarItem.init(title: "Categories",
-                                                                image: "👑".image(size: .init(width: 32, height: 32), fontSize: 32), tag: 1)
+        navigationViewController.tabBarItem = UITabBarItem(title: "Categories",
+                                                           image: "👑".image(size: .init(width: 32, height: 32),
+                                                                               fontSize: 32), tag: 1)
         return tabBarViewController
     }
     
