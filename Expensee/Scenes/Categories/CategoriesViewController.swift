@@ -15,7 +15,23 @@ class CategoriesViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    private lazy var dataSource: CategoryDataSource = CategoryDataSource()
+    private lazy var dataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> = {
+        let dataSource = SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell>()
+
+        dataSource.binder = { (row: CategoryCellModel, cell: CategoryTableViewCell) in
+            cell.nameLabel.text = row.name
+            cell.colorLabel.backgroundColor = UIColor(row.color)
+        }
+
+        dataSource.cellProvider = { tableView, indexPath in
+            let cell: CategoryTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            return cell
+        }
+
+        dataSource.sorter = { $0.name < $1.name }
+
+        return dataSource
+    }()
 
     private lazy var provider: TableViewProvider<CategoryCellModel, CategoryTableViewCell> = { [weak dataSource] in
         let provider = TableViewProvider<CategoryCellModel, CategoryTableViewCell>(tableView: tableView)
@@ -45,50 +61,9 @@ class CategoriesViewController: UIViewController {
                                                             action: #selector(didTapAdd))
     }
 
-    @objc
-    private func didTapAdd() {
+    @objc private func didTapAdd() {
         presenter.didTapAddCategory()
     }
-}
-
-final class CategoryDataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> {
-
-    override var cellProvider: ((UITableView, IndexPath) -> CategoryTableViewCell) {
-        set {}
-        get { dataSource.cellProvider }
-    }
-    
-    override var binder: ((CategoryCellModel, CategoryTableViewCell) -> Void)? {
-        set {}
-        get {
-            return { (model: CategoryCellModel, cell: UITableViewCell) in
-                self.dataSource.binder?(model, cell as! CategoryTableViewCell)
-            }
-        }
-    }
-
-    override var sorter: (CategoryCellModel, CategoryCellModel) -> Bool {
-        set {}
-        get { dataSource.sorter }
-    }
-
-    private let dataSource: SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell> = {
-        let dataSource = SimpleTableDataSource<CategoryCellModel, CategoryTableViewCell>()
-
-        dataSource.binder = { (row: CategoryCellModel, cell: CategoryTableViewCell) in
-            cell.nameLabel.text = row.name
-            cell.colorLabel.text = row.color
-        }
-
-        dataSource.cellProvider = { tableView, indexPath in
-            let cell: CategoryTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            return cell
-        }
-
-        dataSource.sorter = { $0.name < $1.name }
-
-        return dataSource
-    }()
 }
 
 extension CategoriesViewController: CategoriesDisplaying {
