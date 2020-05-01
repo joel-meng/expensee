@@ -14,11 +14,7 @@ class AddCategoryViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var limitTextField: UITextField!
-    @IBOutlet weak var currencySegmentControl: UISegmentedControl! {
-        didSet {
-            presenter?.didSelectMonthlyLimitCurrency(currency(ofSegment: currencySegmentControl))
-        }
-    }
+    @IBOutlet weak var currencySegmentControl: UISegmentedControl!
 
     var presenter: AddCategoryControlling!
     
@@ -47,7 +43,15 @@ class AddCategoryViewController: UIViewController {
             })
         }
         
+        currencySegmentControl.addTarget(self, action: #selector(updateCurrencySelection), for: .valueChanged)
+        updateCurrencySelection(sender: currencySegmentControl)
+
         presenter.viewIsReady()
+    }
+
+    @objc
+    private func updateCurrencySelection(sender: UISegmentedControl) {
+        presenter.didSelectMonthlyLimitCurrency(currency(ofSegment: sender))
     }
 
     private func currency(ofSegment segmentControl: UISegmentedControl) -> String {
@@ -129,11 +133,11 @@ final class AddCategoryPresenter {
     private var interactor: AddCategoryInteracting
     
     private var monthlyLimit: MonthlyLimit? {
-        didSet { update() }
+        didSet { update(category: category, limit: monthlyLimit) }
     }
 
     private var category: Category? {
-        didSet { update() }
+        didSet { update(category: category, limit: monthlyLimit) }
     }
 
     init(view: AddCategoryPresenting, interactor: AddCategoryInteracting) {
@@ -141,9 +145,17 @@ final class AddCategoryPresenter {
         self.interactor = interactor
     }
 
-    private func update() {
-        print(category)
-        print(monthlyLimit)
+    private func update(category: Category?, limit: MonthlyLimit?) {
+        view?.setSaveButtonEnable(isValid(category: category, limit: limit))
+    }
+
+    private func isValid(category: Category?, limit: MonthlyLimit?) -> Bool {
+        guard category?.name != nil else { return false }
+        if limit?.limit != nil, limit?.currency != nil {
+            return true
+        } else {
+            return true
+        }
     }
 
     struct MonthlyLimit {
