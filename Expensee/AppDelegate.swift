@@ -44,11 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func createAddCategoryScene() -> UIViewController {
+        let addCategoryUseCase = CategoryColorUseCase()
+        let addCategoryInteractor = AddCategoryInteractor(colorsUseCase: addCategoryUseCase)
         let addCategoryViewController = AddCategoryViewController(nibName: nil, bundle: nil)
-        
-        let presenter = AddCategoryPresenter(view: addCategoryViewController)
+        let presenter = AddCategoryPresenter(view: addCategoryViewController, interactor: addCategoryInteractor)
         addCategoryViewController.presenter = presenter
-        
         
         let navigationViewController = UINavigationController(rootViewController: addCategoryViewController)
         let tabBarViewController = UITabBarController()

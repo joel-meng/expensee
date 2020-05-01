@@ -93,8 +93,8 @@ struct ColorCellModel {
 
 extension AddCategoryViewController: AddCategoryPresenting {
     
-    func displayColors(colors: [(String, Bool)]) {
-        provider.updateData(colors.map { ColorCellModel.init(color: $0.0, isChecked: $0.1, id: UUID()) })
+    func displayColors(colors: [ColorCellModel]) {
+        provider.updateData(colors)
     }
     
     func setSaveButtonEnable(_ enabled: Bool) {
@@ -104,10 +104,9 @@ extension AddCategoryViewController: AddCategoryPresenting {
 
 protocol AddCategoryPresenting: class {
     
-    func displayColors(colors: [(String, Bool)])
+    func displayColors(colors: [ColorCellModel])
     
     func setSaveButtonEnable(_ enabled: Bool)
-
 }
 
 protocol AddCategoryControlling: class {
@@ -126,6 +125,7 @@ protocol AddCategoryControlling: class {
 final class AddCategoryPresenter {
     
     private weak var view: AddCategoryPresenting?
+    private var interactor: AddCategoryInteracting
     
     private var monthlyLimit: MonthlyLimit? {
         didSet { update() }
@@ -135,8 +135,9 @@ final class AddCategoryPresenter {
         didSet { update() }
     }
 
-    init(view: AddCategoryPresenting) {
+    init(view: AddCategoryPresenting, interactor: AddCategoryInteracting) {
         self.view = view
+        self.interactor = interactor
     }
 
     private func update() {
@@ -158,7 +159,11 @@ final class AddCategoryPresenter {
 extension AddCategoryPresenter: AddCategoryControlling {
     
     func viewIsReady() {
-        view?.displayColors(colors: [("A", true), ("B", false), ("C", true)])
+        let categoriesColor = interactor.listColors(request: ListColorsRequest())
+        let cells = categoriesColor.colors.map {
+            ColorCellModel(color: $0.color, isChecked: false, id: $0.uuid)
+        }
+        view?.displayColors(colors: cells)
         view?.setSaveButtonEnable(false)
     }
     
