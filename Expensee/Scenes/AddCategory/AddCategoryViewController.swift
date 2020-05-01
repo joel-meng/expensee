@@ -138,7 +138,10 @@ protocol AddCategoryControlling: class {
 final class AddCategoryPresenter {
     
     private weak var view: AddCategoryPresenting?
-    private var interactor: AddCategoryInteracting
+
+    private let interactor: AddCategoryInteracting
+
+    private let router: AddCategoriesRouting
     
     private var monthlyLimit: MonthlyLimit? {
         didSet { update(category: category, limit: monthlyLimit) }
@@ -148,9 +151,10 @@ final class AddCategoryPresenter {
         didSet { update(category: category, limit: monthlyLimit) }
     }
 
-    init(view: AddCategoryPresenting, interactor: AddCategoryInteracting) {
+    init(view: AddCategoryPresenting, interactor: AddCategoryInteracting, router: AddCategoriesRouting) {
         self.view = view
         self.interactor = interactor
+        self.router = router
     }
 
     private func update(category: Category?, limit: MonthlyLimit?) {
@@ -215,10 +219,10 @@ extension AddCategoryPresenter: AddCategoryControlling {
 
         let category = SaveCategoryRequest.Category(name: name, color: color, monthlyLimit: monthlyLimit)
         let savedFuture = interactor.saveCategory(request: SaveCategoryRequest(category: category))
-        savedFuture.on(success: { (response) in
-            print(response.category)
+        savedFuture.on(success: { [weak router] (response) in
+            router?.routeBackAndRefresh()
         }, failure: { error in
-//            print(error)
+            print(error)
         })
     }
 

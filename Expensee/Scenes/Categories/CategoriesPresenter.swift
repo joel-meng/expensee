@@ -55,16 +55,10 @@ extension CategoriesPresenter: CategoriesControlling {
     }
 
     func didTapAddCategory() {
-        let request = CategoriesSavingRequest(category: CategoriesSavingRequest.Category(name: "\(Date())",
-            color: "#989343",
-            budget: CategoriesSavingRequest.Budget(currency: "USD", limit: 222)))
-
-        interactor.saveCategory(with: request).on(success: { [weak self] _ in
+//        CategoriesRepository(context: CoreDataStore.shared?.context).delete()
+        router.routeToAddCategory { [weak self] in
             self?.loadCategories()
-        }, failure: { [weak self] error in
-            guard let self = self else { return }
-            self.view?.displayInsertionError(self.translatingError(error))
-        })
+        }
     }
 
     private func translatingError(_ error: Error) -> String {

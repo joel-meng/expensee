@@ -48,25 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                                fontSize: 32), tag: 1)
         return tabBarViewController
     }
-    
-    private func createAddCategoryScene() -> UIViewController {
-        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
-        let colorsUseCase = CategoryColorUseCase()
-        let addCategoryUseCase = AddCategoryUseCase(categoryRepositoy: categoryRepository)
-        let addCategoryInteractor = AddCategoryInteractor(colorsUseCase: colorsUseCase,
-                                                          saveCategoryUseCase: addCategoryUseCase)
-        let addCategoryViewController = AddCategoryViewController(nibName: nil, bundle: nil)
-        let presenter = AddCategoryPresenter(view: addCategoryViewController, interactor: addCategoryInteractor)
-        addCategoryViewController.presenter = presenter
-        
-        let navigationViewController = UINavigationController(rootViewController: addCategoryViewController)
-        let tabBarViewController = UITabBarController()
-        tabBarViewController.setViewControllers([navigationViewController], animated: false)
-        navigationViewController.tabBarItem = UITabBarItem.init(title: "Categories",
-                                                                image: "👑".image(size: .init(width: 32, height: 32), fontSize: 32), tag: 1)
-        return tabBarViewController
-    }
-    
 
     // MARK: - Core Data stack
 

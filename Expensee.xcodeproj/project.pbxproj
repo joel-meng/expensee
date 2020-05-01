@@ -34,6 +34,8 @@
 		7EAA47B1245BEBFA005565C1 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B0245BEBFA005565C1 /* UIColor+Hex.swift */; };
 		7EAA47B3245BF7D3005565C1 /* AddCategoryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B2245BF7D3005565C1 /* AddCategoryUseCase.swift */; };
 		7EAA47B5245C3F5A005565C1 /* CategoriesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B4245C3F5A005565C1 /* CategoriesRouter.swift */; };
+		7EAA47B7245C4991005565C1 /* AddCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B6245C4991005565C1 /* AddCategoryRouter.swift */; };
+		7EAA47BA245C4C1B005565C1 /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47B9245C4C1B005565C1 /* DependencyInjection.swift */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -121,6 +123,8 @@
 		7EAA47B0245BEBFA005565C1 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		7EAA47B2245BF7D3005565C1 /* AddCategoryUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryUseCase.swift; sourceTree = "<group>"; };
 		7EAA47B4245C3F5A005565C1 /* CategoriesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRouter.swift; sourceTree = "<group>"; };
+		7EAA47B6245C4991005565C1 /* AddCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryRouter.swift; sourceTree = "<group>"; };
+		7EAA47B9245C4C1B005565C1 /* DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -249,6 +253,14 @@
 			path = Functional;
 			sourceTree = "<group>";
 		};
+		7EAA47B8245C4C0B005565C1 /* DependencyContrainer */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA47B9245C4C1B005565C1 /* DependencyInjection.swift */,
+			);
+			path = DependencyContrainer;
+			sourceTree = "<group>";
+		};
 		7ED5CE2224590A7C00E5D454 = {
 			isa = PBXGroup;
 			children = (
@@ -308,6 +320,7 @@
 		7ED5CE5E24590FD000E5D454 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				7EAA47B8245C4C0B005565C1 /* DependencyContrainer */,
 				7EAA47A1245B9BB2005565C1 /* Functional */,
 				7EAA479C245B9B36005565C1 /* Helper */,
 				7ED5CED52459156600E5D454 /* TableViewHandling */,
@@ -434,6 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				7EAA4798245B8B08005565C1 /* AddCategoryViewController.swift */,
+				7EAA47B6245C4991005565C1 /* AddCategoryRouter.swift */,
 				7EAA47AC245BDA45005565C1 /* AddCategoryInteractor.swift */,
 				7EAA47AE245BDC40005565C1 /* CategoryColorUseCase.swift */,
 				7EAA47B2245BF7D3005565C1 /* AddCategoryUseCase.swift */,
@@ -614,6 +628,7 @@
 				7ED5CECD2459125200E5D454 /* CategoriesViewController.swift in Sources */,
 				7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */,
 				7EAA47B1245BEBFA005565C1 /* UIColor+Hex.swift in Sources */,
+				7EAA47B7245C4991005565C1 /* AddCategoryRouter.swift in Sources */,
 				7ED5CE5B24590FA300E5D454 /* LaunchViewController.swift in Sources */,
 				7ED5CEA4245910B400E5D454 /* Response.swift in Sources */,
 				7EAA4794245AD189005565C1 /* BudgetDTO.swift in Sources */,
@@ -623,6 +638,7 @@
 				7ED5CEC1245910B400E5D454 /* RequestCreator.swift in Sources */,
 				7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */,
 				7ED5CEEC2459288800E5D454 /* NSObject+Descriptible.swift in Sources */,
+				7EAA47BA245C4C1B005565C1 /* DependencyInjection.swift in Sources */,
 				7EAA478F245AD11B005565C1 /* ExpenseBudget.swift in Sources */,
 				7ED5CEE82459275B00E5D454 /* Reuable.swift in Sources */,
 				7ED5CEC8245910B400E5D454 /* URLSessionDataTaskProtocol.swift in Sources */,
