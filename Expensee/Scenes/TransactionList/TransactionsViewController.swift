@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol TransactionsPresenting: class {
+protocol TransactionListPresenting: class {
 
     func display(transactions: [TransactionCellModel])
 }
@@ -18,16 +18,16 @@ protocol TransactionsControlling: class {
     func viewIsReady()
 }
 
-final class TransactionPresenter {
+final class TransactionListPresenter {
 
-    private weak var view: TransactionsPresenting?
+    private weak var view: TransactionListPresenting?
 
-    init(view: TransactionsPresenting) {
+    init(view: TransactionListPresenting) {
         self.view = view
     }
 }
 
-extension TransactionPresenter: TransactionsControlling {
+extension TransactionListPresenter: TransactionsControlling {
 
     func viewIsReady() {
         displayTransactions()
@@ -44,7 +44,7 @@ extension TransactionPresenter: TransactionsControlling {
     }
 }
 
-class TransactionsViewController: UIViewController {
+class TransactionListViewController: UIViewController {
 
     var presenter: TransactionsControlling!
 
@@ -100,7 +100,7 @@ class TransactionsViewController: UIViewController {
 
 // MARK: - TransactionsPresenting
 
-extension TransactionsViewController: TransactionsPresenting {
+extension TransactionListViewController: TransactionListPresenting {
 
     func display(transactions: [TransactionCellModel]) {
         let emptyMessage = "There's no transactions available yet, however, you can create one by clicking on the top right button.💡"

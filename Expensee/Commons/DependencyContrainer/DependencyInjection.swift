@@ -67,8 +67,8 @@ final class DependencyInjection: DependencyInjecting {
     }
 
     func createTransactionScene(from navigation: UINavigationController) -> UIViewController {
-        let viewController = TransactionsViewController()
-        let presenter = TransactionPresenter(view: viewController)
+        let viewController = TransactionListViewController()
+        let presenter = TransactionListPresenter(view: viewController)
         viewController.presenter = presenter
 
         return viewController

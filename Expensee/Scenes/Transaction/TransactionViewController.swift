@@ -15,3 +15,17 @@ class TransactionViewController: UIViewController {
 
     }
 }
+
+protocol TransactionPresenting: class {
+
+}
+
+protocol TransactionControlling: class {
+
+}
+
+//final class TransactionPresenter {
+//
+//    private weak var view: LaunchPreseting
+//}
+//
