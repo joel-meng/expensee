@@ -137,8 +137,8 @@ class TransactionViewController: UIViewController {
 
 extension TransactionViewController: TransactionPresenting {
 
-    func showIntialState(_ amount: String?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?) {
-        transactionAmountTextField.text = amount
+    func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?) {
+        transactionAmountTextField.text = amount.map(String.init(describing:))
         if let currency = currency {
             currencySegmentControl.selectedSegmentIndex = segmentControlIndex(ofCurrency: currency)
         }
@@ -156,7 +156,7 @@ extension TransactionViewController: TransactionPresenting {
 
 protocol TransactionPresenting: class {
     
-    func showIntialState(_ amount: String?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?)
+    func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?)
 }
 
 protocol TransactionControlling: class {
@@ -185,11 +185,11 @@ final class TransactionPresenter {
     }
 
     private var category: Category {
-        didSet { didUpdateTransaction(transaction) }
+        didSet { didUpdateCategory(category) }
     }
 
     init(view: TransactionPresenting, router: TransactionRouting, transaction: Transaction?, category: Category?) {
-        self.transaction = transaction ?? Transaction(amount: nil, date: nil, currency: nil)
+        self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD")
         self.category = category ?? Category(name: nil, color: nil, limit: .init(amount: nil, currency: nil))
         self.view = view
         self.router = router
@@ -199,10 +199,12 @@ final class TransactionPresenter {
 
     private func didUpdateTransaction(_ transaction: Transaction?) {
         print(transaction)
+        displayCurrentState()
     }
 
     private func didUpdateCategory(_ category: Category?) {
         print(category)
+        displayCurrentState()
     }
 
     enum SceneFlavor {
@@ -219,11 +221,18 @@ extension TransactionPresenter: TransactionControlling {
 
     private func setupInitialState(flavor: SceneFlavor) {
         switch flavor {
-        case .save: view?.showIntialState(nil, currency: nil, date: Date(), categoryName: "DFDS", categoryColor: "#336699")
-            break
+        case .save: displayCurrentState()
         case .update:
             break
         }
+    }
+
+    private func displayCurrentState() {
+        view?.showState(amount: transaction.amount,
+                        currency: transaction.currency,
+                        date: transaction.date ?? Date(),
+                        categoryName: category.name ?? "Select Category",
+                        categoryColor: category.color ?? "#EEEEFF")
     }
 
     // MARK: - <#Comments#>
@@ -241,8 +250,12 @@ extension TransactionPresenter: TransactionControlling {
     }
 
     func didTapCategory() {
-        router.routeToCategoryList { (category) in
-            print(category)
+        router.routeToCategoryList { [weak self, category] (passBack) in
+            self?.category = passBack.category.map {
+                TransactionPresenter.Category(name: $0.name, color: $0.color, limit: $0.budget.map {
+                    TransactionPresenter.Limit(amount: $0.limit, currency: $0.currency)
+                })
+            } ?? category
         }
     }
 }
@@ -269,7 +282,7 @@ extension TransactionPresenter {
 
     struct Limit {
 
-        let amount: String?
+        let amount: Double?
 
         let currency: String?
     }

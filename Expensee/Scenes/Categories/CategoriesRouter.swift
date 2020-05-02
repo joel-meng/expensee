@@ -67,7 +67,8 @@ struct AddCategorySceneModel {
 }
 
 struct SelectCategorySceneModel {
-    let category: Category?
+
+    let category: Category
 
     struct Category {
         let uid: UUID

@@ -25,8 +25,13 @@ final class TransactionRouter: TransactionRouting {
     }
 
     func routeToCategoryList(completion: @escaping (TransactionRouterSceneModel) -> Void) {
-        let nextViewController = factory.createCategoryListSceneForSelection(from: navigationController) { (selection) in
-            print(selection)
+        let nextViewController = factory.createCategoryListSceneForSelection(from: navigationController) {
+            completion(TransactionRouterSceneModel(category:
+                TransactionRouterSceneModel.Category(uid: $0.category.uid,
+                                                     name: $0.category.name,
+                                                     color: $0.category.color,
+                                                     budget: $0.category.budget.map {
+            TransactionRouterSceneModel.Budget(currency: $0.currency, limit: $0.limit)})))
         }
         navigationController.show(nextViewController, sender: nil)
     }
