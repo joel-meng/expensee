@@ -15,6 +15,8 @@ protocol DependencyInjecting {
     func createAddCategoryScene(from navigation: UINavigationController,
                                 sceneModel: AddCategorySceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController
+
+    func createTransactionScene(from navigation: UINavigationController) -> UIViewController
 }
 
 final class DependencyInjection: DependencyInjecting {
@@ -62,5 +64,13 @@ final class DependencyInjection: DependencyInjecting {
         addCategoryViewController.presenter = presenter
 
         return addCategoryViewController
+    }
+
+    func createTransactionScene(from navigation: UINavigationController) -> UIViewController {
+        let viewController = TransactionsViewController()
+        let presenter = TransactionPresenter(view: viewController)
+        viewController.presenter = presenter
+
+        return viewController
     }
 }
