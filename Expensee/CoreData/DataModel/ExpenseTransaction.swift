@@ -1,35 +1,36 @@
 //
-//  ExpenseCategory.swift
+//  ExpenseTransaction.swift
 //  Expensee
 //
-//  Created by Jun Meng on 29/4/20.
+//  Created by Jun Meng on 3/5/20.
 //  Copyright © 2020 Jun Meng. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
-class ExpenseCategory: NSManagedObject {
+class ExpenseTransaction: NSManagedObject {
 
-    @NSManaged private(set) var name: String
-    @NSManaged private(set) var color: String
+    @NSManaged private(set) var amount: Double
+    @NSManaged private(set) var date: Date
+    @NSManaged private(set) var currency: String
     @NSManaged private(set) var uid: UUID
-    @NSManaged private(set) var budget: ExpenseBudget?
+    @NSManaged private(set) var category: ExpenseCategory?
 
-    static func insert(category categoryDTO: CategoryDTO,
-                       into context: NSManagedObjectContext) -> ExpenseCategory {
-        let category: ExpenseCategory = context.insertObject()
-        category.name = categoryDTO.name
-        category.color = categoryDTO.color
-        category.uid = categoryDTO.uid
+    static func insert(category transactionDTO: TransactionDTO,
+                       into context: NSManagedObjectContext) -> ExpenseTransaction {
+        let transaction: ExpenseTransaction = context.insertObject()
+        transaction.amount = transactionDTO.amount
+        transaction.currency = transactionDTO.currency
+        transaction.date = transactionDTO.date
+        transaction.uid = transactionDTO.uid
 
-        if let budget = categoryDTO.budget {
-            category.budget = ExpenseBudget.insert(budget: budget, into: context)
-        }
+        transaction.category = ExpenseCategory.find(by: transactionDTO.category.uid, in: context)
 
-        return category
+        return transaction
     }
 
+    /*
     static func fetchAll(from context: NSManagedObjectContext) throws -> [ExpenseCategory] {
 
         let fetchRequest = ExpenseCategory.fetchRequest()
@@ -51,11 +52,12 @@ class ExpenseCategory: NSManagedObject {
         let predicate = NSPredicate(format:"%K == %@", #keyPath(uid), id as CVarArg)
         return findOrFetch(in: context, matching: predicate)
     }
+     */
 }
 
-extension ExpenseCategory: Managed {
+extension ExpenseTransaction: Managed {
 
     static var defaultSortDescriptors: [NSSortDescriptor] {
-        return [NSSortDescriptor(key: #keyPath(name), ascending: true)]
+        return [NSSortDescriptor(key: #keyPath(date), ascending: true)]
     }
 }

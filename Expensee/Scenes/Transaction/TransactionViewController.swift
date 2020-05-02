@@ -50,9 +50,14 @@ class TransactionViewController: UIViewController {
         setupDateButton(dateButton)
         setupCategoryButton(categoryButton)
         setupDatePicker(datePicker)
+        saveButton.addTarget(self, action: #selector(didTapSave(sender:)), for: .touchUpInside)
         presenter.viewIsReady()
     }
     
+    @objc private func didTapSave(sender: UIButton) {
+        presenter.didTapSave()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -177,6 +182,8 @@ protocol TransactionControlling: class {
     func didSelectDate(_ date: Date)
 
     func didTapCategory()
+
+    func didTapSave()
 }
 
 final class TransactionPresenter {
@@ -197,7 +204,7 @@ final class TransactionPresenter {
 
     init(view: TransactionPresenting, router: TransactionRouting, transaction: Transaction?, category: Category?) {
         self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD")
-        self.category = category ?? Category(name: nil, color: nil, limit: .init(amount: nil, currency: nil))
+        self.category = category ?? Category(id: nil, name: nil, color: nil, limit: .init(amount: nil, currency: nil))
         self.view = view
         self.router = router
     }
@@ -266,13 +273,24 @@ extension TransactionPresenter: TransactionControlling {
         router.routeToCategoryList { [weak self, category] (passBack) in
             guard let self = self else { return }
             self.category = passBack.category.map {
-                TransactionPresenter.Category(name: $0.name, color: $0.color, limit: $0.budget.map {
+                TransactionPresenter.Category(id: $0.uid, name: $0.name, color: $0.color, limit: $0.budget.map {
                     TransactionPresenter.Limit(amount: $0.limit, currency: $0.currency)
                 })
             } ?? category
             self.displayCurrentState()
             self.view?.handleSaveReady(self.isDateValidForSaving())
         }
+    }
+
+    func didTapSave() {
+        guard let amount = self.transaction.amount else { return }
+        guard let categoryId = category.id else { return }
+        let context = CoreDataStore.shared?.context
+        let categoryDTO = CategoryDTO(name: category.name ?? "", color: category.color ?? "", budget: nil, uid: categoryId)
+        let transactionDTO = TransactionDTO(amount: amount, date: Date(), currency: "AAA", uid: UUID(), category: categoryDTO)
+
+        let result = ExpenseTransaction.insert(category: transactionDTO, into: context!)
+        print(result)
     }
 }
 
@@ -288,6 +306,8 @@ extension TransactionPresenter {
     }
 
     struct Category {
+
+        let id: UUID?
 
         let name: String?
 
