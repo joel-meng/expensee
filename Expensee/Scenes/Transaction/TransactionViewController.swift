@@ -20,18 +20,61 @@ class TransactionViewController: UIViewController {
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var datePicker: UIDatePicker!
 
     var presenter: TransactionControlling!
-
+    
+    // MARK: - Lifecycles
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupTransactionAmountTextField(transactionAmountTextField)
         setupSegmentControl(currencySegmentControl)
+        setupDateButton(dateButton)
+        setupCategoryButton(categoryButton)
+        setupDatePicker(datePicker)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presenter.viewIsReady()
     }
 
     // MARK: - UI Setup
+    
+    // MARK: - DatePicker
+    
+    private func setupDatePicker(_ datePicker: UIDatePicker) {
+        datePicker.minuteInterval = 10
+        datePicker.maximumDate = Date()
+        datePicker.addTarget(self, action: #selector(didChangeDatePicker), for: .valueChanged)
+    }
+    
+    @objc private func didChangeDatePicker(sender: UIDatePicker) {
+        presenter.didSelectDate(sender.date)
+    }
+    
+    // MARK: - Date Button
+    private func setupDateButton(_ button: UIButton) {
+        button.addTarget(self, action: #selector(didTapDateButton), for: .touchUpInside)
+    }
+    
+    @objc private func didTapDateButton(sender: UIButton) {
+        datePicker.isHidden = !datePicker.isHidden
+    }
+    
+    // MARK: - Category Button
+    
+    private func setupCategoryButton(_ button: UIButton) {
+        button.addTarget(self, action: #selector(didTapCategoryButton), for: .touchUpInside)
+    }
+    
+    @objc private func didTapCategoryButton(sender: UIButton) {
+        presenter.didTapCategory()
+    }
+    
+    // MARK: - Amount TextField
 
     private func setupTransactionAmountTextField(_ textField: UITextField) {
         transactionAmountTextField.delegate = transactionAmountTextfieldDelegate
@@ -46,6 +89,8 @@ class TransactionViewController: UIViewController {
         }
     }
 
+    // MARK: - Segment Control
+    
     private func setupSegmentControl(_ segmentControl: UISegmentedControl) {
         segmentControl.addTarget(self, action: #selector(didValueChangeSegmentControl(_:)), for: .valueChanged)
     }
@@ -62,22 +107,24 @@ class TransactionViewController: UIViewController {
         default: fatalError("Not supported")
         }
     }
-
-    // MARK: - Lifecycles
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        presenter.viewIsReady()
-    }
 }
+
+// MARK: - TransactionPresenting
 
 extension TransactionViewController: TransactionPresenting {
 
+    func showDatePicker() {
+        let alertController = UIAlertController(nibName:"DatePickerAlertView", bundle: nil)
+
+        alertController.title = ""
+        alertController.addAction(.init(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 protocol TransactionPresenting: class {
-
+    
+    func showDatePicker()
 }
 
 protocol TransactionControlling: class {
@@ -88,7 +135,7 @@ protocol TransactionControlling: class {
 
     func didUpdateTransactionCurrency(_ currency: String?)
 
-    func didTapDate()
+    func didSelectDate(_ date: Date)
 
     func didTapCategory()
 }
@@ -136,12 +183,12 @@ extension TransactionPresenter: TransactionControlling {
         transaction = Transaction(amount: transaction.amount, date: transaction.date, currency: currency ?? transaction.currency)
     }
 
-    func didTapDate() {
-
+    func didSelectDate(_ date: Date) {
+        print(date)
     }
 
     func didTapCategory() {
-
+        print("cate")
     }
 }
 

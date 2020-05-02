@@ -45,6 +45,7 @@
 		7EAA47CF245D13D6005565C1 /* TransactionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAA47CD245D13D6005565C1 /* TransactionViewController.xib */; };
 		7EAA47D1245D177C005565C1 /* TransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47D0245D177C005565C1 /* TransactionListViewController.swift */; };
 		7EAA47D3245D2A80005565C1 /* TransactionListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA47D2245D2A80005565C1 /* TransactionListRouter.swift */; };
+		7EAA47D5245D4238005565C1 /* DatePickerAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EAA47D4245D4238005565C1 /* DatePickerAlertView.xib */; };
 		7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */; };
 		7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3724590A7C00E5D454 /* Expensee.xcdatamodeld */; };
 		7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5CE3A24590A7F00E5D454 /* Assets.xcassets */; };
@@ -143,6 +144,7 @@
 		7EAA47CD245D13D6005565C1 /* TransactionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionViewController.xib; sourceTree = "<group>"; };
 		7EAA47D0245D177C005565C1 /* TransactionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionListViewController.swift; sourceTree = "<group>"; };
 		7EAA47D2245D2A80005565C1 /* TransactionListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListRouter.swift; sourceTree = "<group>"; };
+		7EAA47D4245D4238005565C1 /* DatePickerAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerAlertView.xib; sourceTree = "<group>"; };
 		7ED5CE2B24590A7C00E5D454 /* Expensee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expensee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED5CE2E24590A7C00E5D454 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED5CE3824590A7C00E5D454 /* Expensee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expensee.xcdatamodel; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				7EAA47CC245D13D6005565C1 /* TransactionViewController.swift */,
+				7EAA47D4245D4238005565C1 /* DatePickerAlertView.xib */,
 				7EAA47CD245D13D6005565C1 /* TransactionViewController.xib */,
 			);
 			path = Transaction;
@@ -647,6 +650,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7EAA47C3245D03E7005565C1 /* TransactionListViewController.xib in Resources */,
+				7EAA47D5245D4238005565C1 /* DatePickerAlertView.xib in Resources */,
 				7ED5CE3E24590A7F00E5D454 /* LaunchScreen.storyboard in Resources */,
 				7ED5CE3B24590A7F00E5D454 /* Assets.xcassets in Resources */,
 				7EAA479B245B8B08005565C1 /* AddCategoryViewController.xib in Resources */,

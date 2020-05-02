@@ -13,6 +13,7 @@
                 <outlet property="categoryButton" destination="kW0-1p-FPx" id="Cy4-bM-Dea"/>
                 <outlet property="currencySegmentControl" destination="hJr-9L-vCW" id="KiN-8m-fqk"/>
                 <outlet property="dateButton" destination="J2h-W6-A9Y" id="zeY-Mq-WgD"/>
+                <outlet property="datePicker" destination="pZg-la-ZrG" id="EGM-0l-s3n"/>
                 <outlet property="saveButton" destination="Fqg-1U-8Kq" id="dUm-Mj-Yor"/>
                 <outlet property="transactionAmountTextField" destination="F4v-i6-91o" id="N93-7G-3Bk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -38,45 +39,50 @@
                         <segment title="USD"/>
                     </segments>
                 </segmentedControl>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2h-W6-A9Y">
-                    <rect key="frame" x="0.0" y="204" width="414" height="44"/>
-                    <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="AOY-4r-Fhc"/>
-                    </constraints>
-                    <state key="normal" title="Date">
-                        <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kW0-1p-FPx">
-                    <rect key="frame" x="0.0" y="268" width="414" height="44"/>
-                    <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="zYn-ux-Mqn"/>
-                    </constraints>
-                    <state key="normal" title="Category">
-                        <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KXe-nE-dCQ">
+                    <rect key="frame" x="20" y="180" width="374" height="88"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2h-W6-A9Y">
+                            <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
+                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="AOY-4r-Fhc"/>
+                            </constraints>
+                            <state key="normal" title="Date">
+                                <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <datePicker hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="pZg-la-ZrG">
+                            <rect key="frame" x="0.0" y="44" width="374" height="0.0"/>
+                        </datePicker>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kW0-1p-FPx">
+                            <rect key="frame" x="0.0" y="44" width="374" height="44"/>
+                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="zYn-ux-Mqn"/>
+                            </constraints>
+                            <state key="normal" title="Category">
+                                <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fqg-1U-8Kq">
-                    <rect key="frame" x="190" y="375" width="34" height="30"/>
+                    <rect key="frame" x="190" y="300" width="34" height="30"/>
                     <state key="normal" title="Save"/>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="kW0-1p-FPx" firstAttribute="trailing" secondItem="J2h-W6-A9Y" secondAttribute="trailing" id="156-A8-Lds"/>
-                <constraint firstItem="J2h-W6-A9Y" firstAttribute="top" secondItem="F4v-i6-91o" secondAttribute="bottom" constant="56" id="2zn-Bu-Ifh"/>
                 <constraint firstItem="Fqg-1U-8Kq" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="9i3-wz-nht"/>
                 <constraint firstItem="F4v-i6-91o" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="60" id="JrG-si-Wpw"/>
-                <constraint firstItem="Fqg-1U-8Kq" firstAttribute="top" secondItem="kW0-1p-FPx" secondAttribute="bottom" constant="63" id="KQN-fN-oCF"/>
-                <constraint firstItem="kW0-1p-FPx" firstAttribute="leading" secondItem="J2h-W6-A9Y" secondAttribute="leading" id="NNN-RH-CdG"/>
-                <constraint firstItem="kW0-1p-FPx" firstAttribute="top" secondItem="J2h-W6-A9Y" secondAttribute="bottom" constant="20" id="PQq-WL-yTd"/>
+                <constraint firstItem="KXe-nE-dCQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="SnA-w3-Ba5"/>
                 <constraint firstItem="hJr-9L-vCW" firstAttribute="leading" secondItem="F4v-i6-91o" secondAttribute="trailing" constant="20" id="UFG-hy-Dq2"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="KXe-nE-dCQ" secondAttribute="trailing" constant="20" id="fGB-JJ-Zae"/>
+                <constraint firstItem="Fqg-1U-8Kq" firstAttribute="top" secondItem="KXe-nE-dCQ" secondAttribute="bottom" constant="32" id="g1t-8H-xUf"/>
                 <constraint firstItem="hJr-9L-vCW" firstAttribute="centerY" secondItem="F4v-i6-91o" secondAttribute="centerY" id="i0j-Pb-Wi0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hJr-9L-vCW" secondAttribute="trailing" constant="20" id="mMS-Jg-AxI"/>
-                <constraint firstItem="J2h-W6-A9Y" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="n96-ZJ-9eK"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="J2h-W6-A9Y" secondAttribute="trailing" id="nrK-cL-LPa"/>
+                <constraint firstItem="KXe-nE-dCQ" firstAttribute="top" secondItem="F4v-i6-91o" secondAttribute="bottom" constant="32" id="pI3-lt-nAW"/>
                 <constraint firstItem="F4v-i6-91o" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="twK-0t-n7x"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
