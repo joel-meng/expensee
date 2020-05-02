@@ -39,7 +39,7 @@ final class DependencyInjection: DependencyInjecting {
                                 sceneModel: AddCategorySceneModel? = nil,
                                 completion: @escaping () -> Void) -> UIViewController {
         let category = sceneModel.map {
-            AddCategoryPresenter.Category(name: $0.category?.name, color: $0.category?.color)
+            AddCategoryPresenter.Category(id: $0.category?.uid, name: $0.category?.name, color: $0.category?.color)
         }
         let monthlyLimit = sceneModel.map {
             AddCategoryPresenter.MonthlyLimit(limit: $0.category?.budget?.limit, currency: $0.category?.budget?.currency)

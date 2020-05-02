@@ -104,4 +104,25 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         future.resolve(with: fetched)
         return future
     }
+
+    func update(by categoryDTO: CategoryDTO) -> Future<CategoryDTO> {
+        let future = Future<CategoryDTO>()
+        guard let context = context else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        let found = ExpenseCategory.find(by: categoryDTO.uid, in: context)
+
+        perform {
+            found?.setValue(categoryDTO.color, forKey: "color")
+            found?.setValue(categoryDTO.name, forKey: "name")
+            future.resolve(with: categoryDTO)
+        }
+//        found?.name = categoryDTO.name
+//        found?.budget?.currency = categoryDTO.budget?.currency
+//        found?.budget?.limit = categoryDTO.budget?.limit
+
+        return future
+    }
 }

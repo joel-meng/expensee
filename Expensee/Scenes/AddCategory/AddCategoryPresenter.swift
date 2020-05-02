@@ -40,6 +40,8 @@ final class AddCategoryPresenter {
 
     private let router: AddCategoriesRouting
 
+    private let flavor: SceneFlavor
+
     private var monthlyLimit: MonthlyLimit? {
         didSet { update(category: category, limit: monthlyLimit) }
     }
@@ -55,6 +57,7 @@ final class AddCategoryPresenter {
          monthlyLimit: MonthlyLimit?) {
         self.category = category
         self.monthlyLimit = monthlyLimit
+        self.flavor = category == nil ? .save : .update
         self.view = view
         self.interactor = interactor
         self.router = router
@@ -79,6 +82,7 @@ final class AddCategoryPresenter {
     }
 
     struct Category {
+        let id: UUID?
         let name: String?
         let color: String?
     }
@@ -107,16 +111,25 @@ extension AddCategoryPresenter: AddCategoryControlling {
     }
 
     func didSelectCategoryName(_ name: String?) {
-        category = Category(name: name, color: category?.color)
+        category = Category(id: category?.id, name: name, color: category?.color)
     }
 
     func didSelectCategoryColor(_ color: String?) {
-        category = Category(name: category?.name, color: color)
+        category = Category(id: category?.id, name: category?.name, color: color)
         let cellModel = colorsCellModels(withSelection: color)
         view?.displayColors(colors: cellModel)
     }
 
     func didTapSave() {
+        switch flavor {
+        case .save:
+            saveCategory()
+        case .update:
+            updateCategory()
+        }
+    }
+
+    func saveCategory() {
         guard let name = category?.name, let color = category?.color else {
             // TODO: - display error
             return
@@ -136,6 +149,30 @@ extension AddCategoryPresenter: AddCategoryControlling {
         })
     }
 
+    func updateCategory() {
+        guard let name = category?.name, let color = category?.color else {
+            // TODO: - display error
+            return
+        }
+
+        guard let id = category?.id else {
+            // TODO: - error
+            return
+        }
+
+        let monthlyLimit = self.monthlyLimit.flatMap { monthlyLimit -> UpdateCategoryRequest.MontlyLimit? in
+            guard let limit = monthlyLimit.limit, let currency = monthlyLimit.currency else { return nil }
+            return UpdateCategoryRequest.MontlyLimit(limitAmount: limit, limitCurrency: currency)
+        }
+
+        let category = UpdateCategoryRequest.Category(id: id, name: name, color: color, monthlyLimit: monthlyLimit)
+        interactor.updateCategory(request:UpdateCategoryRequest(category:category)).on(success: { [weak router] (response) in
+            router?.routeBackAndRefresh()
+        }, failure: { error in
+            print(error)
+        })
+    }
+
     // MARK: - Color Cells
 
     private func colorsCellModels(withSelection selection: String?) -> [ColorCellModel] {
@@ -143,5 +180,12 @@ extension AddCategoryPresenter: AddCategoryControlling {
         return categoriesColor.colors.map {
             ColorCellModel(color: $0.color, isChecked: selection != nil ? selection == $0.color : false)
         }
+    }
+
+    // MARK: - Flavor
+
+    enum SceneFlavor {
+        case save
+        case update
     }
 }

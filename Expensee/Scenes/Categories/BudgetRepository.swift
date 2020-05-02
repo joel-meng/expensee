@@ -29,12 +29,8 @@ final class BudgetRepository: BudgetRepositoryProtocol {
             return future
         }
 
-        do {
-            let inserted = try ExpenseBudget.insert(budget: budget, into: context)
-            future.resolve(with: inserted)
-        } catch {
-            future.reject(with: error)
-        }
+        let inserted = ExpenseBudget.insert(budget: budget, into: context)
+        future.resolve(with: inserted)
 
         return future
     }

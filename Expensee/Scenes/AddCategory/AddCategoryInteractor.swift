@@ -13,6 +13,8 @@ protocol AddCategoryInteracting {
     func listColors(request: ListColorsRequest) -> ListColorsResponse
 
     func saveCategory(request: SaveCategoryRequest) -> Future<SaveCategoryResponse>
+
+    func updateCategory(request: UpdateCategoryRequest) -> Future<UpdateCategoryResponse>
 }
 
 final class AddCategoryInteractor: AddCategoryInteracting {
@@ -58,6 +60,26 @@ final class AddCategoryInteractor: AddCategoryInteracting {
             )
         }
     }
+
+    func updateCategory(request: UpdateCategoryRequest) -> Future<UpdateCategoryResponse> {
+        let categoryDTO = CategoryDTO(name: request.category.name,
+                                      color: request.category.color,
+                                      budget: request.category.monthlyLimit.map {
+                                        BudgetDTO(currency: $0.limitCurrency, limit: $0.limitAmount)
+                                      },
+                                      uid: request.category.id)
+        let updateFuture = saveCategoryUseCase.updateCategory(request: UpdateCategoryUseCaseRequest(category: categoryDTO))
+        return updateFuture.map {
+            UpdateCategoryResponse(category:
+                UpdateCategoryResponse.Category(id: $0.category.uid,
+                                                name: $0.category.name,
+                                                color: $0.category.color,
+                                                monthlyLimit: $0.category.budget.map {
+                                                    UpdateCategoryResponse.MontlyLimit(limitAmount: $0.limit,
+                                                                                       limitCurrency: $0.currency)
+                                                }))
+        }
+    }
 }
 
 struct ListColorsRequest {}
@@ -95,6 +117,51 @@ struct SaveCategoryResponse {
     let category: Category
 
     struct Category {
+
+        let name: String
+
+        let color: String
+
+        let monthlyLimit: MontlyLimit?
+    }
+
+    struct MontlyLimit {
+
+        let limitAmount: Double
+
+        let limitCurrency: String
+    }
+}
+
+struct UpdateCategoryRequest {
+
+    let category: Category
+
+    struct Category {
+
+        let id: UUID
+
+        let name: String
+
+        let color: String
+
+        let monthlyLimit: MontlyLimit?
+    }
+
+    struct MontlyLimit {
+
+        let limitAmount: Double
+
+        let limitCurrency: String
+    }
+}
+
+struct UpdateCategoryResponse {
+    let category: Category
+
+    struct Category {
+
+        let id: UUID
 
         let name: String
 
