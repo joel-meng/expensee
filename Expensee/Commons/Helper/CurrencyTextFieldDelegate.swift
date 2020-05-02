@@ -29,7 +29,7 @@ final class CurrencyRangeTextFieldDelegation: TextFieldDelegation<NSNumber?> {
 
     private func setConvertingAction() {
         convertingAction = { [weak formatter] text in
-            guard let text = text else { return .left(nil) }
+            guard let text = text, !text.isEmpty else { return .left(nil) }
             if let converted = formatter?.number(from: text) {
                 return .left(converted)
             }

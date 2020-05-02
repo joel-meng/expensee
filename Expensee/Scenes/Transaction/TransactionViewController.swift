@@ -43,6 +43,7 @@ class TransactionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Log Transaction"
 
         setupTransactionAmountTextField(transactionAmountTextField)
         setupSegmentControl(currencySegmentControl)
@@ -152,11 +153,17 @@ extension TransactionViewController: TransactionPresenting {
             categoryButton.backgroundColor = UIColor(categoryColor)
         }
     }
+
+    func handleSaveReady(_ enabled: Bool) {
+        saveButton.isEnabled = enabled
+    }
 }
 
 protocol TransactionPresenting: class {
     
     func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?)
+
+    func handleSaveReady(_ enabled: Bool)
 }
 
 protocol TransactionControlling: class {
@@ -205,6 +212,10 @@ final class TransactionPresenter {
         print(category)
     }
 
+    private func isDateValidForSaving() -> Bool {
+        return (transaction.amount != nil && category.name != nil && category.color != nil)
+    }
+
     enum SceneFlavor {
         case update
         case save
@@ -213,10 +224,7 @@ final class TransactionPresenter {
 
 extension TransactionPresenter: TransactionControlling {
 
-    func viewIsReady() {
-        setupInitialState(flavor: flavor)
-    }
-
+    // MARK: - State Handling
     private func setupInitialState(flavor: SceneFlavor) {
         switch flavor {
         case .save: displayCurrentState()
@@ -233,28 +241,37 @@ extension TransactionPresenter: TransactionControlling {
                         categoryColor: category.color ?? "#EEEEFF")
     }
 
-    // MARK: - <#Comments#>
+    // MARK: - TransactionControlling
+
+    func viewIsReady() {
+        setupInitialState(flavor: flavor)
+    }
 
     func didInputTransactionAmount(_ amount: Double?) {
-        transaction = Transaction(amount: amount ?? transaction.amount, date: transaction.date, currency: transaction.currency)
+        transaction = Transaction(amount: amount, date: transaction.date, currency: transaction.currency)
+        view?.handleSaveReady(isDateValidForSaving())
     }
 
     func didUpdateTransactionCurrency(_ currency: String?) {
         transaction = Transaction(amount: transaction.amount, date: transaction.date, currency: currency ?? transaction.currency)
+        view?.handleSaveReady(isDateValidForSaving())
     }
 
     func didSelectDate(_ date: Date) {
         transaction = Transaction(amount: transaction.amount, date: date, currency: transaction.currency)
+        view?.handleSaveReady(isDateValidForSaving())
     }
 
     func didTapCategory() {
         router.routeToCategoryList { [weak self, category] (passBack) in
-            self?.category = passBack.category.map {
+            guard let self = self else { return }
+            self.category = passBack.category.map {
                 TransactionPresenter.Category(name: $0.name, color: $0.color, limit: $0.budget.map {
                     TransactionPresenter.Limit(amount: $0.limit, currency: $0.currency)
                 })
             } ?? category
-            self?.displayCurrentState()
+            self.displayCurrentState()
+            self.view?.handleSaveReady(self.isDateValidForSaving())
         }
     }
 }
