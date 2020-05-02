@@ -24,7 +24,7 @@ class AddCategoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Create Category"
+        title = "Category"
 
         limitTextField.delegate = amountTextFieldDelegate
         amountTextFieldDelegate.updateAction = { [weak presenter] _, result in
