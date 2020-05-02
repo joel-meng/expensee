@@ -10,6 +10,7 @@
 		7E41B9D1245D5A1A005155BA /* TransactionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9D0245D5A1A005155BA /* TransactionRouter.swift */; };
 		7E41B9D5245DB982005155BA /* ExpenseTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9D4245DB982005155BA /* ExpenseTransaction.swift */; };
 		7E41B9D7245DBE5E005155BA /* TransactionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9D6245DBE5E005155BA /* TransactionDTO.swift */; };
+		7E41B9D9245E2D90005155BA /* TransactionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9D8245E2D90005155BA /* TransactionPresenter.swift */; };
 		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
 		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
 		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
@@ -111,6 +112,7 @@
 		7E41B9D0245D5A1A005155BA /* TransactionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRouter.swift; sourceTree = "<group>"; };
 		7E41B9D4245DB982005155BA /* ExpenseTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTransaction.swift; sourceTree = "<group>"; };
 		7E41B9D6245DBE5E005155BA /* TransactionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDTO.swift; sourceTree = "<group>"; };
+		7E41B9D8245E2D90005155BA /* TransactionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPresenter.swift; sourceTree = "<group>"; };
 		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
 		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
 		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				7EAA47CC245D13D6005565C1 /* TransactionViewController.swift */,
+				7E41B9D8245E2D90005155BA /* TransactionPresenter.swift */,
 				7E41B9D0245D5A1A005155BA /* TransactionRouter.swift */,
 				7EAA47CD245D13D6005565C1 /* TransactionViewController.xib */,
 			);
@@ -752,6 +755,7 @@
 				7ED5CE6E24590FD000E5D454 /* Fn.swift in Sources */,
 				7ED5CEE42459238500E5D454 /* CategoryTableViewCell.swift in Sources */,
 				7ED5CED12459129A00E5D454 /* CategoriesPresenter.swift in Sources */,
+				7E41B9D9245E2D90005155BA /* TransactionPresenter.swift in Sources */,
 				7EAA47D3245D2A80005565C1 /* TransactionListRouter.swift in Sources */,
 				7ED5CE6C24590FD000E5D454 /* NibExtension+NamingConvention.swift in Sources */,
 				7ED5CED32459145A00E5D454 /* SimpleTableViewDataSource.swift in Sources */,
