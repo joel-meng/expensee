@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol TransactionRouting: class {
+protocol TransactionListRouting: class {
 
     func routeToAddTransaction(completion: @escaping () -> Void)
 
     func routeToUpdateTransaction(with sceneModel: TransactionSceneModel, completion: @escaping () -> Void)
 }
 
-final class TransactionListRouter: TransactionRouting {
+final class TransactionListRouter: TransactionListRouting {
 
     private var navigationController: UINavigationController
 

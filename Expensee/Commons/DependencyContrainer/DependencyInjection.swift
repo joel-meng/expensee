@@ -10,7 +10,10 @@ import UIKit
 
 protocol DependencyInjecting {
 
-    func createCategoryScene(from navigation: UINavigationController) -> UIViewController
+    func createCategoryListScene(from navigation: UINavigationController) -> UIViewController
+
+    func createCategoryListSceneForSelection(from navigation: UINavigationController,
+                                             completion: @escaping (SelectCategorySceneModel) -> Void) -> UIViewController
 
     func createAddCategoryScene(from navigation: UINavigationController,
                                 sceneModel: AddCategorySceneModel?,
@@ -25,14 +28,16 @@ protocol DependencyInjecting {
 
 final class DependencyInjection: DependencyInjecting {
 
-    func createCategoryScene(from navigation: UINavigationController) -> UIViewController {
+    // MARK: - Category List Scene
+
+    func createCategoryListScene(from navigation: UINavigationController) -> UIViewController {
         let router = CategoriesRouter(navigationController: navigation, factory: self)
         let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
         let budgetRepository = BudgetRepository(context: CoreDataStore.shared?.context)
         let categoryUseCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository,
                                                     budgetRepository: budgetRepository)
         let interactor = CategoriesInteractor(categoriesUseCase: categoryUseCase)
-        let presenter = CategoriesPresenter(interactor: interactor, router: router)
+        let presenter = CategoriesPresenter(interactor: interactor, router: router, flavor: .display)
 
         let categoriesViewController = CategoriesViewController(nibName: nil, bundle: nil)
         presenter.view = categoriesViewController
@@ -40,6 +45,25 @@ final class DependencyInjection: DependencyInjecting {
 
         return categoriesViewController
     }
+
+    func createCategoryListSceneForSelection(from navigation: UINavigationController,
+                                             completion: @escaping (SelectCategorySceneModel) -> Void) -> UIViewController {
+        let router = CategoriesRouter(navigationController: navigation, completion: completion, factory: self)
+        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
+        let budgetRepository = BudgetRepository(context: CoreDataStore.shared?.context)
+        let categoryUseCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository,
+                                                    budgetRepository: budgetRepository)
+        let interactor = CategoriesInteractor(categoriesUseCase: categoryUseCase)
+        let presenter = CategoriesPresenter(interactor: interactor, router: router, flavor: .selection)
+
+        let categoriesViewController = CategoriesViewController(nibName: nil, bundle: nil)
+        presenter.view = categoriesViewController
+        categoriesViewController.presenter = presenter
+
+        return categoriesViewController
+    }
+
+    // MARK: - Category Add Scene
 
     func createAddCategoryScene(from navigation: UINavigationController,
                                 sceneModel: AddCategorySceneModel? = nil,
@@ -82,8 +106,12 @@ final class DependencyInjection: DependencyInjecting {
     func createTransactionScene(from navigation: UINavigationController,
                                 sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController {
+        let router = TransactionRouter(navigationController: navigation, factory: self)
         let viewController = TransactionViewController()
-        let presenter = TransactionPresenter(view: viewController, transaction: nil, category: nil)
+        let presenter = TransactionPresenter(view: viewController,
+                                             router: router,
+                                             transaction: nil,
+                                             category: nil)
         viewController.presenter = presenter
 
         return viewController

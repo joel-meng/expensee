@@ -24,9 +24,9 @@ final class TransactionListPresenter {
 
     private weak var view: TransactionListPresenting?
 
-    private var router: TransactionRouting
+    private var router: TransactionListRouting
 
-    init(view: TransactionListPresenting, router: TransactionRouting) {
+    init(view: TransactionListPresenting, router: TransactionListRouting) {
         self.view = view
         self.router = router
     }

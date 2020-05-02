@@ -176,6 +176,8 @@ final class TransactionPresenter {
 
     private weak var view: TransactionPresenting?
 
+    private var router: TransactionRouting
+
     private var flavor: SceneFlavor = .save
 
     private var transaction: Transaction {
@@ -186,10 +188,11 @@ final class TransactionPresenter {
         didSet { didUpdateTransaction(transaction) }
     }
 
-    init(view: TransactionPresenting, transaction: Transaction?, category: Category?) {
+    init(view: TransactionPresenting, router: TransactionRouting, transaction: Transaction?, category: Category?) {
         self.transaction = transaction ?? Transaction(amount: nil, date: nil, currency: nil)
         self.category = category ?? Category(name: nil, color: nil, limit: .init(amount: nil, currency: nil))
         self.view = view
+        self.router = router
     }
 
     // MARK: - Update
@@ -238,7 +241,9 @@ extension TransactionPresenter: TransactionControlling {
     }
 
     func didTapCategory() {
-        print("cate")
+        router.routeToCategoryList { (category) in
+            print(category)
+        }
     }
 }
 

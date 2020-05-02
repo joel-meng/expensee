@@ -32,9 +32,17 @@ final class CategoriesPresenter {
 
     weak var view: CategoriesPresenting?
 
-    init(interactor: CategoriesInteracting, router: CategoriesRouting) {
+    private let flavor: SceneFlavor
+
+    init(interactor: CategoriesInteracting, router: CategoriesRouting, flavor: SceneFlavor) {
         self.interactor = interactor
         self.router = router
+        self.flavor = flavor
+    }
+
+    enum SceneFlavor {
+        case display
+        case selection
     }
 }
 
@@ -64,25 +72,44 @@ extension CategoriesPresenter: CategoriesControlling {
     }
 
     func didSelectCategory(id: UUID) {
-        interactor.loadCategory(request: CategoryLoadRequest(uid: id)).on(success: { [weak self] (response) in
-            guard let category = response.categories else { // TODO: - Error throw
+        interactor.loadCategory(request: CategoryLoadRequest(uid: id)).on(success: { [weak self, flavor] (response) in
+            guard let category = response.categories else {
+                // TODO: - Error throw
                 return
             }
-            
-            self?.router.routeToUpdateCategory(with:
-                AddCategorySceneModel(category: AddCategorySceneModel.Category(uid: category.uid,
-                                                                                 name: category.name,
-                                                                                 color: category.color,
-                                                                                 budget: category.budget.map({
-                    AddCategorySceneModel.Budget(currency: $0.currency, limit: $0.limit)
-            })))) {
-                self?.loadCategories()
+            switch flavor {
+            case .display: self?.routeToAddCategory(with: category)
+            case .selection: self?.routeBack(with: category)
             }
         }, failure: { error in
             
         })
     }
     
+    private func routeBack(with category: CategoryLoadResponse.Category) {
+        let sceneModel = SelectCategorySceneModel(category:
+            SelectCategorySceneModel.Category(uid: category.uid,
+                                              name: category.name,
+                                              color: category.color,
+                                              budget: category.budget.map({
+                                                SelectCategorySceneModel.Budget(currency: $0.currency, limit: $0.limit)})))
+        router.routeBack(with: sceneModel)
+    }
+
+    private func routeToAddCategory(with category: CategoryLoadResponse.Category) {
+        let sceneModel = AddCategorySceneModel(category:
+            AddCategorySceneModel
+                .Category(uid: category.uid,
+                          name: category.name,
+                          color: category.color,
+                          budget: category.budget.map {
+                               AddCategorySceneModel.Budget(currency: $0.currency, limit: $0.limit)}))
+
+        router.routeToUpdateCategory(with:sceneModel) {
+            self.loadCategories()
+        }
+    }
+
     private func translatingError(_ error: Error) -> String {
         "Error happend"
     }

@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let factory = DependencyInjection()
 
         let categoryNavigationController = UINavigationController()
-        let categoryViewController = factory.createCategoryScene(from: categoryNavigationController)
+        let categoryViewController = factory.createCategoryListScene(from: categoryNavigationController)
         categoryNavigationController.viewControllers = [categoryViewController]
         categoryNavigationController.tabBarItem = UITabBarItem(title: "Categories",
                                                                image: "👑".image(size: .init(width: 32, height: 32),
