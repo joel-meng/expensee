@@ -13,24 +13,39 @@ protocol TransactionListPresenting: class {
     func display(transactions: [TransactionCellModel])
 }
 
-protocol TransactionsControlling: class {
+protocol TransactionListControlling: class {
 
     func viewIsReady()
+
+    func didTapAdd()
 }
 
 final class TransactionListPresenter {
 
     private weak var view: TransactionListPresenting?
 
-    init(view: TransactionListPresenting) {
+    private var router: TransactionRouting
+
+    init(view: TransactionListPresenting, router: TransactionRouting) {
         self.view = view
+        self.router = router
     }
 }
 
-extension TransactionListPresenter: TransactionsControlling {
+// MARK: - TransactionListControlling
+
+extension TransactionListPresenter: TransactionListControlling {
+
+    // MARK: - TransactionListControlling
 
     func viewIsReady() {
         displayTransactions()
+    }
+
+    func didTapAdd() {
+        router.routeToAddTransaction { [weak self] in
+            self?.displayTransactions()
+        }
     }
 
     func displayTransactions() {
@@ -46,7 +61,7 @@ extension TransactionListPresenter: TransactionsControlling {
 
 class TransactionListViewController: UIViewController {
 
-    var presenter: TransactionsControlling!
+    var presenter: TransactionListControlling!
 
     // MARK: - Lifecycles
 
@@ -55,13 +70,25 @@ class TransactionListViewController: UIViewController {
         view.makeStateful()
         
         tableView.registerReuableCell(TransactionTableViewCell.self)
+        createBarButton()
+    }
+
+    // MARK: - Navigation Bar Item
+
+    private func createBarButton() {
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+        navigationItem.rightBarButtonItem = addButton
+    }
+
+    @objc private func didTapAdd() {
+        presenter.didTapAdd()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         view.showState(.loading)
-        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) { [weak self] in
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) { [weak self] in
             self?.presenter.viewIsReady()
         }
     }

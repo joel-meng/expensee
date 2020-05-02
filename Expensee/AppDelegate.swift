@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                tag: 1)
 
         let transactionNavigationController = UINavigationController()
-        let transactionViewController = factory.createTransactionScene(from: categoryNavigationController)
+        let transactionViewController = factory.createTransactionListScene(from: transactionNavigationController)
         transactionNavigationController.viewControllers = [transactionViewController]
         transactionNavigationController.tabBarItem = UITabBarItem(title: "Transactions",
                                                                   image: "💸".image(size: .init(width: 32, height: 32),

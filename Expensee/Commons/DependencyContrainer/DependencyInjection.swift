@@ -16,7 +16,11 @@ protocol DependencyInjecting {
                                 sceneModel: AddCategorySceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController
 
-    func createTransactionScene(from navigation: UINavigationController) -> UIViewController
+    func createTransactionListScene(from navigation: UINavigationController) -> UIViewController
+
+    func createTransactionScene(from navigation: UINavigationController,
+                                sceneModel: TransactionSceneModel?,
+                                completion: @escaping () -> Void) -> UIViewController
 }
 
 final class DependencyInjection: DependencyInjecting {
@@ -66,9 +70,20 @@ final class DependencyInjection: DependencyInjecting {
         return addCategoryViewController
     }
 
-    func createTransactionScene(from navigation: UINavigationController) -> UIViewController {
+    func createTransactionListScene(from navigation: UINavigationController) -> UIViewController {
+        let router = TransactionListRouter(navigationController: navigation, factory: self)
         let viewController = TransactionListViewController()
-        let presenter = TransactionListPresenter(view: viewController)
+        let presenter = TransactionListPresenter(view: viewController, router: router)
+        viewController.presenter = presenter
+
+        return viewController
+    }
+
+    func createTransactionScene(from navigation: UINavigationController,
+                                sceneModel: TransactionSceneModel?,
+                                completion: @escaping () -> Void) -> UIViewController {
+        let viewController = TransactionViewController()
+        let presenter = TransactionPresenter(view: viewController, transaction: nil)
         viewController.presenter = presenter
 
         return viewController
