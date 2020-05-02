@@ -13,17 +13,32 @@ class TransactionViewController: UIViewController {
     private let MAX_TRANSACTION_AMOUNT: Double = 999_999_999_999_999
     private let MIN_TRANSACTION_AMOUNT: Double = 0
 
-    private let transactionAmountTextfieldDelegate = CurrencyRangeTextFieldDelegation()
-    @IBOutlet weak var transactionAmountTextField: UITextField!
+    // MARK: - Delegate
 
+    private let transactionAmountTextfieldDelegate = CurrencyRangeTextFieldDelegation()
+
+    // MARK: - UI
+
+    @IBOutlet weak var transactionAmountTextField: UITextField!
     @IBOutlet weak var currencySegmentControl: UISegmentedControl!
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var datePicker: UIDatePicker!
 
+    // MARK: - VIPER
+
     var presenter: TransactionControlling!
     
+    // MARK: - Formatter
+
+    private var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
+        return dateFormatter
+    }()
+
     // MARK: - Lifecycles
 
     override func viewDidLoad() {
@@ -34,11 +49,11 @@ class TransactionViewController: UIViewController {
         setupDateButton(dateButton)
         setupCategoryButton(categoryButton)
         setupDatePicker(datePicker)
+        presenter.viewIsReady()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        presenter.viewIsReady()
     }
 
     // MARK: - UI Setup
@@ -52,6 +67,7 @@ class TransactionViewController: UIViewController {
     }
     
     @objc private func didChangeDatePicker(sender: UIDatePicker) {
+        dateButton.setTitle(dateFormatter.string(from: sender.date), for: .normal)
         presenter.didSelectDate(sender.date)
     }
     
@@ -100,6 +116,14 @@ class TransactionViewController: UIViewController {
         presenter.didUpdateTransactionCurrency(selectedCurrency)
     }
 
+    private func segmentControlIndex(ofCurrency currency: String) -> Int {
+        switch currency {
+        case "NZD": return 0
+        case "USD": return 1
+        default: fatalError("Not supported")
+        }
+    }
+
     private func currency(ofIndex index: Int) -> String {
         switch index {
         case 0: return "NZD"
@@ -113,18 +137,26 @@ class TransactionViewController: UIViewController {
 
 extension TransactionViewController: TransactionPresenting {
 
-    func showDatePicker() {
-        let alertController = UIAlertController(nibName:"DatePickerAlertView", bundle: nil)
-
-        alertController.title = ""
-        alertController.addAction(.init(title: "OK", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+    func showIntialState(_ amount: String?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?) {
+        transactionAmountTextField.text = amount
+        if let currency = currency {
+            currencySegmentControl.selectedSegmentIndex = segmentControlIndex(ofCurrency: currency)
+        }
+        if let date = date {
+            dateButton.setTitle(dateFormatter.string(from: date), for: .normal)
+        }
+        if let categoryName = categoryName {
+            categoryButton.setTitle(categoryName, for: .normal)
+        }
+        if let categoryColor = categoryColor {
+            categoryButton.backgroundColor = UIColor(categoryColor)
+        }
     }
 }
 
 protocol TransactionPresenting: class {
     
-    func showDatePicker()
+    func showIntialState(_ amount: String?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?)
 }
 
 protocol TransactionControlling: class {
@@ -143,6 +175,8 @@ protocol TransactionControlling: class {
 final class TransactionPresenter {
 
     private weak var view: TransactionPresenting?
+
+    private var flavor: SceneFlavor = .save
 
     private var transaction: Transaction {
         didSet { didUpdateTransaction(transaction) }
@@ -167,13 +201,29 @@ final class TransactionPresenter {
     private func didUpdateCategory(_ category: Category?) {
         print(category)
     }
+
+    enum SceneFlavor {
+        case update
+        case save
+    }
 }
 
 extension TransactionPresenter: TransactionControlling {
 
     func viewIsReady() {
-
+        setupInitialState(flavor: flavor)
     }
+
+    private func setupInitialState(flavor: SceneFlavor) {
+        switch flavor {
+        case .save: view?.showIntialState(nil, currency: nil, date: Date(), categoryName: "DFDS", categoryColor: "#336699")
+            break
+        case .update:
+            break
+        }
+    }
+
+    // MARK: - <#Comments#>
 
     func didInputTransactionAmount(_ amount: Double?) {
         transaction = Transaction(amount: amount ?? transaction.amount, date: transaction.date, currency: transaction.currency)
@@ -184,7 +234,7 @@ extension TransactionPresenter: TransactionControlling {
     }
 
     func didSelectDate(_ date: Date) {
-        print(date)
+        transaction = Transaction(amount: transaction.amount, date: date, currency: transaction.currency)
     }
 
     func didTapCategory() {
