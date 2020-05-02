@@ -10,10 +10,10 @@ import Foundation
 
 final class RangeValidator {
 
-    private let lowerLimit: Float
-    private let upperLimit: Float
+    private let lowerLimit: Double
+    private let upperLimit: Double
 
-    init(lowerLimit: Float = 0, upperLimit: Float = 10_000) {
+    init(lowerLimit: Double = 0, upperLimit: Double = 10_000) {
         self.lowerLimit = lowerLimit
         self.upperLimit = upperLimit
     }
@@ -24,7 +24,7 @@ final class RangeValidator {
             return (false, LimitError.invalidEntry)
         }
 
-        guard let newAmount = Float(input) else {
+        guard let newAmount = Double(input) else {
             return (false, LimitError.invalidEntry)
         }
 

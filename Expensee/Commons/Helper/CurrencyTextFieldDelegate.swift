@@ -10,9 +10,9 @@ import UIKit
 
 final class CurrencyRangeTextFieldDelegation: TextFieldDelegation<NSNumber?> {
 
-    private var rangeValidator = RangeValidator()
+    var rangeValidator = RangeValidator()
 
-    private var decimalValidator = DecimalValidator()
+    var decimalValidator = DecimalValidator()
 
     var currencyCode: String? {
         didSet {
@@ -22,6 +22,12 @@ final class CurrencyRangeTextFieldDelegation: TextFieldDelegation<NSNumber?> {
 
     override init() {
         super.init()
+        setConvertingAction()
+    }
+
+    // MARK: - Private
+
+    private func setConvertingAction() {
         convertingAction = { [weak formatter] text in
             guard let text = text else { return .left(nil) }
             if let converted = formatter?.number(from: text) {
@@ -30,8 +36,6 @@ final class CurrencyRangeTextFieldDelegation: TextFieldDelegation<NSNumber?> {
             return .right(CurrencyTextFieldError.unableToConvertToTargetType)
         }
     }
-
-    // MARK: - Private
 
     private lazy var formatter: NumberFormatter = {
         let formatter = NumberFormatter()

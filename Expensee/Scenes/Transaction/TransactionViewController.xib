@@ -14,7 +14,7 @@
                 <outlet property="currencySegmentControl" destination="hJr-9L-vCW" id="KiN-8m-fqk"/>
                 <outlet property="dateButton" destination="J2h-W6-A9Y" id="zeY-Mq-WgD"/>
                 <outlet property="saveButton" destination="Fqg-1U-8Kq" id="dUm-Mj-Yor"/>
-                <outlet property="transactionNameLabel" destination="F4v-i6-91o" id="N93-7G-3Bk"/>
+                <outlet property="transactionAmountTextField" destination="F4v-i6-91o" id="N93-7G-3Bk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

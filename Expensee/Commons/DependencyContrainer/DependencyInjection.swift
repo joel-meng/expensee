@@ -83,7 +83,7 @@ final class DependencyInjection: DependencyInjecting {
                                 sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController {
         let viewController = TransactionViewController()
-        let presenter = TransactionPresenter(view: viewController, transaction: nil)
+        let presenter = TransactionPresenter(view: viewController, transaction: nil, category: nil)
         viewController.presenter = presenter
 
         return viewController
