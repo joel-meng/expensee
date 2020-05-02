@@ -30,7 +30,7 @@
                         <constraint firstAttribute="height" constant="44" id="Kq1-Jj-fVA"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                 </textField>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hJr-9L-vCW">
                     <rect key="frame" x="301" y="110.5" width="93" height="32"/>

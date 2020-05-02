@@ -199,12 +199,10 @@ final class TransactionPresenter {
 
     private func didUpdateTransaction(_ transaction: Transaction?) {
         print(transaction)
-        displayCurrentState()
     }
 
     private func didUpdateCategory(_ category: Category?) {
         print(category)
-        displayCurrentState()
     }
 
     enum SceneFlavor {
@@ -256,6 +254,7 @@ extension TransactionPresenter: TransactionControlling {
                     TransactionPresenter.Limit(amount: $0.limit, currency: $0.currency)
                 })
             } ?? category
+            self?.displayCurrentState()
         }
     }
 }
