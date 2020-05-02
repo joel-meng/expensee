@@ -30,15 +30,15 @@ final class TransactionPresenter {
 extension TransactionPresenter: TransactionsControlling {
 
     func viewIsReady() {
-
+        displayTransactions()
     }
 
     func displayTransactions() {
-        let tx = [
-            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
+        let tx: [TransactionCellModel] = [
+//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
+//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
+//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
+//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
         ]
         view?.display(transactions: tx)
     }
@@ -52,11 +52,18 @@ class TransactionsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.makeStateful()
+        
+        tableView.registerReuableCell(TransactionTableViewCell.self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        presenter.viewIsReady()
+        
+        view.showState(.loading)
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) { [weak self] in
+            self?.presenter.viewIsReady()
+        }
     }
 
     // MARK: - TableViews
@@ -96,8 +103,8 @@ class TransactionsViewController: UIViewController {
 extension TransactionsViewController: TransactionsPresenting {
 
     func display(transactions: [TransactionCellModel]) {
+        let emptyMessage = "There's no transactions available yet, however, you can create one by clicking on the top right button.💡"
+        view.showState(.displaying(transactions.isEmpty ? .empty(message: emptyMessage) : .data))
         provider.updateData(transactions)
     }
-
-
 }
