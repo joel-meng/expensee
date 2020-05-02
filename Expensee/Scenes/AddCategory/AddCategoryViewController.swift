@@ -45,7 +45,7 @@ class AddCategoryViewController: UIViewController {
         }
         
         currencySegmentControl.addTarget(self, action: #selector(updateCurrencySelection(sender:)), for: .valueChanged)
-        updateCurrencySelection(sender: currencySegmentControl)
+
         saveButton.addTarget(self, action: #selector(saveButtonTapped(sender:)), for: .touchUpInside)
         presenter.viewIsReady()
     }

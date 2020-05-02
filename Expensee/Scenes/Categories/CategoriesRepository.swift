@@ -117,11 +117,10 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         perform {
             found?.setValue(categoryDTO.color, forKey: "color")
             found?.setValue(categoryDTO.name, forKey: "name")
+            found?.budget?.setValue(categoryDTO.budget?.currency, forKey: "currency")
+            found?.budget?.setValue(categoryDTO.budget?.limit, forKey: "limit")
             future.resolve(with: categoryDTO)
         }
-//        found?.name = categoryDTO.name
-//        found?.budget?.currency = categoryDTO.budget?.currency
-//        found?.budget?.limit = categoryDTO.budget?.limit
 
         return future
     }

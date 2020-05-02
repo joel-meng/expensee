@@ -136,8 +136,8 @@ extension AddCategoryPresenter: AddCategoryControlling {
         }
 
         let monthlyLimit = self.monthlyLimit.flatMap { monthlyLimit -> SaveCategoryRequest.MontlyLimit? in
-            guard let limit = monthlyLimit.limit, let currency = monthlyLimit.currency else { return nil }
-            return SaveCategoryRequest.MontlyLimit(limitAmount: limit, limitCurrency: currency)
+            guard let limit = monthlyLimit.limit else { return nil }
+            return SaveCategoryRequest.MontlyLimit(limitAmount: limit, limitCurrency: monthlyLimit.currency ?? "NZD")
         }
 
         let category = SaveCategoryRequest.Category(name: name, color: color, monthlyLimit: monthlyLimit)
@@ -161,8 +161,8 @@ extension AddCategoryPresenter: AddCategoryControlling {
         }
 
         let monthlyLimit = self.monthlyLimit.flatMap { monthlyLimit -> UpdateCategoryRequest.MontlyLimit? in
-            guard let limit = monthlyLimit.limit, let currency = monthlyLimit.currency else { return nil }
-            return UpdateCategoryRequest.MontlyLimit(limitAmount: limit, limitCurrency: currency)
+            guard let limit = monthlyLimit.limit else { return nil }
+            return UpdateCategoryRequest.MontlyLimit(limitAmount: limit, limitCurrency: monthlyLimit.currency ?? "NZD")
         }
 
         let category = UpdateCategoryRequest.Category(id: id, name: name, color: color, monthlyLimit: monthlyLimit)
