@@ -20,12 +20,13 @@ protocol CurrencyLayerServiceProtocol {
 
 final class CurrencyLayerService: CurrencyLayerServiceProtocol {
 
+    static let queryDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        return dateFormatter
+    }()
+
     static private func parametrizeDate(_ date: Date) -> String {
-        let queryDateFormatter: DateFormatter = {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "YYYY-MM-dd"
-            return dateFormatter
-        }()
         return queryDateFormatter.string(from: date)
     }
 
@@ -38,10 +39,12 @@ final class CurrencyLayerService: CurrencyLayerServiceProtocol {
             ("format", "1")
         }
 
-        Rest.load(request: request, expectedResultType: CurrencyConvertResponse.self) { (result) in
-            print(result)
+        Rest.load(request: request,
+                  dateDecodingStrategy: JSONDecoder.DateDecodingStrategy.formatted(queryDateFormatter),
+                  expectedResultType: CurrencyConvertResponse.self) { (result) in
             switch result {
-            case .failure(let error): future.reject(with: error)
+            case .failure(let error):
+                future.reject(with: error)
             case .success(let response):
                 future.resolve(with: response.quotes.usdnzd)
             }

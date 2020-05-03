@@ -27,6 +27,7 @@ struct CurrencyConvertResponse: Codable {
     let success: Bool
     let timestamp: TimeInterval
     let source: String
+    let date: Date
     let quotes: Quote
 }
 
