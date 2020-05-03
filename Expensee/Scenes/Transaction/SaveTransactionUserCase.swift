@@ -22,11 +22,14 @@ final class SaveTransactionUseCase: SaveTransactionUseCaseProtocol {
     }
 
     func saveTransaction(with request: SaveTransactionUseCaseRequest) -> Future<SaveTransactionUseCaseResponse> {
-        return transactionRepository.save(SavingTransactionModel(amount: request.transaction.amount,
-                                                                 date: request.transaction.date,
-                                                                 currency: request.transaction.currency,
-                                                                 uid: request.transaction.uid),
-                                          categoryId: request.categoryId).map(SaveTransactionUseCaseResponse.init)
+        return transactionRepository.save(
+            SavingTransactionModel(amount: request.transaction.amount,
+                                   currency: request.transaction.currency,
+                                   originalAmount: request.transaction.originalAmount,
+                                   originalCurrency: request.transaction.originalCurrency,
+                                   date: request.transaction.date,
+                                   uid: request.transaction.uid),
+            categoryId: request.categoryId).map(SaveTransactionUseCaseResponse.init)
     }
 }
 
@@ -45,6 +48,10 @@ struct SaveTransactionUseCaseRequest {
         let currency: String
 
         let uid: UUID
+
+        let originalAmount: Double
+
+        let originalCurrency: String
     }
 }
 

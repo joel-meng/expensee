@@ -27,38 +27,47 @@ final class TransactionInteractor: TransactionInteracting {
 
     func saveTransaction(with request: SaveTransactionRequest) -> Future<SaveTransactionResponse> {
         switch request.transaction.currency {
-        case "USD": return saveTransactionInUSD(with: request)
-        case "NZD": return saveTransactionInNZD(with: request)
+        case "USD":
+            return convertUSDToNZD(with: request).flatMap { [unowned self] in
+                let savingRequest = SaveTransactionUseCaseRequest(transaction:
+                    SaveTransactionUseCaseRequest
+                        .Transaction(amount: $0.convertionResult.toCurrencyAmount,
+                                     date: $0.convertionResult.date,
+                                     currency: $0.convertionResult.toCurrency,
+                                     uid: UUID(),
+                                     originalAmount: $0.convertionResult.fromCurrencyAmount,
+                                     originalCurrency: $0.convertionResult.fromCurrency),
+                                                                  categoryId: request.categoryId)
+                return self.saveTransactionInNZD(with: savingRequest)
+            }
+
+        case "NZD":
+            let useCaseRequest = SaveTransactionUseCaseRequest(transaction:
+                       SaveTransactionUseCaseRequest.Transaction(amount: request.transaction.amount,
+                                                                 date: request.transaction.date,
+                                                                 currency: request.transaction.currency,
+                                                                 uid: UUID(),
+                                                                 originalAmount: request.transaction.amount,
+                                                                 originalCurrency: request.transaction.currency),
+                                                                categoryId: request.categoryId)
+            return saveTransactionInNZD(with: useCaseRequest)
         default: fatalError("Not Supported")
         }
     }
 
-    private func saveTransactionInUSD(with request: SaveTransactionRequest) -> Future<SaveTransactionResponse> {
+    private func convertUSDToNZD(with request: SaveTransactionRequest) -> Future<ConvertCurrencyUseCaseResponse> {
         let conversionRequest = ConvertCurrencyUseCaseRequest(convertion:
             ConvertCurrencyUseCaseRequest
                 .CurrencyConvertionDTO(fromCurrency: request.transaction.currency,
                                        toCurrency: "NZD",
                                        date: request.transaction.date,
                                        fromCurrencyAmount: request.transaction.amount))
-
-        return currencyConversionUseCase.convertCurrency(with: conversionRequest).flatMap { [unowned self] in
-            let newRequest = SaveTransactionRequest(transaction:
-                SaveTransactionRequest.Transaction(amount: $0.convertionResult.toCurrencyAmount,
-                                                   date: $0.convertionResult.date,
-                                                   currency: $0.convertionResult.toCurrency),
-                                                    categoryId: request.categoryId)
-            return self.saveTransactionInNZD(with: newRequest)
-        }
+        return currencyConversionUseCase.convertCurrency(with: conversionRequest)
     }
 
-    private func saveTransactionInNZD(with request: SaveTransactionRequest) -> Future<SaveTransactionResponse> {
-        let userCaseRequest = SaveTransactionUseCaseRequest(transaction:
-            SaveTransactionUseCaseRequest.Transaction(amount: request.transaction.amount,
-                                                      date: request.transaction.date,
-                                                      currency: request.transaction.currency,
-                                                      uid: UUID()), categoryId: request.categoryId)
+    private func saveTransactionInNZD(with request: SaveTransactionUseCaseRequest) -> Future<SaveTransactionResponse> {
 
-        return saveTransactionUseCase.saveTransaction(with: userCaseRequest).map {
+        return saveTransactionUseCase.saveTransaction(with: request).map {
             SaveTransactionResponse(transaction:
                 SaveTransactionResponse
                     .Transaction(amount: $0.transaction.amount,

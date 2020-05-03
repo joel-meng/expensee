@@ -139,7 +139,8 @@ extension TransactionPresenter: TransactionControlling {
             SaveTransactionRequest(transaction:
                 SaveTransactionRequest.Transaction(amount: amount,
                                                    date: date,
-                                                   currency: currency), categoryId: categoryId))
+                                                   currency: currency),
+                                   categoryId: categoryId))
         result.on(success: { [weak router] (response) in
             router?.routeBackToTransactionList()
         }, failure: { [weak view] error in

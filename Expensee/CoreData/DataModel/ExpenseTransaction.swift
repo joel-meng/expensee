@@ -12,8 +12,10 @@ import CoreData
 class ExpenseTransaction: NSManagedObject {
 
     @NSManaged private(set) var amount: Double
-    @NSManaged private(set) var date: Date
     @NSManaged private(set) var currency: String
+    @NSManaged private(set) var originalAmount: Double
+    @NSManaged private(set) var originalCurrency: String
+    @NSManaged private(set) var date: Date
     @NSManaged private(set) var uid: UUID
     @NSManaged private(set) var category: ExpenseCategory?
 
@@ -25,6 +27,8 @@ class ExpenseTransaction: NSManagedObject {
         transaction.currency = transactionModel.currency
         transaction.date = transactionModel.date
         transaction.uid = transactionModel.uid
+        transaction.originalAmount = transactionModel.originalAmount
+        transaction.originalCurrency = transactionModel.originalCurrency
 
         transaction.category = ExpenseCategory.find(by: categoryId, in: context)
 

@@ -65,9 +65,13 @@ struct SavingTransactionModel {
 
     let amount: Double
 
-    let date: Date
-
     let currency: String
+
+    let originalAmount: Double
+
+    let originalCurrency: String
+
+    let date: Date
 
     let uid: UUID
 }
