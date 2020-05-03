@@ -23,7 +23,7 @@ import Foundation
    "USDAMD":478.89766,
 */
 
-struct CurrencyConvertResponse: Codable {
+struct CurrencyConvertResponseCodable: Codable {
     let success: Bool
     let timestamp: TimeInterval
     let source: String
@@ -33,7 +33,7 @@ struct CurrencyConvertResponse: Codable {
 
 struct Quote: Codable {
     let usdnzd: Double
-
+    
     enum CodingKeys: String, CodingKey {
         case usdnzd = "USDNZD"
     }

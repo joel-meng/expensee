@@ -14,8 +14,8 @@
 		7E41B9DB245E2DF2005155BA /* TransactoinInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9DA245E2DF2005155BA /* TransactoinInteractor.swift */; };
 		7E41B9DD245E2EA6005155BA /* CurrencyConvertingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9DC245E2EA6005155BA /* CurrencyConvertingUseCase.swift */; };
 		7E41B9E2245E325A005155BA /* CurrencyLayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */; };
-		7E41B9E4245E3AF1005155BA /* CurrencyConvertResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E3245E3AF1005155BA /* CurrencyConvertResponse.swift */; };
 		7E41B9E6245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */; };
+		7E41B9E8245E58A8005155BA /* CurrencyConvertResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */; };
 		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
 		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
 		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
@@ -121,8 +121,8 @@
 		7E41B9DA245E2DF2005155BA /* TransactoinInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactoinInteractor.swift; sourceTree = "<group>"; };
 		7E41B9DC245E2EA6005155BA /* CurrencyConvertingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConvertingUseCase.swift; sourceTree = "<group>"; };
 		7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyLayerService.swift; sourceTree = "<group>"; };
-		7E41B9E3245E3AF1005155BA /* CurrencyConvertResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConvertResponse.swift; sourceTree = "<group>"; };
 		7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUSDQuoteRequestBuilder.swift; sourceTree = "<group>"; };
+		7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertResponse.swift; sourceTree = "<group>"; };
 		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
 		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
 		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
@@ -465,7 +465,7 @@
 		7ED5CE78245910B400E5D454 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7E41B9E3245E3AF1005155BA /* CurrencyConvertResponse.swift */,
+				7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -761,12 +761,12 @@
 				7EAA47BC245C4E3C005565C1 /* AddCategoryPresenter.swift in Sources */,
 				7EAA47AD245BDA45005565C1 /* AddCategoryInteractor.swift in Sources */,
 				7ED5CED7245915FD00E5D454 /* SimpleTableViewProvider.swift in Sources */,
-				7E41B9E4245E3AF1005155BA /* CurrencyConvertResponse.swift in Sources */,
 				7EAA47A9245BD2D0005565C1 /* AnyTextFieldDelegation.swift in Sources */,
 				7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */,
 				7EAA47B5245C3F5A005565C1 /* CategoriesRouter.swift in Sources */,
 				7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */,
 				7ED5CE5724590F5C00E5D454 /* LaunchDetailsInteractor.swift in Sources */,
+				7E41B9E8245E58A8005155BA /* CurrencyConvertResponse.swift in Sources */,
 				7ED5CEA1245910B400E5D454 /* DateFormatter.swift in Sources */,
 				7ED5CE3924590A7C00E5D454 /* Expensee.xcdatamodeld in Sources */,
 				7E41B9D7245DBE5E005155BA /* TransactionDTO.swift in Sources */,

@@ -10,46 +10,50 @@ import Foundation
 
 protocol CurrencyConvertingUseCaseProtocol {
 
-    func convertCurrency(with request: ConvertCurrencyRequest) -> ConvertCurrencyResposne
+    func convertCurrency(with request: ConvertCurrencyUseCaseRequest) -> Future<ConvertCurrencyUseCaseResposne>
 }
 
 final class CurrencyConvertingUseCase: CurrencyConvertingUseCaseProtocol {
 
-    func convertCurrency(with request: ConvertCurrencyRequest) -> ConvertCurrencyResposne {
-        fatalError()
+    private let currencyConvertingService: CurrencyLayerServiceProtocol
+
+    init(currencyService: CurrencyLayerServiceProtocol) {
+        self.currencyConvertingService = currencyService
+    }
+
+    func convertCurrency(with request: ConvertCurrencyUseCaseRequest) -> Future<ConvertCurrencyUseCaseResposne> {
+        let future = Future<ConvertCurrencyUseCaseResposne>()
+
+        guard request.convertion.fromCurrency == "USD" && request.convertion.toCurrency == "NZD" else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        return currencyConvertingService.historyUSDQuotes(convertionRequest: request.convertion).map {
+            ConvertCurrencyUseCaseResposne(convertionResult: $0)
+        }
     }
 }
 
-struct ConvertCurrencyRequest {
+struct CurrencyConvertionDTO {
 
-    let convertion: [Convertion]
+    let fromCurrency: String
 
-    struct Convertion {
+    let toCurrency: String
 
-        let fromCurrency: String
+    let date: Date
 
-        let toCurrency: String
+    let fromCurrencyAmount: Double
 
-        let date: Date
-
-        let amount: Double
-    }
+    let toCurrencyAmount: Double?
 }
 
-struct ConvertCurrencyResposne {
+struct ConvertCurrencyUseCaseRequest {
 
-    let convertionResult: [ConvertionResult]
+    let convertion: CurrencyConvertionDTO
+}
 
-    struct ConvertionResult {
+struct ConvertCurrencyUseCaseResposne {
 
-        let fromCurrency: String
-
-        let toCurrency: String
-
-        let date: Date
-
-        let originalAmount: Double
-
-        let resultAmount: Double
-    }
+    let convertionResult: CurrencyConvertionDTO
 }

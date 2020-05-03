@@ -53,7 +53,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         }
 
         perform {
-            let inserted = try! ExpenseCategory.insert(category: category, into: context)
+            let inserted = ExpenseCategory.insert(category: category, into: context)
             let categoryDTO = CategoryDTO(name: inserted.name, color: inserted.color, budget: inserted.budget.map {
                 BudgetDTO(currency: $0.currency, limit: $0.limit)
             }, uid: category.uid)

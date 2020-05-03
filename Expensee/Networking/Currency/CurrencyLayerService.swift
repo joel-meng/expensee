@@ -8,45 +8,45 @@
 
 import Foundation
 
-enum Currency: String {
-    case nzd = "NZD"
-    case usd = "USD"
-}
-
 protocol CurrencyLayerServiceProtocol {
 
-    static func historyUSDQuotes(date: Date) -> Future<Double>
+    func historyUSDQuotes(convertionRequest: CurrencyConvertionDTO) -> Future<CurrencyConvertionDTO>
 }
 
 final class CurrencyLayerService: CurrencyLayerServiceProtocol {
 
-    static let queryDateFormatter: DateFormatter = {
+    let queryDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         return dateFormatter
     }()
 
-    static private func parametrizeDate(_ date: Date) -> String {
+    private func parametrizeDate(_ date: Date) -> String {
         return queryDateFormatter.string(from: date)
     }
 
-    static func historyUSDQuotes(date: Date) -> Future<Double> {
-        let future = Future<Double>()
+    func historyUSDQuotes(convertionRequest: CurrencyConvertionDTO) -> Future<CurrencyConvertionDTO> {
+        let future = Future<CurrencyConvertionDTO>()
 
         let request = historyUSDQuoteRequest {
-            ("date", parametrizeDate(date))
+            ("date", parametrizeDate(convertionRequest.date))
             ("access_key", "1e41bb64ceb47346e6f138aaf6b11dd9")
             ("format", "1")
         }
 
         Rest.load(request: request,
                   dateDecodingStrategy: JSONDecoder.DateDecodingStrategy.formatted(queryDateFormatter),
-                  expectedResultType: CurrencyConvertResponse.self) { (result) in
+                  expectedResultType: CurrencyConvertResponseCodable.self) { (result) in
             switch result {
             case .failure(let error):
                 future.reject(with: error)
             case .success(let response):
-                future.resolve(with: response.quotes.usdnzd)
+                let result = CurrencyConvertionDTO(fromCurrency: convertionRequest.fromCurrency,
+                                                   toCurrency: convertionRequest.toCurrency,
+                                                   date: convertionRequest.date,
+                                                   fromCurrencyAmount: convertionRequest.fromCurrencyAmount,
+                                                   toCurrencyAmount: response.quotes.usdnzd)
+                future.resolve(with: result)
             }
         }
 
