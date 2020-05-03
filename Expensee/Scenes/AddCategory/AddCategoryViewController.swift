@@ -88,7 +88,7 @@ class AddCategoryViewController: UIViewController {
             return cell
         }
 
-        dataSource.sorter = { $0.color < $1.color }
+        dataSource.rowSorter = { $0.color < $1.color }
 
         return dataSource
     }()

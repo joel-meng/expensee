@@ -28,7 +28,7 @@ class CategoriesViewController: UIViewController {
             return cell
         }
 
-        dataSource.sorter = { $0.name < $1.name }
+        dataSource.rowSorter = { $0.name < $1.name }
 
         return dataSource
     }()
@@ -47,6 +47,7 @@ class CategoriesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Category List"
+        view.makeStateful()
         tableView.registerReuableCell(CategoryTableViewCell.self)
 
         createAddButton()
@@ -69,9 +70,19 @@ class CategoriesViewController: UIViewController {
 }
 
 extension CategoriesViewController: CategoriesPresenting {
+    func displayLoading() {
+        DispatchQueue.main.async { [view] in
+            view?.showState(.loading)
+        }
+    }
 
     func displayCategories(_ categories: [CategoryCellModel]) {
-        provider.updateData(categories)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let emptyMessage = "There's no category available yet, however, you can create one by clicking on the top right button.💡"
+            self.view?.showState(.displaying(categories.isEmpty ? .empty(message: emptyMessage) : .data))
+            self.provider.updateData(categories)
+        }
     }
 
     func displayInsertionError(_ errorMessage: String) {

@@ -93,6 +93,7 @@ class TransactionListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Transactions"
         view.makeStateful()
         
         tableView.registerReuableCell(TransactionTableViewCell.self)
@@ -143,7 +144,9 @@ class TransactionListViewController: UIViewController {
             return cell
         }
 
-        dataSource.sorter = { $0.timestamp > $1.timestamp }
+        dataSource.rowSorter = { $0.timestamp > $1.timestamp }
+
+        dataSource.sectionSorter = { $0.title < $1.title }
 
         dataSource.mergingRules = { (rows: [TransactionCellModel]) -> [Section<TransactionCellModel>] in
             Dictionary(grouping: rows) {
@@ -169,7 +172,6 @@ class TransactionListViewController: UIViewController {
 extension TransactionListViewController: TransactionListPresenting {
 
     func display(transactions: [TransactionCellModel]) {
-//        print(transactions)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let emptyMessage = "There's no transactions available yet, however, you can create one by clicking on the top right button.💡"

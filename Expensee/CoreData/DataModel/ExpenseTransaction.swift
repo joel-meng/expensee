@@ -38,6 +38,12 @@ class ExpenseTransaction: NSManagedObject {
         return transaction
     }
 
+    static func delete(from context: NSManagedObjectContext) throws {
+        let fetchAll = ExpenseTransaction.fetchRequest()
+        let delete = NSBatchDeleteRequest(fetchRequest: fetchAll)
+        try context.execute(delete)
+    }
+
     /*
     static func fetchAll(from context: NSManagedObjectContext) throws -> [ExpenseCategory] {
 

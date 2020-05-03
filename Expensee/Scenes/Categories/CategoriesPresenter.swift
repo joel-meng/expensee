@@ -13,6 +13,8 @@ protocol CategoriesPresenting: class {
     func displayInsertionError(_ errorMessage: String)
 
     func displayCategories(_ categories: [CategoryCellModel])
+
+    func displayLoading()
 }
 
 protocol CategoriesControlling: class {
@@ -67,6 +69,7 @@ extension CategoriesPresenter: CategoriesControlling {
     func didTapAddCategory() {
 //        let context = CoreDataStore.shared?.context
 //        try! ExpenseCategory.delete(from: context!)
+//        try! ExpenseTransaction.delete(from: context!)
         router.routeToAddCategory { [weak self] in
             self?.loadCategories()
         }
