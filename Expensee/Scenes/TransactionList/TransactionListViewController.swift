@@ -83,7 +83,7 @@ class TransactionListViewController: UIViewController {
 //        }
 
 
-        CategoriesRepository(context: CoreDataStore.shared?.context).fetchAll().on(success: {
+        CategoriesRepository(context: CoreDataStore.shared?.context).fetchAllWithTransactions().on(success: {// _ in
             $0.forEach {
                 print($0)
             }

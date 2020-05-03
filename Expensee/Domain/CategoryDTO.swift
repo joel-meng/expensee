@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct CategoryDTO {
+struct CategoryDTO: Hashable {
 
     let name: String
 

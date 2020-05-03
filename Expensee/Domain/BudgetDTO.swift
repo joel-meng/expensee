@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct BudgetDTO {
+struct BudgetDTO: Hashable {
 
     let currency: String
 

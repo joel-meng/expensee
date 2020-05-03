@@ -29,7 +29,9 @@ final class SaveTransactionUseCase: SaveTransactionUseCaseProtocol {
                                    originalCurrency: request.transaction.originalCurrency,
                                    date: request.transaction.date,
                                    uid: request.transaction.uid),
-            categoryId: request.categoryId).map(SaveTransactionUseCaseResponse.init)
+            categoryId: request.categoryId).map {
+                SaveTransactionUseCaseResponse(transaction: $0.0, category: $0.1)
+        }
     }
 }
 
@@ -58,4 +60,6 @@ struct SaveTransactionUseCaseRequest {
 struct SaveTransactionUseCaseResponse {
 
     let transaction: TransactionDTO
+
+    let category: CategoryDTO
 }

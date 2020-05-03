@@ -17,11 +17,15 @@ class ExpenseTransaction: NSManagedObject {
     @NSManaged private(set) var originalCurrency: String
     @NSManaged private(set) var date: Date
     @NSManaged private(set) var uid: UUID
-    @NSManaged private(set) var category: ExpenseCategory?
+    @NSManaged private(set) var category: ExpenseCategory
 
     static func insert(transactionModel: SavingTransactionModel,
                        categoryId: UUID,
-                       into context: NSManagedObjectContext) -> ExpenseTransaction {
+                       into context: NSManagedObjectContext) throws -> ExpenseTransaction {
+        guard let category = ExpenseCategory.find(by: categoryId, in: context) else {
+            throw NSError()
+        }
+
         let transaction: ExpenseTransaction = context.insertObject()
         transaction.amount = transactionModel.amount
         transaction.currency = transactionModel.currency
@@ -29,8 +33,7 @@ class ExpenseTransaction: NSManagedObject {
         transaction.uid = transactionModel.uid
         transaction.originalAmount = transactionModel.originalAmount
         transaction.originalCurrency = transactionModel.originalCurrency
-
-        transaction.category = ExpenseCategory.find(by: categoryId, in: context)
+        transaction.category = category
 
         return transaction
     }

@@ -87,6 +87,37 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         return future
     }
 
+    func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]> {
+        let future = Future<[CategoryDTO: [TransactionDTO]]>()
+
+        guard let context = context else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        do {
+            let fetched = try ExpenseCategory.fetchAll(from: context)
+            let result = fetched.map { category -> (CategoryDTO, [TransactionDTO]) in
+                let categoryDTO = CategoryDTO(name: category.name,
+                                           color: category.color,
+                                           budget: category.budget.map {BudgetDTO(currency: $0.currency, limit: $0.limit)},
+                                           uid: category.uid)
+
+                let transactionsDTO = category.transactions?.map {
+                    TransactionDTO(amount: $0.amount, date: $0.date, currency: $0.currency, uid: $0.uid)
+                } ?? []
+
+                return (categoryDTO, transactionsDTO)
+            }
+
+            future.resolve(with: Dictionary(uniqueKeysWithValues: result))
+        } catch {
+            future.reject(with: error)
+        }
+
+        return future
+    }
+
     func fetch(by id: UUID) -> Future<CategoryDTO?> {
         let future = Future<CategoryDTO?>()
 

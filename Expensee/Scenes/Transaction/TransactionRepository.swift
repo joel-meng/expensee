@@ -11,7 +11,7 @@ import CoreData
 
 protocol TransactionRepositoryProtocol: RepositoryProtocol {
 
-    func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<TransactionDTO>
+    func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)>
 
     func fetchAll() -> Future<[TransactionDTO]>
 
@@ -26,29 +26,37 @@ final class TransactionRepository: TransactionRepositoryProtocol {
         self.context = context
     }
 
-    func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<TransactionDTO> {
-        let future = Future<TransactionDTO>()
+    func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)> {
+        let future = Future<(TransactionDTO, CategoryDTO)>()
 
         guard let context = context else {
             future.reject(with: NSError())
             return future
         }
 
-        perform {
-            let inserted = ExpenseTransaction.insert(transactionModel: transaction, categoryId: categoryId, into: context)
+        do {
+            let inserted = try ExpenseTransaction.insert(transactionModel: transaction,
+                                                         categoryId: categoryId,
+                                                         into: context)
+
             let transactionDTO = TransactionDTO(amount: inserted.amount,
                                                 date: inserted.date,
                                                 currency: inserted.currency,
-                                                uid: inserted.uid,
-                                                category: inserted.category.map {
-                                                    CategoryDTO(name: $0.name,
-                                                                color: $0.color,
-                                                                budget: $0.budget.map {
-                                                        BudgetDTO(currency: $0.currency, limit: $0.limit)
-                                                    }, uid: $0.uid)
-                                                }!)
-            future.resolve(with: transactionDTO)
+                                                uid: inserted.uid)
+
+            let categoryDTO = CategoryDTO(name: inserted.category.name,
+                                          color: inserted.category.color,
+                                          budget: inserted.category.budget.map {
+                                            BudgetDTO(currency: $0.currency, limit: $0.limit)},
+                                          uid: inserted.category.uid)
+
+            try save()
+
+            future.resolve(with: (transactionDTO, categoryDTO))
+        } catch {
+            future.reject(with: error)
         }
+
         return future
     }
 

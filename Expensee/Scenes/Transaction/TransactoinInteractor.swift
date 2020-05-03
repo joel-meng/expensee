@@ -75,10 +75,10 @@ final class TransactionInteractor: TransactionInteracting {
                                  currency: $0.transaction.currency,
                                  category:
                         SaveTransactionResponse
-                            .Category(id: $0.transaction.category.uid,
-                                      name: $0.transaction.category.name,
-                                      color: $0.transaction.category.color,
-                                      limit: $0.transaction.category.budget.map {
+                            .Category(id: $0.category.uid,
+                                      name: $0.category.name,
+                                      color: $0.category.color,
+                                      limit: $0.category.budget.map {
                                         SaveTransactionResponse
                                             .Limit(amount: $0.limit,
                                                    currency: $0.currency)})))

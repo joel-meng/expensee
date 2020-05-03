@@ -17,6 +17,4 @@ struct TransactionDTO {
     let currency: String
 
     let uid: UUID
-
-    let category: CategoryDTO
 }
