@@ -29,7 +29,7 @@ private func authorized(_ base: RestRequest) -> RestRequest {
 }
 
 private func request(withPath path: String) -> RestRequest {
-	return XRequest(path: path)
+	return CurrencyConvertRequest(path: path)
 }
 
 private func get(_ base: RestRequest) -> RestRequest {

@@ -13,6 +13,9 @@
 		7E41B9D9245E2D90005155BA /* TransactionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9D8245E2D90005155BA /* TransactionPresenter.swift */; };
 		7E41B9DB245E2DF2005155BA /* TransactoinInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9DA245E2DF2005155BA /* TransactoinInteractor.swift */; };
 		7E41B9DD245E2EA6005155BA /* CurrencyConvertingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9DC245E2EA6005155BA /* CurrencyConvertingUseCase.swift */; };
+		7E41B9E2245E325A005155BA /* CurrencyLayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */; };
+		7E41B9E4245E3AF1005155BA /* CurrencyConvertResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E3245E3AF1005155BA /* CurrencyConvertResponse.swift */; };
+		7E41B9E6245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */; };
 		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
 		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
 		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
@@ -78,7 +81,7 @@
 		7ED5CEC2245910B400E5D454 /* RestRequestAuthorizationDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE98245910B400E5D454 /* RestRequestAuthorizationDecorator.swift */; };
 		7ED5CEC3245910B400E5D454 /* RestRequestMethodDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE99245910B400E5D454 /* RestRequestMethodDecorator.swift */; };
 		7ED5CEC4245910B400E5D454 /* RestRequestURLQueryDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE9A245910B400E5D454 /* RestRequestURLQueryDecorator.swift */; };
-		7ED5CEC5245910B400E5D454 /* XRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE9B245910B400E5D454 /* XRequest.swift */; };
+		7ED5CEC5245910B400E5D454 /* CurrencyConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE9B245910B400E5D454 /* CurrencyConvertRequest.swift */; };
 		7ED5CEC6245910B400E5D454 /* RestRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE9D245910B400E5D454 /* RestRequest.swift */; };
 		7ED5CEC7245910B400E5D454 /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE9E245910B400E5D454 /* URLSessionProvider.swift */; };
 		7ED5CEC8245910B400E5D454 /* URLSessionDataTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5CE9F245910B400E5D454 /* URLSessionDataTaskProtocol.swift */; };
@@ -117,6 +120,9 @@
 		7E41B9D8245E2D90005155BA /* TransactionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPresenter.swift; sourceTree = "<group>"; };
 		7E41B9DA245E2DF2005155BA /* TransactoinInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactoinInteractor.swift; sourceTree = "<group>"; };
 		7E41B9DC245E2EA6005155BA /* CurrencyConvertingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConvertingUseCase.swift; sourceTree = "<group>"; };
+		7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyLayerService.swift; sourceTree = "<group>"; };
+		7E41B9E3245E3AF1005155BA /* CurrencyConvertResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConvertResponse.swift; sourceTree = "<group>"; };
+		7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUSDQuoteRequestBuilder.swift; sourceTree = "<group>"; };
 		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
 		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
 		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
@@ -186,7 +192,7 @@
 		7ED5CE98245910B400E5D454 /* RestRequestAuthorizationDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestRequestAuthorizationDecorator.swift; sourceTree = "<group>"; };
 		7ED5CE99245910B400E5D454 /* RestRequestMethodDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestRequestMethodDecorator.swift; sourceTree = "<group>"; };
 		7ED5CE9A245910B400E5D454 /* RestRequestURLQueryDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestRequestURLQueryDecorator.swift; sourceTree = "<group>"; };
-		7ED5CE9B245910B400E5D454 /* XRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XRequest.swift; sourceTree = "<group>"; };
+		7ED5CE9B245910B400E5D454 /* CurrencyConvertRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertRequest.swift; sourceTree = "<group>"; };
 		7ED5CE9D245910B400E5D454 /* RestRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestRequest.swift; sourceTree = "<group>"; };
 		7ED5CE9E245910B400E5D454 /* URLSessionProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionProvider.swift; sourceTree = "<group>"; };
 		7ED5CE9F245910B400E5D454 /* URLSessionDataTaskProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionDataTaskProtocol.swift; sourceTree = "<group>"; };
@@ -226,6 +232,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E41B9DF245E30B4005155BA /* Currency */ = {
+			isa = PBXGroup;
+			children = (
+				7ED5CE78245910B400E5D454 /* Model */,
+				7ED5CE9B245910B400E5D454 /* CurrencyConvertRequest.swift */,
+				7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */,
+				7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */,
+			);
+			path = Currency;
+			sourceTree = "<group>";
+		};
 		7EAA477924596078005565C1 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,10 +434,10 @@
 		7ED5CE70245910B300E5D454 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				7ED5CE71245910B400E5D454 /* Extension */,
 				7ED5CE74245910B400E5D454 /* Rest.swift */,
+				7E41B9DF245E30B4005155BA /* Currency */,
+				7ED5CE71245910B400E5D454 /* Extension */,
 				7ED5CE75245910B400E5D454 /* Enums */,
-				7ED5CE78245910B400E5D454 /* Model */,
 				7ED5CE95245910B400E5D454 /* Request */,
 				7ED5CE9C245910B400E5D454 /* Protocols */,
 			);
@@ -448,6 +465,7 @@
 		7ED5CE78245910B400E5D454 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7E41B9E3245E3AF1005155BA /* CurrencyConvertResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -457,7 +475,6 @@
 			children = (
 				7ED5CE96245910B400E5D454 /* RequestCreator.swift */,
 				7ED5CE97245910B400E5D454 /* Decorator */,
-				7ED5CE9B245910B400E5D454 /* XRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -718,7 +735,7 @@
 				7EAA478F245AD11B005565C1 /* ExpenseBudget.swift in Sources */,
 				7ED5CEE82459275B00E5D454 /* Reuable.swift in Sources */,
 				7ED5CEC8245910B400E5D454 /* URLSessionDataTaskProtocol.swift in Sources */,
-				7ED5CEC5245910B400E5D454 /* XRequest.swift in Sources */,
+				7ED5CEC5245910B400E5D454 /* CurrencyConvertRequest.swift in Sources */,
 				7ED5CEC4245910B400E5D454 /* RestRequestURLQueryDecorator.swift in Sources */,
 				7ED5CEA2245910B400E5D454 /* Rest.swift in Sources */,
 				7EAA47A3245B9BBE005565C1 /* Either.swift in Sources */,
@@ -728,6 +745,7 @@
 				7EAA47B3245BF7D3005565C1 /* AddCategoryUseCase.swift in Sources */,
 				7E41B9D5245DB982005155BA /* ExpenseTransaction.swift in Sources */,
 				7EAA47BE245C594D005565C1 /* CategoriesLoadUseCase.swift in Sources */,
+				7E41B9E2245E325A005155BA /* CurrencyLayerService.swift in Sources */,
 				7EAA4796245ADBAC005565C1 /* BudgetRepository.swift in Sources */,
 				7EAA47CA245D0856005565C1 /* TransactionCellModel.swift in Sources */,
 				7EAA47C7245D0635005565C1 /* TransactionTableViewCell.swift in Sources */,
@@ -743,6 +761,7 @@
 				7EAA47BC245C4E3C005565C1 /* AddCategoryPresenter.swift in Sources */,
 				7EAA47AD245BDA45005565C1 /* AddCategoryInteractor.swift in Sources */,
 				7ED5CED7245915FD00E5D454 /* SimpleTableViewProvider.swift in Sources */,
+				7E41B9E4245E3AF1005155BA /* CurrencyConvertResponse.swift in Sources */,
 				7EAA47A9245BD2D0005565C1 /* AnyTextFieldDelegation.swift in Sources */,
 				7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */,
 				7EAA47B5245C3F5A005565C1 /* CategoriesRouter.swift in Sources */,
@@ -754,6 +773,7 @@
 				7ED5CEF024592C3D00E5D454 /* UITableView+Reuable.swift in Sources */,
 				7ED5CEA0245910B400E5D454 /* HTTPURLResponse+Status.swift in Sources */,
 				7EAA47A5245B9C22005565C1 /* LimitValidator.swift in Sources */,
+				7E41B9E6245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift in Sources */,
 				7ED5CEEE24592B1F00E5D454 /* UIView+DefaultNib.swift in Sources */,
 				7ED5CE6A24590FD000E5D454 /* UIView+Stateful.swift in Sources */,
 				7ED5CED92459164600E5D454 /* TableSection.swift in Sources */,
