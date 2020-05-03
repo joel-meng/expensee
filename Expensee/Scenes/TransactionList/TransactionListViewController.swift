@@ -81,6 +81,15 @@ class TransactionListViewController: UIViewController {
 //            self?.presenter.viewIsReady()
 //            self?.presenter.didTapAdd()
 //        }
+
+
+        CategoriesRepository(context: CoreDataStore.shared?.context).fetchAll().on(success: {
+            $0.forEach {
+                print($0)
+            }
+        }, failure: {
+            print($0)
+        })
     }
 
     // MARK: - Navigation Bar Item

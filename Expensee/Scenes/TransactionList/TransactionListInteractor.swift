@@ -10,19 +10,37 @@ import Foundation
 
 protocol TransactionListInteracting {
 
-    func saveTransaction(with request: ListTransactionInteractionRequest) -> Future<ListTransactionInteractionResponse>
+    func loadTransactions(with request: ListTransactionInteractionRequest)
+        -> Future<ListTransactionInteractionResponse>
 }
 
 final class TransactionListInteractor: TransactionListInteracting {
 
-    func saveTransaction(with request: ListTransactionInteractionRequest) -> Future<ListTransactionInteractionResponse> {
-        fatalError()
+    private let categoryLoadUseCase: CategoriesLoadUseCaseProtocol
+
+    init(categoryLoadUseCase: CategoriesLoadUseCaseProtocol) {
+        self.categoryLoadUseCase = categoryLoadUseCase
+    }
+
+    func loadTransactions(with request: ListTransactionInteractionRequest)
+        -> Future<ListTransactionInteractionResponse> {
+//
+//        categoryLoadUseCase.loadAllCategory().map {
+//            $0.map {
+//                ListTransactionInteractionResponse
+//                    .Transaction(amount: <#T##Double#>, date: <#T##Date#>, currency: <#T##String#>, category: <#T##ListTransactionInteractionResponse.Category#>)
+//            }
+//
+//        }
+            fatalError()
     }
 }
 
 struct ListTransactionInteractionRequest {}
 
 struct ListTransactionInteractionResponse {
+
+    let transactions: [Transaction]
 
     struct Transaction {
 
