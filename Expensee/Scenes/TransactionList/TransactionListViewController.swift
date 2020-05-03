@@ -24,11 +24,14 @@ final class TransactionListPresenter {
 
     private weak var view: TransactionListPresenting?
 
-    private var router: TransactionListRouting
+    private let router: TransactionListRouting
 
-    init(view: TransactionListPresenting, router: TransactionListRouting) {
+    private let interactor: TransactionListInteracting
+
+    init(view: TransactionListPresenting, interactor: TransactionListInteracting, router: TransactionListRouting) {
         self.view = view
         self.router = router
+        self.interactor = interactor
     }
 }
 
@@ -39,23 +42,30 @@ extension TransactionListPresenter: TransactionListControlling {
     // MARK: - TransactionListControlling
 
     func viewIsReady() {
-        displayTransactions()
+        loadTransactions()
     }
 
     func didTapAdd() {
         router.routeToAddTransaction { [weak self] in
-            self?.displayTransactions()
+            self?.loadTransactions()
         }
     }
 
-    func displayTransactions() {
-        let tx: [TransactionCellModel] = [
+    func loadTransactions() {
+        interactor.loadTransactions(with:
+            ListTransactionInteractionRequest())
+            .on(success: { [weak view] (response) in
+//                view?.display(transactions: [])
+            }, failure: { error in
+
+            })
+//        let tx: [TransactionCellModel] = [
 //            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
 //            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
 //            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
 //            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-        ]
-        view?.display(transactions: tx)
+//        ]
+
     }
 }
 
@@ -76,20 +86,7 @@ class TransactionListViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-//        view.showState(.loading)
-//        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) { [weak self] in
-//            self?.presenter.viewIsReady()
-//            self?.presenter.didTapAdd()
-//        }
-
-
-        CategoriesRepository(context: CoreDataStore.shared?.context).fetchAllWithTransactions().on(success: {// _ in
-            $0.forEach {
-                print($0)
-            }
-        }, failure: {
-            print($0)
-        })
+        presenter.viewIsReady()
     }
 
     // MARK: - Navigation Bar Item

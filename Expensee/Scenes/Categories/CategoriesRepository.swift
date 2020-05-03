@@ -33,6 +33,8 @@ protocol CategoriesRepositoryProtocol: RepositoryProtocol {
 
     func fetchAll() -> Future<[CategoryDTO]>
 
+    func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]>
+
     func fetch(by id: UUID) -> Future<CategoryDTO?>
 }
 

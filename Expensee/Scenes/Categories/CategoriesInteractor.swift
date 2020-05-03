@@ -30,13 +30,11 @@ final class CategoriesInteractor: CategoriesInteracting {
             CategoriesLoadResponse(categories: categories.map {
                 CategoriesLoadResponse.Category(name: $0.name, color: $0.color, budget: $0.budget.map({
                     CategoriesLoadResponse.Budget(currency: $0.currency, limit: $0.limit)
-                }), uid: $0.uid)
-            })
-        }
+                }), uid: $0.uid)})}
     }
     
     func loadCategory(request: CategoryLoadRequest) -> Future<CategoryLoadResponse> {
-        categoriesUseCase.loadCategory(by: request.uid).map { (categoryDTO) -> CategoryLoadResponse in
+        return categoriesUseCase.loadCategory(by: request.uid).map { (categoryDTO) -> CategoryLoadResponse in
             guard let category: CategoryDTO = categoryDTO else { return CategoryLoadResponse(categories: nil) }
             return CategoryLoadResponse(categories:
                 CategoryLoadResponse.Category(uid: category.uid,
@@ -44,11 +42,7 @@ final class CategoriesInteractor: CategoriesInteracting {
                                               color: category.color,
                                               budget: category.budget.map {
                                                 CategoryLoadResponse.Budget(currency: $0.currency,
-                                                                            limit: $0.limit)
-                    }
-                )
-            )
-        }
+                                                                            limit: $0.limit)}))}
     }
 }
 
