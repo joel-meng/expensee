@@ -94,7 +94,7 @@ final class DependencyInjection: DependencyInjecting {
         let router = TransactionListRouter(navigationController: navigation, factory: self)
         let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
         let useCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository)
-        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: CurrencyLayerService())
+        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: StubCurrencyLayerService())
         let transactionBudgetingUsecase = TransactionCategoryBudgetCase(currencyUseCase: currencyConvertingUseCase)
         let interactor = TransactionListInteractor(categoryLoadUseCase: useCase,
                                                    transactionBudgetingUsecase: transactionBudgetingUsecase)
@@ -109,7 +109,7 @@ final class DependencyInjection: DependencyInjecting {
                                 sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController {
         let router = TransactionRouter(navigationController: navigation, factory: self, routeBackToTransactionListCompletion: completion)
-        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: CurrencyLayerService())
+        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: StubCurrencyLayerService())
         let saveTransactionUseCase = SaveTransactionUseCase(transactionRepository:
             TransactionRepository(context: CoreDataStore.shared?.context))
         let interactor = TransactionInteractor(currencyConversionUseCase: currencyConvertingUseCase,

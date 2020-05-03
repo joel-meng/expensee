@@ -86,8 +86,10 @@ extension CategoriesViewController: CategoriesPresenting {
     }
 
     func displayInsertionError(_ errorMessage: String) {
-        let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
-        present(alertController, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
+            self?.present(alertController, animated: true, completion: nil)
+        }
     }
 }

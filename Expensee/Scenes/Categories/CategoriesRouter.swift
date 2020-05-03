@@ -36,17 +36,23 @@ final class CategoriesRouter: CategoriesRouting {
 
     func routeToAddCategory(completion: @escaping () -> Void) {
         let nextViewController = factory.createAddCategoryScene(from: navigationController, sceneModel: nil, completion: completion)
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
     }
 
     func routeToUpdateCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void) {
         let nextViewController = factory.createAddCategoryScene(from: navigationController, sceneModel: sceneModel, completion: completion)
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
     }
 
     func routeBack(with sceneModel: SelectCategorySceneModel) {
-        completion?(sceneModel)
-        navigationController.popViewController(animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.completion?(sceneModel)
+            self?.navigationController.popViewController(animated: true)
+        }
     }
 }
 

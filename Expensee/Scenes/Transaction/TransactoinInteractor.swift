@@ -31,12 +31,12 @@ final class TransactionInteractor: TransactionInteracting {
             return convertUSDToNZD(with: request).flatMap { [unowned self] in
                 let savingRequest = SaveTransactionUseCaseRequest(transaction:
                     SaveTransactionUseCaseRequest
-                        .Transaction(amount: $0.convertionResult.toCurrencyAmount,
-                                     date: $0.convertionResult.date,
+                        .Transaction(amount: $0.convertionResult.toCurrencyAmount * request.transaction.amount,
+                                     date: request.transaction.date,
                                      currency: $0.convertionResult.toCurrency,
                                      uid: UUID(),
-                                     originalAmount: $0.convertionResult.fromCurrencyAmount,
-                                     originalCurrency: $0.convertionResult.fromCurrency),
+                                     originalAmount: request.transaction.amount,
+                                     originalCurrency: request.transaction.currency),
                                                                   categoryId: request.categoryId)
                 return self.saveTransactionInNZD(with: savingRequest)
             }

@@ -20,6 +20,7 @@
 		7E41B9EC245E6A0E005155BA /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */; };
 		7E679460245E8AA70079BCC0 /* TransactionListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */; };
 		7E679462245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */; };
+		7E679464245F0E740079BCC0 /* StubCurrencyLayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */; };
 		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
 		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
 		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
@@ -131,6 +132,7 @@
 		7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
 		7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListInteractor.swift; sourceTree = "<group>"; };
 		7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCategoryBudgetCase.swift; sourceTree = "<group>"; };
+		7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubCurrencyLayerService.swift; sourceTree = "<group>"; };
 		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
 		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
 		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				7ED5CE78245910B400E5D454 /* Model */,
 				7ED5CE9B245910B400E5D454 /* CurrencyConvertRequest.swift */,
 				7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */,
+				7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */,
 				7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */,
 			);
 			path = Currency;
@@ -749,6 +752,7 @@
 				7EAA47BA245C4C1B005565C1 /* DependencyInjection.swift in Sources */,
 				7EAA478F245AD11B005565C1 /* ExpenseBudget.swift in Sources */,
 				7ED5CEE82459275B00E5D454 /* Reuable.swift in Sources */,
+				7E679464245F0E740079BCC0 /* StubCurrencyLayerService.swift in Sources */,
 				7ED5CEC8245910B400E5D454 /* URLSessionDataTaskProtocol.swift in Sources */,
 				7ED5CEC5245910B400E5D454 /* CurrencyConvertRequest.swift in Sources */,
 				7ED5CEC4245910B400E5D454 /* RestRequestURLQueryDecorator.swift in Sources */,

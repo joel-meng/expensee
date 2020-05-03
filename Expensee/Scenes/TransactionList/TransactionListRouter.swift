@@ -30,14 +30,18 @@ final class TransactionListRouter: TransactionListRouting {
         let nextViewController = factory.createTransactionScene(from: navigationController,
                                                                 sceneModel: nil,
                                                                 completion: completion)
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
     }
 
     func routeToUpdateTransaction(with sceneModel: TransactionSceneModel, completion: @escaping () -> Void) {
         let nextViewController = factory.createTransactionScene(from: navigationController,
                                                                 sceneModel: sceneModel,
                                                                 completion: completion )
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
     }
 }
 

@@ -26,7 +26,9 @@ final class AddCategoriesRouter: AddCategoriesRouting {
     }
 
     func routeBackAndRefresh() {
-        completion()
-        navigationController.popViewController(animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.completion()
+            self?.navigationController.popViewController(animated: true)
+        }
     }
 }
