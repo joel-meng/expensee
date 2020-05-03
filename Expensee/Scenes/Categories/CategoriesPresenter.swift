@@ -65,7 +65,8 @@ extension CategoriesPresenter: CategoriesControlling {
     }
 
     func didTapAddCategory() {
-//        CategoriesRepository(context: CoreDataStore.shared?.context).delete()
+//        let context = CoreDataStore.shared?.context
+//        try! ExpenseCategory.delete(from: context!)
         router.routeToAddCategory { [weak self] in
             self?.loadCategories()
         }

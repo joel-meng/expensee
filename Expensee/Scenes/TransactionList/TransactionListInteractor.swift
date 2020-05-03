@@ -30,57 +30,61 @@ final class TransactionListInteractor: TransactionListInteracting {
 
     func loadTransactions(with request: ListTransactionInteractionRequest)
         -> Future<ListTransactionInteractionResponse> {
-        let future = Future<ListTransactionInteractionResponse>()
-
-        categoryLoadUseCase.loadAllCategoryWithTransactions().on(success: { [weak self] (category) in
-            let mappedCategory = category.map { (category, transactions) in
-                Category(id: category.uid, name: category.name, color: category.color, limit: category.budget.map {
-                    Limit(amount: $0.limit, currency: $0.currency)
-                }, transactions: transactions.map {
-                    Transaction(amount: $0.amount, date: $0.date, currency: $0.currency)
-                })
-            }
-            self?.categories = mappedCategory
-            future.resolve(with: ListTransactionInteractionResponse(categories: mappedCategory))
-        }, failure: { error in
-            future.reject(with: error)
-        })
-        return future
+        return categoryLoadUseCase.loadAllCategoryWithTransactions().flatMap { [unowned self] response in
+            self.transactionsBudgetize(response)
+        }.map { (response) -> ListTransactionInteractionResponse in
+            let transactions = response.transactions.map {
+                return ListTransactionInteractionResponse.Transaction(id: $0.id,
+                                                               amount: $0.amount,
+                                                               date: $0.date,
+                                                               currency: $0.currency,
+                                                               overBudget: $0.overBudget,
+                                                               category:
+                    ListTransactionInteractionResponse.Category(id: $0.category.id,
+                                                                name: $0.category.name,
+                                                                color: $0.category.color)
+                ) }
+            return ListTransactionInteractionResponse(transactions: transactions)
+        }
     }
-}
 
-struct Transaction {
-
-    let amount: Double
-
-    let date: Date
-
-    let currency: String
-}
-
-struct Category {
-
-    let id: UUID
-
-    let name: String
-
-    let color: String
-
-    let limit: Limit?
-
-    let transactions: [Transaction]
-}
-
-struct Limit {
-
-    let amount: Double
-
-    let currency: String
+    func transactionsBudgetize(_ transactions: [CategoryDTO: [TransactionDTO]])
+        -> Future<TransactionCategoryBudgetResponse> {
+        transactions.forEach { (key, value) in
+            print(key, value)
+        }
+        return transactionBudgetingUsecase.transactionBudgetLimitCalculating(request:
+            TransactionCategoryBudgetRequest(categorizedTransactions: transactions))
+    }
 }
 
 struct ListTransactionInteractionRequest {}
 
 struct ListTransactionInteractionResponse {
 
-    let categories: [Category]
+    let transactions: [Transaction]
+
+    struct Transaction {
+
+        let id: UUID
+
+        let amount: Double
+
+        let date: Date
+
+        let currency: String
+
+        let overBudget: Bool
+
+        let category: Category
+    }
+
+    struct Category {
+
+        let id: UUID
+
+        let name: String
+
+        let color: String
+    }
 }

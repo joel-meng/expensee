@@ -24,15 +24,14 @@ final class TransactionCategoryBudgetCase: TransactionCategoryBudgetCaseProtocol
     }
 
     func transactionBudgetLimitCalculating(request: TransactionCategoryBudgetRequest) -> Future<TransactionCategoryBudgetResponse> {
+
         if let usdQuote = usdToNZDQuote {
-            return calculateTransactionOverBudgets(withQuote: usdQuote, request: request)
+            let future = Future<TransactionCategoryBudgetResponse>()
+            let response = calculateTransactionOverBudgets(withQuote: usdQuote, request: request)
+            future.resolve(with: response)
+            return future
         } else {
-            return findUSDQuote(at: Date()).flatMap { [weak self]  (response) -> Future<TransactionCategoryBudgetResponse> in
-                guard let self = self else {
-                    let errorFuture = Future<TransactionCategoryBudgetResponse>()
-                    defer { errorFuture.reject(with: NSError()) }
-                    return errorFuture
-                }
+            return findUSDQuote(at: Date()).map { [unowned self]  (response) -> TransactionCategoryBudgetResponse in
                 let usdQuote = response.convertionResult.toCurrencyAmount
                 self.usdToNZDQuote = usdQuote
                 return self.calculateTransactionOverBudgets(withQuote: usdQuote, request: request)
@@ -42,31 +41,36 @@ final class TransactionCategoryBudgetCase: TransactionCategoryBudgetCaseProtocol
 
     private func calculateTransactionOverBudgets(withQuote quote: Double,
                                                  request: TransactionCategoryBudgetRequest)
-        -> Future<TransactionCategoryBudgetResponse> {
+        -> TransactionCategoryBudgetResponse {
 
-        let future = Future<TransactionCategoryBudgetResponse>()
-        request.categorizedTransactions.forEach { (category, transactions) in
+        let transactions = request.categorizedTransactions.flatMap { (category, transactions) -> [TransactionCategoryBudgetResponse.Transaction] in
             if let budgetCap = category.budget {
                 let budgetLimitInNZD = budgetCap.currency == "USD" ? quote * budgetCap.limit : budgetCap.limit
                 let transactionTotal = transactions.reduce(0) { $0 + $1.amount }
                 let overBudget = budgetLimitInNZD < transactionTotal
 
-                let calculatedTransactions = transactions.map { (tx) -> TransactionCategoryBudgetResponse.Transaction in
-                    TransactionCategoryBudgetResponse.Transaction(id: tx.uid,
-                                                                  amount: tx.amount,
-                                                                  date: tx.date,
-                                                                  currency: tx.currency,
-                                                                  overBudget: overBudget,
-                                                                  category:
-                        TransactionCategoryBudgetResponse.Category(id: category.uid,
-                                                                   name: category.name,
-                                                                   color: category.color))
-                }
-                future.resolve(with: TransactionCategoryBudgetResponse(transactions: calculatedTransactions))
+                return mapTransactionDTOList(transactions, category: category, overBudget: overBudget)
+            } else {
+                return mapTransactionDTOList(transactions, category: category, overBudget: false)
             }
         }
+        return TransactionCategoryBudgetResponse(transactions: transactions)
+    }
 
-        return future
+    private func mapTransactionDTOList(_ transactions: [TransactionDTO],
+                                       category: CategoryDTO,
+                                       overBudget: Bool) -> [TransactionCategoryBudgetResponse.Transaction] {
+        return transactions.map { (tx) -> TransactionCategoryBudgetResponse.Transaction in
+            TransactionCategoryBudgetResponse.Transaction(id: tx.uid,
+                                                          amount: tx.amount,
+                                                          date: tx.date,
+                                                          currency: tx.currency,
+                                                          overBudget: overBudget,
+                                                          category:
+                TransactionCategoryBudgetResponse.Category(id: category.uid,
+                                                           name: category.name,
+                                                           color: category.color))
+        }
     }
 
     private func findUSDQuote(at now: Date) -> Future<ConvertCurrencyUseCaseResponse> {

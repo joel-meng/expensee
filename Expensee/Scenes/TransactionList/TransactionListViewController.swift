@@ -52,20 +52,22 @@ extension TransactionListPresenter: TransactionListControlling {
     }
 
     func loadTransactions() {
-        interactor.loadTransactions(with:
-            ListTransactionInteractionRequest())
+        interactor.loadTransactions(with: ListTransactionInteractionRequest())
             .on(success: { [weak view] (response) in
-//                view?.display(transactions: [])
+//                print(response)
+                let transactionCellModels = response.transactions.map { tx in
+                    TransactionCellModel(currency: tx.currency,
+                                         amount: tx.amount,
+                                         date: tx.date,
+                                         categoryName: tx.category.name,
+                                         categoryColor: tx.category.color)
+                }
+                DispatchQueue.main.async {
+                    view?.display(transactions: transactionCellModels)
+                }
             }, failure: { error in
-
+                print(error)
             })
-//        let tx: [TransactionCellModel] = [
-//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-//            TransactionCellModel(currency: "USD", amount: 123, date: Date(), categoryName: "Some", categoryColor: "#003322"),
-//        ]
-
     }
 }
 
@@ -137,8 +139,12 @@ class TransactionListViewController: UIViewController {
 extension TransactionListViewController: TransactionListPresenting {
 
     func display(transactions: [TransactionCellModel]) {
-        let emptyMessage = "There's no transactions available yet, however, you can create one by clicking on the top right button.💡"
-        view.showState(.displaying(transactions.isEmpty ? .empty(message: emptyMessage) : .data))
-        provider.updateData(transactions)
+//        print(transactions)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let emptyMessage = "There's no transactions available yet, however, you can create one by clicking on the top right button.💡"
+            self.view?.showState(.displaying(transactions.isEmpty ? .empty(message: emptyMessage) : .data))
+            self.provider.updateData(transactions)
+        }
     }
 }
