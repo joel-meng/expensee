@@ -75,7 +75,8 @@ extension TransactionListPresenter: TransactionListControlling {
                                                 date: dateFormatter.string(from: tx.date),
                                                 categoryName: tx.category.name,
                                                 categoryColor: tx.category.color,
-                                                overBudget: tx.overBudget)
+                                                overBudget: tx.overBudget,
+                                                timestamp: tx.date)
                 }
                 view?.display(transactions: transactionCellModels)
             }, failure: { error in
@@ -122,10 +123,17 @@ class TransactionListViewController: UIViewController {
     private lazy var dataSource: SimpleTableDataSource<TransactionCellModel, TransactionTableViewCell> = {
         let dataSource = SimpleTableDataSource<TransactionCellModel, TransactionTableViewCell>()
 
+        let dayDateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .none
+            return formatter
+        }()
+
         dataSource.binder = { (row: TransactionCellModel, cell: TransactionTableViewCell) in
             cell.amountLabel.text = row.amount.description
             cell.categoryLabel.text = row.categoryName
-            cell.categoryLabel.backgroundColor = UIColor(row.categoryColor)
+            cell.categoryColorLabel.backgroundColor = UIColor(row.categoryColor)
             cell.datatimeLabel.text = row.date.description
             cell.overBudgetLabel.isHidden = !row.overBudget
         }
@@ -135,8 +143,15 @@ class TransactionListViewController: UIViewController {
             return cell
         }
 
-        dataSource.sorter = { $0.date > $1.date }
+        dataSource.sorter = { $0.timestamp > $1.timestamp }
 
+        dataSource.mergingRules = { (rows: [TransactionCellModel]) -> [Section<TransactionCellModel>] in
+            Dictionary(grouping: rows) {
+                dayDateFormatter.string(from: $0.timestamp)
+            }.map { (key, rows) in
+                Section<TransactionCellModel>(rows: rows, title: key)
+            }
+        }
         return dataSource
     }()
 

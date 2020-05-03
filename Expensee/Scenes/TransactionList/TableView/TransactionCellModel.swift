@@ -21,4 +21,6 @@ struct TransactionCellModel {
     let categoryColor: String
 
     let overBudget: Bool
+
+    let timestamp: Date
 }

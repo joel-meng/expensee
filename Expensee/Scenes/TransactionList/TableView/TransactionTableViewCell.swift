@@ -14,4 +14,5 @@ class TransactionTableViewCell: UITableViewCell, Reusable {
     @IBOutlet weak var datatimeLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var categoryColorLabel: UILabel!
 }
