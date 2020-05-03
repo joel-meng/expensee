@@ -10,7 +10,7 @@ import Foundation
 
 protocol CurrencyLayerServiceProtocol {
 
-    func historyUSDQuotes(convertionRequest: CurrencyConvertionDTO) -> Future<CurrencyConvertionDTO>
+    func historyUSDQuotes(convertionRequest: CurrencyConvertionRequestDTO) -> Future<CurrencyConvertionResponseDTO>
 }
 
 final class CurrencyLayerService: CurrencyLayerServiceProtocol {
@@ -25,8 +25,8 @@ final class CurrencyLayerService: CurrencyLayerServiceProtocol {
         return queryDateFormatter.string(from: date)
     }
 
-    func historyUSDQuotes(convertionRequest: CurrencyConvertionDTO) -> Future<CurrencyConvertionDTO> {
-        let future = Future<CurrencyConvertionDTO>()
+    func historyUSDQuotes(convertionRequest: CurrencyConvertionRequestDTO) -> Future<CurrencyConvertionResponseDTO> {
+        let future = Future<CurrencyConvertionResponseDTO>()
 
         let request = historyUSDQuoteRequest {
             ("date", parametrizeDate(convertionRequest.date))
@@ -41,15 +41,39 @@ final class CurrencyLayerService: CurrencyLayerServiceProtocol {
             case .failure(let error):
                 future.reject(with: error)
             case .success(let response):
-                let result = CurrencyConvertionDTO(fromCurrency: convertionRequest.fromCurrency,
-                                                   toCurrency: convertionRequest.toCurrency,
-                                                   date: convertionRequest.date,
-                                                   fromCurrencyAmount: convertionRequest.fromCurrencyAmount,
-                                                   toCurrencyAmount: response.quotes.usdnzd)
+                let result = CurrencyConvertionResponseDTO(fromCurrency: convertionRequest.fromCurrency,
+                                                           toCurrency: convertionRequest.toCurrency,
+                                                           date: convertionRequest.date,
+                                                           fromCurrencyAmount: convertionRequest.fromCurrencyAmount,
+                                                           toCurrencyAmount: response.quotes.usdnzd)
                 future.resolve(with: result)
             }
         }
 
         return future
     }
+}
+
+struct CurrencyConvertionRequestDTO {
+
+    let fromCurrency: String
+
+    let toCurrency: String
+
+    let date: Date
+
+    let fromCurrencyAmount: Double
+}
+
+struct CurrencyConvertionResponseDTO {
+
+    let fromCurrency: String
+
+    let toCurrency: String
+
+    let date: Date
+
+    let fromCurrencyAmount: Double
+
+    let toCurrencyAmount: Double
 }

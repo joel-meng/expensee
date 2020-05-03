@@ -16,6 +16,8 @@
 		7E41B9E2245E325A005155BA /* CurrencyLayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */; };
 		7E41B9E6245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */; };
 		7E41B9E8245E58A8005155BA /* CurrencyConvertResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */; };
+		7E41B9EA245E697A005155BA /* SaveTransactionUserCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E9245E697A005155BA /* SaveTransactionUserCase.swift */; };
+		7E41B9EC245E6A0E005155BA /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */; };
 		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
 		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
 		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
@@ -123,6 +125,8 @@
 		7E41B9E1245E325A005155BA /* CurrencyLayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyLayerService.swift; sourceTree = "<group>"; };
 		7E41B9E5245E5229005155BA /* HistoryUSDQuoteRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUSDQuoteRequestBuilder.swift; sourceTree = "<group>"; };
 		7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertResponse.swift; sourceTree = "<group>"; };
+		7E41B9E9245E697A005155BA /* SaveTransactionUserCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTransactionUserCase.swift; sourceTree = "<group>"; };
+		7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
 		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
 		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
 		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
@@ -340,6 +344,8 @@
 				7EAA47CD245D13D6005565C1 /* TransactionViewController.xib */,
 				7E41B9DA245E2DF2005155BA /* TransactoinInteractor.swift */,
 				7E41B9DC245E2EA6005155BA /* CurrencyConvertingUseCase.swift */,
+				7E41B9E9245E697A005155BA /* SaveTransactionUserCase.swift */,
+				7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -717,6 +723,7 @@
 				7E41B9DB245E2DF2005155BA /* TransactoinInteractor.swift in Sources */,
 				7ED5CEA3245910B400E5D454 /* HTTPMethod.swift in Sources */,
 				7ED5CEE0245920BF00E5D454 /* String+Emoji.swift in Sources */,
+				7E41B9EA245E697A005155BA /* SaveTransactionUserCase.swift in Sources */,
 				7ED5CE6B24590FD000E5D454 /* StringExtension+TypeName.swift in Sources */,
 				7ED5CECD2459125200E5D454 /* CategoriesViewController.swift in Sources */,
 				7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */,
@@ -728,6 +735,7 @@
 				7EAA47812459A0F4005565C1 /* CategoriesInteractor.swift in Sources */,
 				7ED5CEEA245927AD00E5D454 /* DescriptibleByType.swift in Sources */,
 				7EAA47AB245BD318005565C1 /* AnyValidator.swift in Sources */,
+				7E41B9EC245E6A0E005155BA /* TransactionRepository.swift in Sources */,
 				7ED5CEC1245910B400E5D454 /* RequestCreator.swift in Sources */,
 				7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */,
 				7ED5CEEC2459288800E5D454 /* NSObject+Descriptible.swift in Sources */,
