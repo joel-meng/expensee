@@ -106,7 +106,7 @@ final class DependencyInjection: DependencyInjecting {
     func createTransactionScene(from navigation: UINavigationController,
                                 sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController {
-        let router = TransactionRouter(navigationController: navigation, factory: self)
+        let router = TransactionRouter(navigationController: navigation, factory: self, routeBackToTransactionListCompletion: completion)
         let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: CurrencyLayerService())
         let saveTransactionUseCase = SaveTransactionUseCase(transactionRepository:
             TransactionRepository(context: CoreDataStore.shared?.context))

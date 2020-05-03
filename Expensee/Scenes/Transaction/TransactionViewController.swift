@@ -13,6 +13,8 @@ protocol TransactionPresenting: class {
     func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?)
 
     func handleSaveReady(_ enabled: Bool)
+
+    func displayError(_ message: String)
 }
 
 class TransactionViewController: UIViewController {
@@ -168,5 +170,11 @@ extension TransactionViewController: TransactionPresenting {
 
     func handleSaveReady(_ enabled: Bool) {
         saveButton.isEnabled = enabled
+    }
+
+    func displayError(_ message: String) {
+         let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+         alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
+         present(alertController, animated: true, completion: nil)
     }
 }

@@ -140,10 +140,10 @@ extension TransactionPresenter: TransactionControlling {
                 SaveTransactionRequest.Transaction(amount: amount,
                                                    date: date,
                                                    currency: currency), categoryId: categoryId))
-        result.on(success: { (response) in
-            print(response)
-        }, failure: { error in
-            print(error)
+        result.on(success: { [weak router] (response) in
+            router?.routeBackToTransactionList()
+        }, failure: { [weak view] error in
+            view?.displayError("Oops, something went wrong.")
         })
     }
 }

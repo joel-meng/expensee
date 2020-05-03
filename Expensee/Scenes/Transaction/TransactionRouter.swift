@@ -10,6 +10,8 @@ import UIKit
 
 protocol TransactionRouting: class {
 
+    func routeBackToTransactionList()
+
     func routeToCategoryList(completion: @escaping (TransactionRouterSceneModel) -> Void)
 }
 
@@ -19,9 +21,21 @@ final class TransactionRouter: TransactionRouting {
 
     private var factory: DependencyInjecting
 
-    init(navigationController: UINavigationController, factory: DependencyInjecting) {
+    private var routeBackToTransactionListCompletion: () -> Void
+
+    init(navigationController: UINavigationController,
+         factory: DependencyInjecting,
+         routeBackToTransactionListCompletion: @escaping () -> Void) {
         self.factory = factory
         self.navigationController = navigationController
+        self.routeBackToTransactionListCompletion = routeBackToTransactionListCompletion
+    }
+
+    func routeBackToTransactionList() {
+        DispatchQueue.main.async { [weak self] in
+            self?.routeBackToTransactionListCompletion()
+            self?.navigationController.popViewController(animated: true)
+        }
     }
 
     func routeToCategoryList(completion: @escaping (TransactionRouterSceneModel) -> Void) {
@@ -33,7 +47,9 @@ final class TransactionRouter: TransactionRouting {
                                                      budget: $0.category.budget.map {
             TransactionRouterSceneModel.Budget(currency: $0.currency, limit: $0.limit)})))
         }
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
     }
 }
 

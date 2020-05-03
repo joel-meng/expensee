@@ -76,11 +76,11 @@ class TransactionListViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        view.showState(.loading)
-        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) { [weak self] in
-            self?.presenter.viewIsReady()
-            self?.presenter.didTapAdd()
-        }
+//        view.showState(.loading)
+//        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) { [weak self] in
+//            self?.presenter.viewIsReady()
+//            self?.presenter.didTapAdd()
+//        }
     }
 
     // MARK: - Navigation Bar Item
