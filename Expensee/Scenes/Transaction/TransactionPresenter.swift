@@ -29,6 +29,8 @@ final class TransactionPresenter {
 
     private var router: TransactionRouting
 
+    private var interactor: TransactionInteracting
+
     private var flavor: SceneFlavor = .save
 
     private var transaction: Transaction {
@@ -39,10 +41,15 @@ final class TransactionPresenter {
         didSet { didUpdateCategory(category) }
     }
 
-    init(view: TransactionPresenting, router: TransactionRouting, transaction: Transaction?, category: Category?) {
+    init(view: TransactionPresenting,
+         interactor: TransactionInteracting,
+         router: TransactionRouting,
+         transaction: Transaction?,
+         category: Category?) {
         self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD")
         self.category = category ?? Category(id: nil, name: nil, color: nil, limit: .init(amount: nil, currency: nil))
         self.view = view
+        self.interactor = interactor
         self.router = router
     }
 
@@ -120,14 +127,28 @@ extension TransactionPresenter: TransactionControlling {
     }
 
     func didTapSave() {
-        guard let amount = self.transaction.amount else { return }
-        guard let categoryId = category.id else { return }
-        let context = CoreDataStore.shared?.context
-        let categoryDTO = CategoryDTO(name: category.name ?? "", color: category.color ?? "", budget: nil, uid: categoryId)
-        let transactionDTO = TransactionDTO(amount: amount, date: Date(), currency: "AAA", uid: UUID(), category: categoryDTO)
+        saveTransaction()
+    }
 
-        let result = ExpenseTransaction.insert(category: transactionDTO, into: context!)
-        print(result)
+    private func saveTransaction() {
+        guard let amount = transaction.amount, let date = transaction.date else { return }
+        guard let categoryId = category.id else { return }
+
+        let currency = transaction.currency ?? "NZD"
+        let result = interactor.saveTransaction(with:
+            SaveTransactionRequest(transaction:SaveTransactionRequest
+                .Transaction(amount: amount,
+                             date: date,
+                             currency: currency,
+                             category: SaveTransactionRequest.Category(id: categoryId,
+                                                                       name: "",
+                                                                       color: "",
+                                                                       limit: nil))))
+        result.on(success: { (response) in
+            print(response)
+        }, failure: { error in
+            print(error)
+        })
     }
 }
 

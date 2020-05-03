@@ -45,7 +45,7 @@ final class CurrencyLayerService: CurrencyLayerServiceProtocol {
                                                            toCurrency: convertionRequest.toCurrency,
                                                            date: convertionRequest.date,
                                                            fromCurrencyAmount: convertionRequest.fromCurrencyAmount,
-                                                           toCurrencyAmount: response.quotes.usdnzd)
+                                                           toCurrencyAmount: response.quotes.usdnzd * convertionRequest.fromCurrencyAmount)
                 future.resolve(with: result)
             }
         }

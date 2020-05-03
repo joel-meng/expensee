@@ -41,11 +41,11 @@ final class TransactionInteractor: TransactionInteracting {
                                        date: request.transaction.date,
                                        fromCurrencyAmount: request.transaction.amount))
 
-        return currencyConversionUseCase.convertCurrency(with:conversionRequest).flatMap { [self] x in
+        return currencyConversionUseCase.convertCurrency(with: conversionRequest).flatMap { [unowned self] in
             let newRequest = SaveTransactionRequest(transaction:
-                SaveTransactionRequest.Transaction(amount: x.convertionResult.toCurrencyAmount,
-                                                   date: x.convertionResult.date,
-                                                   currency: x.convertionResult.toCurrency,
+                SaveTransactionRequest.Transaction(amount: $0.convertionResult.toCurrencyAmount,
+                                                   date: $0.convertionResult.date,
+                                                   currency: $0.convertionResult.toCurrency,
                                                    category: request.transaction.category))
             return self.saveTransactionInNZD(with: newRequest)
         }

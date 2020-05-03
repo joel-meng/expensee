@@ -107,8 +107,14 @@ final class DependencyInjection: DependencyInjecting {
                                 sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController {
         let router = TransactionRouter(navigationController: navigation, factory: self)
+        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: CurrencyLayerService())
+        let saveTransactionUseCase = SaveTransactionUseCase(transactionRepository:
+            TransactionRepository(context: CoreDataStore.shared?.context))
+        let interactor = TransactionInteractor(currencyConversionUseCase: currencyConvertingUseCase,
+                                               saveTransactionUseCase: saveTransactionUseCase)
         let viewController = TransactionViewController()
         let presenter = TransactionPresenter(view: viewController,
+                                             interactor: interactor,
                                              router: router,
                                              transaction: nil,
                                              category: nil)
