@@ -60,15 +60,19 @@ final class TransactionInteractor: TransactionInteracting {
 
         return saveTransactionUseCase.saveTransaction(with: userCaseRequest).map {
             SaveTransactionResponse(transaction:
-                SaveTransactionResponse.Transaction(amount: $0.transaction.amount,
-                                                    date: $0.transaction.date,
-                                                    currency: $0.transaction.currency,
-                                                    category:
-                    SaveTransactionResponse.Category(id: $0.transaction.category.uid,
-                                                     name: $0.transaction.category.name,
-                                                     color: $0.transaction.category.color,
-                                                     limit: $0.transaction.category.budget.map {
-                                                        SaveTransactionResponse.Limit(amount: $0.limit, currency: $0.currency)})))
+                SaveTransactionResponse
+                    .Transaction(amount: $0.transaction.amount,
+                                 date: $0.transaction.date,
+                                 currency: $0.transaction.currency,
+                                 category:
+                        SaveTransactionResponse
+                            .Category(id: $0.transaction.category.uid,
+                                      name: $0.transaction.category.name,
+                                      color: $0.transaction.category.color,
+                                      limit: $0.transaction.category.budget.map {
+                                        SaveTransactionResponse
+                                            .Limit(amount: $0.limit,
+                                                   currency: $0.currency)})))
         }
     }
 }

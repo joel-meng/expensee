@@ -94,8 +94,6 @@ class TransactionListViewController: UIViewController {
         presenter.didTapAdd()
     }
 
-
-
     // MARK: - TableViews
 
     @IBOutlet weak var tableView: UITableView!
