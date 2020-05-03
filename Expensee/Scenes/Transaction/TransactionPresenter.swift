@@ -136,14 +136,10 @@ extension TransactionPresenter: TransactionControlling {
 
         let currency = transaction.currency ?? "NZD"
         let result = interactor.saveTransaction(with:
-            SaveTransactionRequest(transaction:SaveTransactionRequest
-                .Transaction(amount: amount,
-                             date: date,
-                             currency: currency,
-                             category: SaveTransactionRequest.Category(id: categoryId,
-                                                                       name: "",
-                                                                       color: "",
-                                                                       limit: nil))))
+            SaveTransactionRequest(transaction:
+                SaveTransactionRequest.Transaction(amount: amount,
+                                                   date: date,
+                                                   currency: currency), categoryId: categoryId))
         result.on(success: { (response) in
             print(response)
         }, failure: { error in

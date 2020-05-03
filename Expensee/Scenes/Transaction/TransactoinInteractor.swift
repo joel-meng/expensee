@@ -45,23 +45,18 @@ final class TransactionInteractor: TransactionInteracting {
             let newRequest = SaveTransactionRequest(transaction:
                 SaveTransactionRequest.Transaction(amount: $0.convertionResult.toCurrencyAmount,
                                                    date: $0.convertionResult.date,
-                                                   currency: $0.convertionResult.toCurrency,
-                                                   category: request.transaction.category))
+                                                   currency: $0.convertionResult.toCurrency),
+                                                    categoryId: request.categoryId)
             return self.saveTransactionInNZD(with: newRequest)
         }
     }
 
     private func saveTransactionInNZD(with request: SaveTransactionRequest) -> Future<SaveTransactionResponse> {
         let userCaseRequest = SaveTransactionUseCaseRequest(transaction:
-            TransactionDTO(amount: request.transaction.amount,
-                           date: request.transaction.date,
-                           currency: request.transaction.currency,
-                           uid: UUID(),
-                           category: CategoryDTO(name: request.transaction.category.name,
-                                                 color: request.transaction.category.color,
-                                                 budget: request.transaction.category.limit.map {
-                                                    BudgetDTO(currency: $0.currency, limit: $0.amount)},
-                                                 uid: request.transaction.category.id)))
+            SaveTransactionUseCaseRequest.Transaction(amount: request.transaction.amount,
+                                                      date: request.transaction.date,
+                                                      currency: request.transaction.currency,
+                                                      uid: UUID()), categoryId: request.categoryId)
 
         return saveTransactionUseCase.saveTransaction(with: userCaseRequest).map {
             SaveTransactionResponse(transaction:
@@ -82,31 +77,13 @@ struct SaveTransactionRequest {
 
     let transaction: Transaction
 
+    let categoryId: UUID
+
     struct Transaction {
 
         let amount: Double
 
         let date: Date
-
-        let currency: String
-
-        let category: Category
-    }
-
-    struct Category {
-
-        let id: UUID
-
-        let name: String
-
-        let color: String
-
-        let limit: Limit?
-    }
-
-    struct Limit {
-
-        let amount: Double
 
         let currency: String
     }

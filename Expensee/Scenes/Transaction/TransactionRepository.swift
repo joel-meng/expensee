@@ -11,7 +11,7 @@ import CoreData
 
 protocol TransactionRepositoryProtocol: RepositoryProtocol {
 
-    func save(_ transaction: TransactionDTO) -> Future<TransactionDTO>
+    func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<TransactionDTO>
 
     func fetchAll() -> Future<[TransactionDTO]>
 
@@ -26,7 +26,7 @@ final class TransactionRepository: TransactionRepositoryProtocol {
         self.context = context
     }
 
-    func save(_ transaction: TransactionDTO) -> Future<TransactionDTO> {
+    func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<TransactionDTO> {
         let future = Future<TransactionDTO>()
 
         guard let context = context else {
@@ -35,7 +35,7 @@ final class TransactionRepository: TransactionRepositoryProtocol {
         }
 
         perform {
-            let inserted = ExpenseTransaction.insert(category: transaction, into: context)
+            let inserted = ExpenseTransaction.insert(transactionModel: transaction, categoryId: categoryId, into: context)
             let transactionDTO = TransactionDTO(amount: inserted.amount,
                                                 date: inserted.date,
                                                 currency: inserted.currency,
@@ -59,4 +59,15 @@ final class TransactionRepository: TransactionRepositoryProtocol {
     func fetch(by id: UUID) -> Future<TransactionDTO?> {
         fatalError()
     }
+}
+
+struct SavingTransactionModel {
+
+    let amount: Double
+
+    let date: Date
+
+    let currency: String
+
+    let uid: UUID
 }
