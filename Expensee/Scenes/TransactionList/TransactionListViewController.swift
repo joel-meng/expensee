@@ -22,6 +22,19 @@ protocol TransactionListControlling: class {
 
 final class TransactionListPresenter {
 
+    private let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
+
+    private let currencyFormatter: NumberFormatter = {
+        let currencyFormatter = NumberFormatter()
+        currencyFormatter.numberStyle = .currency
+        return currencyFormatter
+    }()
+
     private weak var view: TransactionListPresenting?
 
     private let router: TransactionListRouting
@@ -53,18 +66,18 @@ extension TransactionListPresenter: TransactionListControlling {
 
     func loadTransactions() {
         interactor.loadTransactions(with: ListTransactionInteractionRequest())
-            .on(success: { [weak view] (response) in
-//                print(response)
-                let transactionCellModels = response.transactions.map { tx in
-                    TransactionCellModel(currency: tx.currency,
-                                         amount: tx.amount,
-                                         date: tx.date,
-                                         categoryName: tx.category.name,
-                                         categoryColor: tx.category.color)
+            .on(success: { [weak view, currencyFormatter, dateFormatter] (response) in
+                let transactionCellModels = response.transactions.map { tx -> TransactionCellModel in
+                    currencyFormatter.currencyCode = tx.currency
+                    let amount = currencyFormatter.string(from: NSNumber(value: tx.amount)) ?? "?"
+                    return TransactionCellModel(currency: tx.currency,
+                                                amount: amount,
+                                                date: dateFormatter.string(from: tx.date),
+                                                categoryName: tx.category.name,
+                                                categoryColor: tx.category.color,
+                                                overBudget: tx.overBudget)
                 }
-                DispatchQueue.main.async {
-                    view?.display(transactions: transactionCellModels)
-                }
+                view?.display(transactions: transactionCellModels)
             }, failure: { error in
                 print(error)
             })
@@ -112,7 +125,9 @@ class TransactionListViewController: UIViewController {
         dataSource.binder = { (row: TransactionCellModel, cell: TransactionTableViewCell) in
             cell.amountLabel.text = row.amount.description
             cell.categoryLabel.text = row.categoryName
+            cell.categoryLabel.backgroundColor = UIColor(row.categoryColor)
             cell.datatimeLabel.text = row.date.description
+            cell.overBudgetLabel.isHidden = !row.overBudget
         }
 
         dataSource.cellProvider = { tableView, indexPath in
@@ -120,7 +135,7 @@ class TransactionListViewController: UIViewController {
             return cell
         }
 
-        dataSource.sorter = { $0.date < $1.date }
+        dataSource.sorter = { $0.date > $1.date }
 
         return dataSource
     }()

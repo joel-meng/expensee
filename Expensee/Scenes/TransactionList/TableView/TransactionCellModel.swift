@@ -12,11 +12,13 @@ struct TransactionCellModel {
 
     let currency: String
 
-    let amount: Double
+    let amount: String
 
-    let date: Date
+    let date: String
 
     let categoryName: String
 
     let categoryColor: String
+
+    let overBudget: Bool
 }
