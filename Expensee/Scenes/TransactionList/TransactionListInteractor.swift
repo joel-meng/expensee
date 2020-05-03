@@ -39,6 +39,8 @@ final class TransactionListInteractor: TransactionListInteracting {
                                                                date: $0.date,
                                                                currency: $0.currency,
                                                                overBudget: $0.overBudget,
+                                                               originalAmount: $0.originalAmount,
+                                                               originalCurrency: $0.originalCurrency,
                                                                category:
                     ListTransactionInteractionResponse.Category(id: $0.category.id,
                                                                 name: $0.category.name,
@@ -75,6 +77,10 @@ struct ListTransactionInteractionResponse {
         let currency: String
 
         let overBudget: Bool
+
+        let originalAmount: Double
+
+        let originalCurrency: String
 
         let category: Category
     }

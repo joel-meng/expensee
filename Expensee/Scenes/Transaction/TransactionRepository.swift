@@ -42,7 +42,9 @@ final class TransactionRepository: TransactionRepositoryProtocol {
             let transactionDTO = TransactionDTO(amount: inserted.amount,
                                                 date: inserted.date,
                                                 currency: inserted.currency,
-                                                uid: inserted.uid)
+                                                uid: inserted.uid,
+                                                originalAmount: inserted.originalAmount,
+                                                originalCurrency: inserted.originalCurrency)
 
             let categoryDTO = CategoryDTO(name: inserted.category.name,
                                           color: inserted.category.color,

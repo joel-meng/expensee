@@ -102,11 +102,16 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
             let result = fetched.map { category -> (CategoryDTO, [TransactionDTO]) in
                 let categoryDTO = CategoryDTO(name: category.name,
                                            color: category.color,
-                                           budget: category.budget.map {BudgetDTO(currency: $0.currency, limit: $0.limit)},
+                                           budget: category.budget.map { BudgetDTO(currency: $0.currency, limit: $0.limit) },
                                            uid: category.uid)
 
                 let transactionsDTO = category.transactions?.map {
-                    TransactionDTO(amount: $0.amount, date: $0.date, currency: $0.currency, uid: $0.uid)
+                    TransactionDTO(amount: $0.amount,
+                                   date: $0.date,
+                                   currency: $0.currency,
+                                   uid: $0.uid,
+                                   originalAmount: $0.originalAmount,
+                                   originalCurrency: $0.originalCurrency)
                 } ?? []
 
                 return (categoryDTO, transactionsDTO)

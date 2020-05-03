@@ -66,6 +66,8 @@ final class TransactionCategoryBudgetCase: TransactionCategoryBudgetCaseProtocol
                                                           date: tx.date,
                                                           currency: tx.currency,
                                                           overBudget: overBudget,
+                                                          originalAmount: tx.originalAmount,
+                                                          originalCurrency: tx.originalCurrency,
                                                           category:
                 TransactionCategoryBudgetResponse.Category(id: category.uid,
                                                            name: category.name,
@@ -104,6 +106,10 @@ struct TransactionCategoryBudgetResponse {
         let currency: String
 
         let overBudget: Bool
+
+        let originalAmount: Double
+
+        let originalCurrency: String
 
         let category: Category
     }

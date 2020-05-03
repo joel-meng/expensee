@@ -68,9 +68,9 @@ extension TransactionListPresenter: TransactionListControlling {
         interactor.loadTransactions(with: ListTransactionInteractionRequest())
             .on(success: { [weak view, currencyFormatter, dateFormatter] (response) in
                 let transactionCellModels = response.transactions.map { tx -> TransactionCellModel in
-                    currencyFormatter.currencyCode = tx.currency
-                    let amount = currencyFormatter.string(from: NSNumber(value: tx.amount)) ?? "?"
-                    return TransactionCellModel(currency: tx.currency,
+                    currencyFormatter.currencyCode = tx.originalCurrency
+                    let amount = currencyFormatter.string(from: NSNumber(value: tx.originalAmount)) ?? "?"
+                    return TransactionCellModel(currency: tx.originalCurrency,
                                                 amount: amount,
                                                 date: dateFormatter.string(from: tx.date),
                                                 categoryName: tx.category.name,

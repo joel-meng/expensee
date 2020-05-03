@@ -17,4 +17,8 @@ struct TransactionDTO {
     let currency: String
 
     let uid: UUID
+
+    let originalAmount: Double
+
+    let originalCurrency: String
 }
