@@ -58,9 +58,6 @@ final class TransactionListInteractor: TransactionListInteracting {
 
     private func transactionsBudgetize(_ transactions: [CategoryDTO: [TransactionDTO]])
         -> Future<TransactionCategoryBudgetResponse> {
-        transactions.forEach { (key, value) in
-            print(key, value)
-        }
         return transactionBudgetingUsecase.transactionBudgetLimitCalculating(request:
             TransactionCategoryBudgetRequest(categorizedTransactions: transactions))
     }

@@ -66,7 +66,6 @@ final class AddCategoryPresenter {
     }
 
     private func update(category: Category?, limit: MonthlyLimit?) {
-        print(category, limit)
         view?.setSaveButtonEnable(isValid(category: category, limit: limit))
     }
 
@@ -149,8 +148,8 @@ extension AddCategoryPresenter: AddCategoryControlling {
         let savedFuture = interactor.saveCategory(request: SaveCategoryRequest(category: category))
         savedFuture.on(success: { [weak router] (response) in
             router?.routeBackAndRefresh()
-        }, failure: { error in
-            print(error)
+        }, failure: { [view] error in
+            view?.displayError("Oops, something went wrong.")
         })
     }
 
@@ -173,8 +172,8 @@ extension AddCategoryPresenter: AddCategoryControlling {
         let category = UpdateCategoryRequest.Category(id: id, name: name, color: color, monthlyLimit: monthlyLimit)
         interactor.updateCategory(request:UpdateCategoryRequest(category:category)).on(success: { [weak router] (response) in
             router?.routeBackAndRefresh()
-        }, failure: { error in
-            print(error)
+        }, failure: { [view] error in
+            view?.displayError("Oops, something went wrong.")
         })
     }
 
