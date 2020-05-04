@@ -84,14 +84,25 @@ extension TransactionListPresenter: TransactionListControlling {
 
     func didSelectTransaction(_ id: UUID) {
 
-        interactor.fetchTransaction(with: FetchTransactionInteractionRequest(transactionId: id)).on(success: { (response) in
-            print(response)
+        interactor.fetchTransaction(with: FetchTransactionInteractionRequest(transactionId: id))
+            .on(success: { [weak router, weak self] (response) in
+
+            guard let tx = response.transaction, let category = response.transaction?.category else { return }
+            let sceneModel = TransactionSceneModel(transaction:
+                TransactionSceneModel.Transaction(id: tx.id,
+                                                  amount: tx.amount,
+                                                  date: tx.date,
+                                                  currency: tx.currency,
+                                                  originalAmount: tx.originalAmount,
+                                                  originalCurrency: tx.currency,
+                                                  category: TransactionSceneModel.Category(id: category.id,
+                                                                                           name: category.name,
+                                                                                           color: category.color)))
+            router?.routeToUpdateTransaction(with: sceneModel) {
+                self?.loadTransactions()
+            }
         }, failure: { error in
             self.view?.showError("Oops, something went wrong.")
         })
-
-        router.routeToUpdateTransaction { [weak self] in
-            self?.loadTransactions()
-        }
     }
 }

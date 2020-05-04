@@ -47,7 +47,7 @@ final class TransactionPresenter {
          transaction: Transaction?,
          category: Category?) {
         self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD")
-        self.category = category ?? Category(id: nil, name: nil, color: nil, limit: .init(amount: nil, currency: nil))
+        self.category = category ?? Category(id: nil, name: nil, color: nil)
         self.view = view
         self.interactor = interactor
         self.router = router
@@ -117,9 +117,7 @@ extension TransactionPresenter: TransactionControlling {
         router.routeToCategoryList { [weak self, category] (passBack) in
             guard let self = self else { return }
             self.category = passBack.category.map {
-                TransactionPresenter.Category(id: $0.uid, name: $0.name, color: $0.color, limit: $0.budget.map {
-                    TransactionPresenter.Limit(amount: $0.limit, currency: $0.currency)
-                })
+                TransactionPresenter.Category(id: $0.uid, name: $0.name, color: $0.color)
             } ?? category
             self.displayCurrentState()
             self.view?.handleSaveReady(self.isDateValidForSaving())
@@ -167,14 +165,5 @@ extension TransactionPresenter {
         let name: String?
 
         let color: String?
-
-        let limit: Limit?
-    }
-
-    struct Limit {
-
-        let amount: Double?
-
-        let currency: String?
     }
 }

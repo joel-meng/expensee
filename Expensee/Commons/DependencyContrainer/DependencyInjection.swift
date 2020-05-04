@@ -111,6 +111,19 @@ final class DependencyInjection: DependencyInjecting {
     func createTransactionScene(from navigation: UINavigationController,
                                 sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController {
+
+        let transaction = sceneModel.map {
+            TransactionPresenter.Transaction(amount: $0.transaction.originalAmount,
+                                             date: $0.transaction.date,
+                                             currency: $0.transaction.originalCurrency)
+        }
+
+        let category = sceneModel.map {
+            TransactionPresenter.Category(id: $0.transaction.category.id,
+                                          name: $0.transaction.category.name,
+                                          color: $0.transaction.category.color)
+        }
+
         let router = TransactionRouter(navigationController: navigation, factory: self, routeBackToTransactionListCompletion: completion)
         let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: StubCurrencyLayerService())
         let saveTransactionUseCase = SaveTransactionUseCase(transactionRepository:
@@ -121,8 +134,8 @@ final class DependencyInjection: DependencyInjecting {
         let presenter = TransactionPresenter(view: viewController,
                                              interactor: interactor,
                                              router: router,
-                                             transaction: nil,
-                                             category: nil)
+                                             transaction: transaction,
+                                             category: category)
         viewController.presenter = presenter
 
         return viewController
