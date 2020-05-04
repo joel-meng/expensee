@@ -10,9 +10,11 @@ import UIKit
 
 protocol TransactionPresenting: class {
 
-    func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?)
+    func showState(amount: Double?, currency: String?, date: String?, categoryName: String?, categoryColor: String?)
 
     func handleSaveReady(_ enabled: Bool)
+
+    func updateDateButton(with text: String)
 
     func displayError(_ message: String)
 }
@@ -38,15 +40,6 @@ class TransactionViewController: UIViewController {
     // MARK: - VIPER
 
     var presenter: TransactionControlling!
-    
-    // MARK: - Formatter
-
-    private var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .short
-        return dateFormatter
-    }()
 
     // MARK: - Lifecycles
 
@@ -82,7 +75,6 @@ class TransactionViewController: UIViewController {
     }
     
     @objc private func didChangeDatePicker(sender: UIDatePicker) {
-        dateButton.setTitle(dateFormatter.string(from: sender.date), for: .normal)
         presenter.didSelectDate(sender.date)
     }
     
@@ -152,14 +144,21 @@ class TransactionViewController: UIViewController {
 
 extension TransactionViewController: TransactionPresenting {
 
-    func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?) {
-        DispatchQueue.main.async { [weak self, dateFormatter] in
+    func updateDateButton(with text: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.dateButton.setTitle(text, for: .normal)
+        }
+    }
+
+
+    func showState(amount: Double?, currency: String?, date: String?, categoryName: String?, categoryColor: String?) {
+        DispatchQueue.main.async { [weak self] in
             self?.transactionAmountTextField.text = amount.map(String.init(describing:))
             if let currency = currency, let index = self?.segmentControlIndex(ofCurrency: currency) {
                 self?.currencySegmentControl.selectedSegmentIndex = index
             }
             if let date = date {
-                self?.dateButton.setTitle(dateFormatter.string(from: date), for: .normal)
+                self?.dateButton.setTitle(date, for: .normal)
             }
             if let categoryName = categoryName {
                 self?.categoryButton.setTitle(categoryName, for: .normal)

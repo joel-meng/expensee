@@ -80,6 +80,8 @@ final class TransactionInteractor: TransactionInteracting {
                     .Transaction(amount: $0.transaction.amount,
                                  date: $0.transaction.date,
                                  currency: $0.transaction.currency,
+                                 originalAmount: $0.transaction.originalAmount,
+                                 originalCurrency: $0.transaction.originalCurrency,
                                  category:
                         SaveTransactionResponse
                             .Category(id: $0.category.uid,
@@ -172,6 +174,10 @@ struct SaveTransactionResponse {
         let date: Date
 
         let currency: String
+
+        let originalAmount: Double
+
+        let originalCurrency: String
 
         let category: Category
     }
