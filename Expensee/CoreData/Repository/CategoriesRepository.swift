@@ -31,10 +31,6 @@ extension RepositoryProtocol {
         try context?.save()
     }
 
-    func save() throws {
-        try context?.save()
-    }
-
     var workerContext: NSManagedObjectContext {
         let workerContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         workerContext.parent = context
