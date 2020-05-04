@@ -27,8 +27,10 @@ class AddCategoryViewController: UIViewController {
         title = "Category"
 
         limitTextField.delegate = amountTextFieldDelegate
-        amountTextFieldDelegate.updateAction = { [weak presenter] _, result in
+        amountTextFieldDelegate.updateAction = { [weak presenter, weak self] _, result in
             result.do(ifLeft: { (amount) in
+                guard let self = self else { return }
+                presenter?.didSelectMonthlyLimitCurrency(self.currency(ofSegment: self.currencySegmentControl))
                 presenter?.didSelectMonthlyLimit(amount?.doubleValue)
             }, ifRight: { error in
                 print("\(error)")

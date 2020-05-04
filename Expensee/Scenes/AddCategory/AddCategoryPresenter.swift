@@ -66,16 +66,17 @@ final class AddCategoryPresenter {
     }
 
     private func update(category: Category?, limit: MonthlyLimit?) {
+        print(category, limit)
         view?.setSaveButtonEnable(isValid(category: category, limit: limit))
     }
 
     private func isValid(category: Category?, limit: MonthlyLimit?) -> Bool {
-        guard category?.name != nil else { return false }
-        if limit?.limit != nil, limit?.currency != nil {
-            return true
-        } else {
+        guard category?.name != nil, category?.color != nil else { return false }
+        if (limit?.limit != nil && limit?.currency != nil) ||
+            (limit?.limit == nil && limit?.currency == nil) {
             return true
         }
+        return false
     }
 
     struct MonthlyLimit {
@@ -105,10 +106,12 @@ extension AddCategoryPresenter: AddCategoryControlling {
     }
 
     func didSelectMonthlyLimit(_ limit: Double?) {
-        self.monthlyLimit = MonthlyLimit(limit: limit, currency: monthlyLimit?.currency)
+        self.monthlyLimit = MonthlyLimit(limit: limit,
+                                         currency: limit == nil ? nil : monthlyLimit?.currency)
     }
 
     func didSelectMonthlyLimitCurrency(_ currency: String?) {
+        guard monthlyLimit?.limit != nil else { return }
         self.monthlyLimit = MonthlyLimit(limit: monthlyLimit?.limit, currency: currency)
     }
 
