@@ -13,7 +13,6 @@
                 <outlet property="currencySegmentControl" destination="xnl-fb-yOB" id="Fvt-Fb-iT7"/>
                 <outlet property="limitTextField" destination="bpE-Kg-T2u" id="P7l-gl-Ejv"/>
                 <outlet property="nameTextField" destination="dIw-tU-AvV" id="e6l-Fy-dXV"/>
-                <outlet property="saveButton" destination="psc-8g-oZh" id="8Fq-Nj-9uq"/>
                 <outlet property="tableView" destination="U7D-xN-FlE" id="MBK-Eo-Hld"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -29,7 +28,7 @@
                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                 </textField>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U7D-xN-FlE">
-                    <rect key="frame" x="12" y="142" width="390" height="220"/>
+                    <rect key="frame" x="12" y="132" width="390" height="220"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="220" id="8HD-lZ-aDj"/>
@@ -37,32 +36,27 @@
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bpE-Kg-T2u">
-                    <rect key="frame" x="121" y="394" width="170" height="34"/>
+                    <rect key="frame" x="121" y="384" width="170" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="decimalPad"/>
                 </textField>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xnl-fb-yOB">
-                    <rect key="frame" x="309" y="395.5" width="93" height="32"/>
+                    <rect key="frame" x="309" y="385.5" width="93" height="32"/>
                     <segments>
                         <segment title="NZD"/>
                         <segment title="USD"/>
                     </segments>
                 </segmentedControl>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month Limit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pdA-4k-hHk">
-                    <rect key="frame" x="12" y="401" width="91" height="21"/>
+                    <rect key="frame" x="12" y="390.5" width="91" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="psc-8g-oZh">
-                    <rect key="frame" x="12" y="460" width="390" height="30"/>
-                    <state key="normal" title="Save"/>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="U7D-xN-FlE" firstAttribute="trailing" secondItem="dIw-tU-AvV" secondAttribute="trailing" id="DEk-iL-bVT"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="psc-8g-oZh" secondAttribute="trailing" constant="12" id="Lw4-P6-ECg"/>
                 <constraint firstItem="bpE-Kg-T2u" firstAttribute="top" secondItem="U7D-xN-FlE" secondAttribute="bottom" constant="32" id="NGk-Mc-CAU"/>
                 <constraint firstItem="pdA-4k-hHk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="QCq-NW-0En"/>
                 <constraint firstItem="xnl-fb-yOB" firstAttribute="leading" secondItem="bpE-Kg-T2u" secondAttribute="trailing" constant="18" id="S79-7y-mzZ"/>
@@ -70,10 +64,8 @@
                 <constraint firstItem="dIw-tU-AvV" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="Ybn-P5-3od"/>
                 <constraint firstItem="bpE-Kg-T2u" firstAttribute="leading" secondItem="pdA-4k-hHk" secondAttribute="trailing" constant="18" id="Yid-yA-4lf"/>
                 <constraint firstItem="U7D-xN-FlE" firstAttribute="leading" secondItem="dIw-tU-AvV" secondAttribute="leading" id="Yqp-mS-MKK"/>
-                <constraint firstItem="pdA-4k-hHk" firstAttribute="top" secondItem="U7D-xN-FlE" secondAttribute="bottom" constant="39" id="dAH-iR-81o"/>
-                <constraint firstItem="psc-8g-oZh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="dTZ-ee-43g"/>
-                <constraint firstItem="psc-8g-oZh" firstAttribute="top" secondItem="bpE-Kg-T2u" secondAttribute="bottom" constant="32" id="iU2-dl-9iK"/>
-                <constraint firstItem="U7D-xN-FlE" firstAttribute="top" secondItem="dIw-tU-AvV" secondAttribute="bottom" constant="32" id="j83-7q-24f"/>
+                <constraint firstItem="pdA-4k-hHk" firstAttribute="centerY" secondItem="bpE-Kg-T2u" secondAttribute="centerY" id="hwq-Yl-Vo0"/>
+                <constraint firstItem="U7D-xN-FlE" firstAttribute="top" secondItem="dIw-tU-AvV" secondAttribute="bottom" constant="22" id="j83-7q-24f"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dIw-tU-AvV" secondAttribute="trailing" constant="12" id="k9H-7W-Dcx"/>
                 <constraint firstItem="xnl-fb-yOB" firstAttribute="centerY" secondItem="bpE-Kg-T2u" secondAttribute="centerY" id="lR6-EG-0bG"/>
                 <constraint firstItem="dIw-tU-AvV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="uai-By-AP9"/>
