@@ -30,10 +30,10 @@ class AddCategoryViewController: UIViewController {
         amountTextFieldDelegate.updateAction = { [weak presenter, weak self] _, result in
             result.do(ifLeft: { (amount) in
                 guard let self = self else { return }
-                presenter?.didSelectMonthlyLimitCurrency(self.currency(ofSegment: self.currencySegmentControl))
                 presenter?.didSelectMonthlyLimit(amount?.doubleValue)
-            }, ifRight: { error in
-                print("\(error)")
+                presenter?.didSelectMonthlyLimitCurrency(self.currency(ofSegment: self.currencySegmentControl))
+            }, ifRight: { [weak self] error in
+                self?.displayError("Something went wrong..")
             })
         }
 
@@ -41,8 +41,8 @@ class AddCategoryViewController: UIViewController {
         anyTextFieldDelegate.updateAction = { [weak presenter] _, result in
             result.do(ifLeft: { (name) in
                 presenter?.didSelectCategoryName(name)
-            }, ifRight: { error in
-                print("\(error)")
+            }, ifRight: { [weak self] error in
+                self?.displayError("Something went wrong..")
             })
         }
         

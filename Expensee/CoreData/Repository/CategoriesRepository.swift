@@ -107,10 +107,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
     func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]> {
         let future = Future<[CategoryDTO: [TransactionDTO]]>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         do {
             let fetched = try ExpenseCategory.fetchAll(from: context)
@@ -132,21 +129,18 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
                 return (categoryDTO, transactionsDTO)
             }
 
+            try save(worker: context)
             future.resolve(with: Dictionary(uniqueKeysWithValues: result))
-        } catch {
+        } catch  {
             future.reject(with: error)
         }
-
         return future
     }
 
     func fetch(by id: UUID) -> Future<CategoryDTO?> {
         let future = Future<CategoryDTO?>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         let fetched = ExpenseCategory.find(by: id, in: context).map {
             CategoryDTO(name: $0.name, color: $0.color, budget: $0.budget.map {
@@ -154,7 +148,13 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
             }, uid: $0.uid)
         }
 
-        future.resolve(with: fetched)
+        do {
+            try save(worker: context)
+            future.resolve(with: fetched)
+        } catch  {
+            future.reject(with: error)
+        }
+
         return future
     }
 
@@ -180,10 +180,10 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
             found?.setValue(nil, forKey: "budget")
         }
 
-        future.resolve(with: categoryDTO)
 
         do {
             try save(worker: context)
+            future.resolve(with: categoryDTO)
         } catch  {
             future.reject(with: error)
         }

@@ -13,8 +13,6 @@ protocol TransactionRepositoryProtocol: RepositoryProtocol {
 
     func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)>
 
-    func fetchAll() -> Future<[TransactionDTO]>
-
     func fetch(by id: UUID) -> Future<(TransactionDTO, CategoryDTO)?>
 
     func update(by categoryDTO: TransactionDTO, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)>
@@ -31,10 +29,7 @@ final class TransactionRepository: TransactionRepositoryProtocol {
     func save(_ transaction: SavingTransactionModel, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)> {
         let future = Future<(TransactionDTO, CategoryDTO)>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         do {
             let inserted = try ExpenseTransaction.insert(transactionModel: transaction,
@@ -54,8 +49,7 @@ final class TransactionRepository: TransactionRepositoryProtocol {
                                             BudgetDTO(currency: $0.currency, limit: $0.limit)},
                                           uid: inserted.category.uid)
 
-            try save()
-
+            try save(worker: context)
             future.resolve(with: (transactionDTO, categoryDTO))
         } catch {
             future.reject(with: error)
@@ -64,17 +58,10 @@ final class TransactionRepository: TransactionRepositoryProtocol {
         return future
     }
 
-    func fetchAll() -> Future<[TransactionDTO]> {
-        fatalError()
-    }
-
     func fetch(by id: UUID) -> Future<(TransactionDTO, CategoryDTO)?> {
         let future = Future<(TransactionDTO, CategoryDTO)?>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         let fetched = ExpenseTransaction.find(by: id, in: context).map { tx -> (TransactionDTO, CategoryDTO) in
             let transaction = TransactionDTO(amount: tx.amount,
@@ -92,16 +79,20 @@ final class TransactionRepository: TransactionRepositoryProtocol {
             return (transaction, category)
         }
 
-        future.resolve(with: fetched)
+        do {
+            try save(worker: context)
+            future.resolve(with: fetched)
+        } catch {
+            future.reject(with: error)
+        }
+
+
         return future
     }
 
     func update(by transactionDTO: TransactionDTO, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)> {
         let future = Future<(TransactionDTO, CategoryDTO)>()
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         guard let foundCategory = ExpenseCategory.find(by: categoryId, in: context) else {
             future.reject(with: NSError())
@@ -114,15 +105,21 @@ final class TransactionRepository: TransactionRepositoryProtocol {
 
         let foundTransaction = ExpenseTransaction.find(by: transactionDTO.uid, in: context)
 
-        perform {
-            foundTransaction?.setValue(transactionDTO.amount, forKey: "amount")
-            foundTransaction?.setValue(transactionDTO.currency, forKey: "currency")
-            foundTransaction?.setValue(transactionDTO.date, forKey: "date")
-            foundTransaction?.setValue(transactionDTO.originalAmount, forKey: "originalAmount")
-            foundTransaction?.setValue(transactionDTO.originalCurrency, forKey: "originalCurrency")
-            foundTransaction?.setValue(transactionDTO.uid, forKey: "uid")
-            foundTransaction?.setValue(foundCategory, forKey: "category")
+
+        foundTransaction?.setValue(transactionDTO.amount, forKey: "amount")
+        foundTransaction?.setValue(transactionDTO.currency, forKey: "currency")
+        foundTransaction?.setValue(transactionDTO.date, forKey: "date")
+        foundTransaction?.setValue(transactionDTO.originalAmount, forKey: "originalAmount")
+        foundTransaction?.setValue(transactionDTO.originalCurrency, forKey: "originalCurrency")
+        foundTransaction?.setValue(transactionDTO.uid, forKey: "uid")
+        foundTransaction?.setValue(foundCategory, forKey: "category")
+
+
+        do {
+            try save(worker: context)
             future.resolve(with: (transactionDTO, categoryDTO))
+        } catch {
+            future.reject(with: error)
         }
 
         return future
