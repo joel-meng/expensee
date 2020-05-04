@@ -46,7 +46,7 @@ final class TransactionPresenter {
          router: TransactionRouting,
          transaction: Transaction?,
          category: Category?) {
-        self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD")
+        self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD", uid: nil)
         self.category = category ?? Category(id: nil, name: nil, color: nil)
         self.flavor = transaction != nil && category != nil ? .update : .save
         self.view = view
@@ -99,17 +99,18 @@ extension TransactionPresenter: TransactionControlling {
     }
 
     func didInputTransactionAmount(_ amount: Double?) {
-        transaction = Transaction(amount: amount, date: transaction.date, currency: transaction.currency)
+        transaction = Transaction(amount: amount, date: transaction.date, currency: transaction.currency, uid: transaction.uid)
         view?.handleSaveReady(isDateValidForSaving())
     }
 
     func didUpdateTransactionCurrency(_ currency: String?) {
-        transaction = Transaction(amount: transaction.amount, date: transaction.date, currency: currency ?? transaction.currency)
+        transaction = Transaction(amount: transaction.amount, date: transaction.date,
+                                  currency: currency ?? transaction.currency, uid: transaction.uid)
         view?.handleSaveReady(isDateValidForSaving())
     }
 
     func didSelectDate(_ date: Date) {
-        transaction = Transaction(amount: transaction.amount, date: date, currency: transaction.currency)
+        transaction = Transaction(amount: transaction.amount, date: date, currency: transaction.currency, uid: transaction.uid)
         view?.handleSaveReady(isDateValidForSaving())
     }
 
@@ -131,16 +132,28 @@ extension TransactionPresenter: TransactionControlling {
 
         switch flavor {
         case .save: saveTransaction(amount: amount, date: date, categoryId: categoryId, currency: currency)
-        case .update: updateTransaction(amount: amount, date: date, categoryId: categoryId, currency: currency)
+        case .update:
+            updateTransaction(amount: amount,
+                              date: date,
+                              categoryId: categoryId,
+                              currency: currency,
+                              transactionId: transaction.uid)
         }
     }
 
-    private func updateTransaction(amount: Double, date: Date, categoryId: UUID, currency: String) {
+    private func updateTransaction(amount: Double, date: Date, categoryId: UUID, currency: String, transactionId: UUID?) {
+        guard let transactionId = transactionId else {
+            view?.displayError("Oops, something unexpected happened.")
+            return
+        }
+
         let result = interactor.updateTransaction(with:
             UpdateTransactionRequest(transaction:
                 UpdateTransactionRequest.Transaction(amount: amount,
                                                      date: date,
-                                                     currency: currency), categoryId: categoryId))
+                                                     currency: currency,
+                                                     uid: transactionId),
+                                     categoryId: categoryId))
 
         result.on(success: { [weak router] (response) in
             print(response)
@@ -174,6 +187,8 @@ extension TransactionPresenter {
         let date: Date?
 
         let currency: String?
+
+        let uid: UUID?
     }
 
     struct Category {

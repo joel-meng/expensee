@@ -115,7 +115,8 @@ final class DependencyInjection: DependencyInjecting {
         let transaction = sceneModel.map {
             TransactionPresenter.Transaction(amount: $0.transaction.originalAmount,
                                              date: $0.transaction.date,
-                                             currency: $0.transaction.originalCurrency)
+                                             currency: $0.transaction.originalCurrency,
+                                             uid: $0.transaction.id)
         }
 
         let category = sceneModel.map {

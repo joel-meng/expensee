@@ -106,7 +106,7 @@ final class TransactionInteractor: TransactionInteracting {
                         .Transaction(amount: $0.convertionResult.toCurrencyAmount * request.transaction.amount,
                                      date: request.transaction.date,
                                      currency: $0.convertionResult.toCurrency,
-                                     uid: UUID(),
+                                     uid: request.transaction.uid,
                                      originalAmount: request.transaction.amount,
                                      originalCurrency: request.transaction.currency),
                                                                   categoryId: request.categoryId)
@@ -117,11 +117,11 @@ final class TransactionInteractor: TransactionInteracting {
             let useCaseRequest = UpdateTransactionUseCaseRequest(transaction:
                        UpdateTransactionUseCaseRequest.Transaction(amount: request.transaction.amount,
                                                                    date: request.transaction.date,
-                                                                    currency: request.transaction.currency,
-                                                                    uid: UUID(),
-                                                                    originalAmount: request.transaction.amount,
-                                                                    originalCurrency: request.transaction.currency),
-                                                                    categoryId: request.categoryId)
+                                                                   currency: request.transaction.currency,
+                                                                   uid: request.transaction.uid,
+                                                                   originalAmount: request.transaction.amount,
+                                                                   originalCurrency: request.transaction.currency),
+                                                                 categoryId: request.categoryId)
             return updateTransactionInNZD(with: useCaseRequest)
         default: fatalError("Not Supported")
         }
@@ -208,6 +208,8 @@ struct UpdateTransactionRequest {
         let date: Date
 
         let currency: String
+
+        let uid: UUID
     }
 }
 
