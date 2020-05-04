@@ -14,6 +14,10 @@ protocol RepositoryProtocol {
     var context: NSManagedObjectContext? { get }
 
     func perform(action: @escaping () -> Void)
+
+    var workerContext: NSManagedObjectContext { get }
+
+    func save(worker context: NSManagedObjectContext) throws
 }
 
 extension RepositoryProtocol {
@@ -22,8 +26,15 @@ extension RepositoryProtocol {
         context?.performChanges(block: action)
     }
 
-    func save() throws {
+    func save(worker workerContext: NSManagedObjectContext) throws {
+        try workerContext.save()
         try context?.save()
+    }
+
+    var workerContext: NSManagedObjectContext {
+        let workerContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        workerContext.parent = context
+        return workerContext
     }
 }
 
@@ -51,17 +62,18 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
     func save(_ category: CategoryDTO) -> Future<CategoryDTO> {
         let future = Future<CategoryDTO>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
-        perform {
-            let inserted = ExpenseCategory.insert(category: category, into: context)
-            let categoryDTO = CategoryDTO(name: inserted.name, color: inserted.color, budget: inserted.budget.map {
-                BudgetDTO(currency: $0.currency, limit: $0.limit)
-            }, uid: category.uid)
+        let inserted = ExpenseCategory.insert(category: category, into: context)
+        let categoryDTO = CategoryDTO(name: inserted.name, color: inserted.color, budget: inserted.budget.map {
+            BudgetDTO(currency: $0.currency, limit: $0.limit)
+        }, uid: category.uid)
+
+        do {
+            try save(worker: context)
             future.resolve(with: categoryDTO)
+        } catch {
+            future.reject(with: error)
         }
 
         return future
@@ -70,10 +82,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
     func fetchAll() -> Future<[CategoryDTO]> {
         let future = Future<[CategoryDTO]>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         do {
             let fetched = try ExpenseCategory.fetchAll(from: context)
@@ -94,10 +103,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
     func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]> {
         let future = Future<[CategoryDTO: [TransactionDTO]]>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         do {
             let fetched = try ExpenseCategory.fetchAll(from: context)
@@ -119,21 +125,18 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
                 return (categoryDTO, transactionsDTO)
             }
 
+            try save(worker: context)
             future.resolve(with: Dictionary(uniqueKeysWithValues: result))
-        } catch {
+        } catch  {
             future.reject(with: error)
         }
-
         return future
     }
 
     func fetch(by id: UUID) -> Future<CategoryDTO?> {
         let future = Future<CategoryDTO?>()
 
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         let fetched = ExpenseCategory.find(by: id, in: context).map {
             CategoryDTO(name: $0.name, color: $0.color, budget: $0.budget.map {
@@ -141,25 +144,44 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
             }, uid: $0.uid)
         }
 
-        future.resolve(with: fetched)
+        do {
+            try save(worker: context)
+            future.resolve(with: fetched)
+        } catch  {
+            future.reject(with: error)
+        }
+
         return future
     }
 
     func update(by categoryDTO: CategoryDTO) -> Future<CategoryDTO> {
         let future = Future<CategoryDTO>()
-        guard let context = context else {
-            future.reject(with: NSError())
-            return future
-        }
+        let context = workerContext
 
         let found = ExpenseCategory.find(by: categoryDTO.uid, in: context)
 
-        perform {
-            found?.setValue(categoryDTO.color, forKey: "color")
-            found?.setValue(categoryDTO.name, forKey: "name")
-            found?.budget?.setValue(categoryDTO.budget?.currency, forKey: "currency")
-            found?.budget?.setValue(categoryDTO.budget?.limit, forKey: "limit")
+        found?.setValue(categoryDTO.color, forKey: "color")
+        found?.setValue(categoryDTO.name, forKey: "name")
+
+        if let currency = categoryDTO.budget?.currency, let limit = categoryDTO.budget?.limit {
+            if found?.budget == nil {
+                let newBudget = ExpenseBudget.insert(budget: BudgetDTO(currency: currency, limit: limit), into: context)
+                found?.setValue(newBudget, forKey: "budget")
+            }
+            found?.budget?.setValue(currency, forKey: "currency")
+            found?.budget?.setValue(limit, forKey: "limit")
+        }
+
+        if categoryDTO.budget == nil && found?.budget != nil {
+            found?.setValue(nil, forKey: "budget")
+        }
+
+
+        do {
+            try save(worker: context)
             future.resolve(with: categoryDTO)
+        } catch  {
+            future.reject(with: error)
         }
 
         return future

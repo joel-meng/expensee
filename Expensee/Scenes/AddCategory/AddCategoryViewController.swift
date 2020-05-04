@@ -12,7 +12,6 @@ class AddCategoryViewController: UIViewController {
 
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var limitTextField: UITextField!
     @IBOutlet weak var currencySegmentControl: UISegmentedControl!
 
@@ -26,32 +25,46 @@ class AddCategoryViewController: UIViewController {
         super.viewDidLoad()
         title = "Category"
 
-        limitTextField.delegate = amountTextFieldDelegate
-        amountTextFieldDelegate.updateAction = { [weak presenter] _, result in
-            result.do(ifLeft: { (amount) in
-                presenter?.didSelectMonthlyLimit(amount?.doubleValue)
-            }, ifRight: { error in
-                print("\(error)")
-            })
-        }
-
-        nameTextField.delegate = anyTextFieldDelegate
-        anyTextFieldDelegate.updateAction = { [weak presenter] _, result in
-            result.do(ifLeft: { (name) in
-                presenter?.didSelectCategoryName(name)
-            }, ifRight: { error in
-                print("\(error)")
-            })
-        }
-        
+        setupLimitTextField(limitTextField, delegate: amountTextFieldDelegate)
+        setupNameTextField(nameTextField, delegate: anyTextFieldDelegate)
         currencySegmentControl.addTarget(self, action: #selector(updateCurrencySelection(sender:)), for: .valueChanged)
-
-        saveButton.addTarget(self, action: #selector(saveButtonTapped(sender:)), for: .touchUpInside)
+        setupSaveButton()
         presenter.viewIsReady()
     }
 
+    private func setupSaveButton() {
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .save,
+                                         target: self,
+                                         action: #selector(saveButtonTapped))
+        navigationItem.rightBarButtonItem = saveButton
+    }
+
+    private func setupLimitTextField(_ limitTextField: UITextField, delegate: CurrencyRangeTextFieldDelegation) {
+        limitTextField.delegate = amountTextFieldDelegate
+        delegate.updateAction = { [weak presenter, weak self] _, result in
+            result.do(ifLeft: { (amount) in
+                guard let self = self else { return }
+                presenter?.didSelectMonthlyLimit(amount?.doubleValue)
+                presenter?.didSelectMonthlyLimitCurrency(self.currency(ofSegment: self.currencySegmentControl))
+            }, ifRight: { [weak self] error in
+                self?.displayError("Something went wrong..")
+            })
+        }
+    }
+
+    private func setupNameTextField(_ nameTextField: UITextField, delegate: AnyTextFieldDelegation) {
+        nameTextField.delegate = anyTextFieldDelegate
+        delegate.updateAction = { [weak presenter] _, result in
+            result.do(ifLeft: { (name) in
+                presenter?.didSelectCategoryName(name)
+            }, ifRight: { [weak self] error in
+                self?.displayError("Something went wrong..")
+            })
+        }
+    }
+
     @objc
-    private func saveButtonTapped(sender: UIButton) {
+    private func saveButtonTapped() {
         presenter.didTapSave()
     }
 
@@ -107,10 +120,13 @@ class AddCategoryViewController: UIViewController {
 extension AddCategoryViewController: AddCategoryPresenting {
     
     func displayCategory(name: String, monthlyBudget: (Double, String)?) {
-        nameTextField.text = name
-        if let monthly = monthlyBudget {
-            limitTextField.text = String(describing: monthly.0)
-            currencySegmentControl.selectedSegmentIndex = segmentIndex(ofCurrency: monthly.1)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.nameTextField.text = name
+            if let monthly = monthlyBudget {
+                self.limitTextField.text = String(describing: monthly.0)
+                self.currencySegmentControl.selectedSegmentIndex = self.segmentIndex(ofCurrency: monthly.1)
+            }
         }
     }
 
@@ -119,7 +135,9 @@ extension AddCategoryViewController: AddCategoryPresenting {
     }
     
     func setSaveButtonEnable(_ enabled: Bool) {
-        saveButton.isEnabled = enabled
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationItem.rightBarButtonItem?.isEnabled = enabled
+        }
     }
 
     func displayError(_ message: String) {

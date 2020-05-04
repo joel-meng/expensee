@@ -34,7 +34,6 @@ class TransactionViewController: UIViewController {
     @IBOutlet weak var currencySegmentControl: UISegmentedControl!
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
-    @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var datePicker: UIDatePicker!
 
     // MARK: - VIPER
@@ -52,11 +51,11 @@ class TransactionViewController: UIViewController {
         setupDateButton(dateButton)
         setupCategoryButton(categoryButton)
         setupDatePicker(datePicker)
-        saveButton.addTarget(self, action: #selector(didTapSave(sender:)), for: .touchUpInside)
+        setupSaveButton()
         presenter.viewIsReady()
     }
     
-    @objc private func didTapSave(sender: UIButton) {
+    @objc private func didTapSave() {
         presenter.didTapSave()
     }
 
@@ -68,6 +67,11 @@ class TransactionViewController: UIViewController {
     
     // MARK: - DatePicker
     
+    private func setupSaveButton() {
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(didTapSave))
+        navigationItem.rightBarButtonItem = saveButton
+    }
+
     private func setupDatePicker(_ datePicker: UIDatePicker) {
         datePicker.minuteInterval = 10
         datePicker.maximumDate = Date()
@@ -175,7 +179,7 @@ extension TransactionViewController: TransactionPresenting {
 
     func handleSaveReady(_ enabled: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.saveButton.isEnabled = enabled
+            self?.navigationItem.rightBarButtonItem?.isEnabled = enabled
         }
     }
 

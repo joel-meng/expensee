@@ -70,12 +70,12 @@ final class AddCategoryPresenter {
     }
 
     private func isValid(category: Category?, limit: MonthlyLimit?) -> Bool {
-        guard category?.name != nil else { return false }
-        if limit?.limit != nil, limit?.currency != nil {
-            return true
-        } else {
+        guard category?.name != nil, category?.color != nil else { return false }
+        if (limit?.limit != nil && limit?.currency != nil) ||
+            (limit?.limit == nil && limit?.currency == nil) {
             return true
         }
+        return false
     }
 
     struct MonthlyLimit {
@@ -105,10 +105,12 @@ extension AddCategoryPresenter: AddCategoryControlling {
     }
 
     func didSelectMonthlyLimit(_ limit: Double?) {
-        self.monthlyLimit = MonthlyLimit(limit: limit, currency: monthlyLimit?.currency)
+        self.monthlyLimit = MonthlyLimit(limit: limit,
+                                         currency: limit == nil ? nil : monthlyLimit?.currency)
     }
 
     func didSelectMonthlyLimitCurrency(_ currency: String?) {
+        guard monthlyLimit?.limit != nil else { return }
         self.monthlyLimit = MonthlyLimit(limit: monthlyLimit?.limit, currency: currency)
     }
 
@@ -146,8 +148,8 @@ extension AddCategoryPresenter: AddCategoryControlling {
         let savedFuture = interactor.saveCategory(request: SaveCategoryRequest(category: category))
         savedFuture.on(success: { [weak router] (response) in
             router?.routeBackAndRefresh()
-        }, failure: { error in
-            print(error)
+        }, failure: { [view] error in
+            view?.displayError("Oops, something went wrong.")
         })
     }
 
@@ -170,8 +172,8 @@ extension AddCategoryPresenter: AddCategoryControlling {
         let category = UpdateCategoryRequest.Category(id: id, name: name, color: color, monthlyLimit: monthlyLimit)
         interactor.updateCategory(request:UpdateCategoryRequest(category:category)).on(success: { [weak router] (response) in
             router?.routeBackAndRefresh()
-        }, failure: { error in
-            print(error)
+        }, failure: { [view] error in
+            view?.displayError("Oops, something went wrong.")
         })
     }
 

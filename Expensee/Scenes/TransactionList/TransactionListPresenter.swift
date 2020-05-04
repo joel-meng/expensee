@@ -77,8 +77,8 @@ extension TransactionListPresenter: TransactionListControlling {
                                                 transactionId: tx.id)
                 }
                 view?.display(transactions: transactionCellModels)
-            }, failure: { error in
-                print(error)
+            }, failure: { [view] error in
+                view?.showError("Oops, something went wrong")
             })
     }
 

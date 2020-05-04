@@ -40,13 +40,9 @@ final class TransactionPresenter {
 
     private var flavor: SceneFlavor = .save
 
-    private var transaction: Transaction {
-        didSet { didUpdateTransaction(transaction) }
-    }
+    private var transaction: Transaction
 
-    private var category: Category {
-        didSet { didUpdateCategory(category) }
-    }
+    private var category: Category
 
     init(view: TransactionPresenting,
          interactor: TransactionInteracting,
@@ -62,14 +58,6 @@ final class TransactionPresenter {
     }
 
     // MARK: - Update
-
-    private func didUpdateTransaction(_ transaction: Transaction?) {
-        print(transaction)
-    }
-
-    private func didUpdateCategory(_ category: Category?) {
-        print(category)
-    }
 
     private func isDateValidForSaving() -> Bool {
         return (transaction.amount != nil && category.name != nil && category.color != nil)
@@ -164,7 +152,6 @@ extension TransactionPresenter: TransactionControlling {
                                      categoryId: categoryId))
 
         result.on(success: { [weak router] (response) in
-            print(response)
             router?.routeBackToTransactionList()
         }, failure: { [weak view] error in
             view?.displayError("Oops, something went wrong.")

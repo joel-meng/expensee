@@ -16,12 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-
-
         CoreDataStore.initialize() { [weak self] in
             self?.window = self?.createWindow()
             self?.window?.rootViewController = self?.createHomeViewController()
-//            self?.window?.rootViewController = self?.createAddCategoryScene()
             self?.window?.makeKeyAndVisible()
         }
         return true
