@@ -62,7 +62,7 @@ class TransactionInteractorTestCase: XCTestCase {
         let interactor = TransactionInteractor(currencyConversionUseCase: StubCurrencyConvertingUseCase(mockUSD2NZDQuote: mockUSD2NZDQuote),
                                                saveTransactionUseCase: StubSaveTransactionUseCase())
 
-        expect("Success should be called", { (expectation) in
+        expect("Transaction saved with NZD, so should convert USD to NZD", { (expectation) in
             let transactionDate = Date()
             let saveFuture = interactor.saveTransaction(with:
                 SaveTransactionRequest(transaction:
@@ -83,6 +83,7 @@ class TransactionInteractorTestCase: XCTestCase {
     }
 
     func testSaveNZD_AmountDoesNOTConvert() {
+
         class StubCurrencyConvertingUseCase: CurrencyConvertingUseCaseProtocol {
 
             let mockUSD2NZDQuote: Double
@@ -134,6 +135,73 @@ class TransactionInteractorTestCase: XCTestCase {
             currencyConversionUseCase: StubCurrencyConvertingUseCase(mockUSD2NZDQuote: mockUSD2NZDQuote),
             saveTransactionUseCase: StubSaveTransactionUseCase())
 
+        expect("Transaction saved with NZD", { (expectation) in
+            let transactionDate = Date()
+            let saveFuture = interactor.saveTransaction(with:
+                SaveTransactionRequest(transaction:
+                    SaveTransactionRequest.Transaction(amount: 10,
+                                                       date: transactionDate,
+                                                       currency: "NZD"),
+                                       categoryId: UUID()))
+            saveFuture.onSuccess { (response) in
+                XCTAssertEqual(response.transaction.currency, "NZD", "Saved NZD straigt away to use case.")
+                XCTAssertEqual(response.transaction.originalCurrency, "NZD", "Original currency will be save as `originalCurrency`")
+                XCTAssertEqual(response.transaction.amount, 10,
+                               "Saving NZD amount DOSE NOT CHANGE and saved.")
+                XCTAssertEqual(response.transaction.originalAmount, 10, "Original amount will be save as `originalAmount`")
+                XCTAssertEqual(response.transaction.date, transactionDate, "Transaction date should not intact")
+                expectation.fulfill()
+            }
+        })
+    }
+
+    func testSaveNZD_ConversionErrorDoesNOTAffectSaving() {
+
+        class StubCurrencyConvertingUseCase: CurrencyConvertingUseCaseProtocol {
+
+            let mockUSD2NZDQuote: Double
+
+            init(mockUSD2NZDQuote: Double) {
+                self.mockUSD2NZDQuote = mockUSD2NZDQuote
+            }
+
+            func convertCurrency(with request: ConvertCurrencyUseCaseRequest) -> Future<ConvertCurrencyUseCaseResponse> {
+                let future = Future<ConvertCurrencyUseCaseResponse>()
+                future.reject(with: NSError())
+                return future
+            }
+        }
+
+        class StubSaveTransactionUseCase: SaveTransactionUseCaseProtocol {
+
+            func saveTransaction(with request: SaveTransactionUseCaseRequest) -> Future<SaveTransactionUseCaseResponse> {
+                let future = Future<SaveTransactionUseCaseResponse>()
+                let response = SaveTransactionUseCaseResponse(transaction:
+                    TransactionDTO(amount: request.transaction.amount,
+                                   date: request.transaction.date,
+                                   currency: request.transaction.currency,
+                                   uid: request.transaction.uid,
+                                   originalAmount: request.transaction.originalAmount,
+                                   originalCurrency: request.transaction.originalCurrency),
+                                                              category: CategoryDTO(name: "name",
+                                                                                    color: "#ffffff",
+                                                                                    budget: nil,
+                                                                                    uid: request.categoryId))
+                future.resolve(with: response)
+                return future
+            }
+
+            func updateTransaction(with request: UpdateTransactionUseCaseRequest) -> Future<UpdateTransactionUseCaseResponse> {
+                XCTFail()
+                return Future<UpdateTransactionUseCaseResponse>()
+            }
+        }
+
+        let mockUSD2NZDQuote = 1.65
+        let interactor = TransactionInteractor(
+            currencyConversionUseCase: StubCurrencyConvertingUseCase(mockUSD2NZDQuote: mockUSD2NZDQuote),
+            saveTransactionUseCase: StubSaveTransactionUseCase())
+
         expect("Success should be called", { (expectation) in
             let transactionDate = Date()
             let saveFuture = interactor.saveTransaction(with:
@@ -151,6 +219,71 @@ class TransactionInteractorTestCase: XCTestCase {
                 XCTAssertEqual(response.transaction.date, transactionDate, "Transaction date should not intact")
                 expectation.fulfill()
             }
+        })
+    }
+
+    func testSaveUSD_ConversionErrorAFFECTSSaving() {
+
+        class StubCurrencyConvertingUseCase: CurrencyConvertingUseCaseProtocol {
+
+            let mockUSD2NZDQuote: Double
+
+            init(mockUSD2NZDQuote: Double) {
+                self.mockUSD2NZDQuote = mockUSD2NZDQuote
+            }
+
+            func convertCurrency(with request: ConvertCurrencyUseCaseRequest) -> Future<ConvertCurrencyUseCaseResponse> {
+                let future = Future<ConvertCurrencyUseCaseResponse>()
+                future.reject(with: NSError(domain: "stubDomain", code: 123, userInfo: nil))
+                return future
+            }
+        }
+
+        class StubSaveTransactionUseCase: SaveTransactionUseCaseProtocol {
+
+            func saveTransaction(with request: SaveTransactionUseCaseRequest) -> Future<SaveTransactionUseCaseResponse> {
+                let future = Future<SaveTransactionUseCaseResponse>()
+                let response = SaveTransactionUseCaseResponse(transaction:
+                    TransactionDTO(amount: request.transaction.amount,
+                                   date: request.transaction.date,
+                                   currency: request.transaction.currency,
+                                   uid: request.transaction.uid,
+                                   originalAmount: request.transaction.originalAmount,
+                                   originalCurrency: request.transaction.originalCurrency),
+                                                              category: CategoryDTO(name: "name",
+                                                                                    color: "#ffffff",
+                                                                                    budget: nil,
+                                                                                    uid: request.categoryId))
+                future.resolve(with: response)
+                return future
+            }
+
+            func updateTransaction(with request: UpdateTransactionUseCaseRequest) -> Future<UpdateTransactionUseCaseResponse> {
+                XCTFail()
+                return Future<UpdateTransactionUseCaseResponse>()
+            }
+        }
+
+        let mockUSD2NZDQuote = 1.65
+        let interactor = TransactionInteractor(
+            currencyConversionUseCase: StubCurrencyConvertingUseCase(mockUSD2NZDQuote: mockUSD2NZDQuote),
+            saveTransactionUseCase: StubSaveTransactionUseCase())
+
+        expect("Success should be called", { (expectation) in
+            let transactionDate = Date()
+            let saveFuture = interactor.saveTransaction(with:
+                SaveTransactionRequest(transaction:
+                    SaveTransactionRequest.Transaction(amount: 10,
+                                                       date: transactionDate,
+                                                       currency: "USD"),
+                                       categoryId: UUID()))
+            saveFuture.on(success: { (response) in
+                XCTFail()
+            }, failure: { error in
+                XCTAssertEqual((error as NSError).domain, "stubDomain")
+                XCTAssertEqual((error as NSError).code, 123)
+                expectation.fulfill()
+            })
         })
     }
 }
