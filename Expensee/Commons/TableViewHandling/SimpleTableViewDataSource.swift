@@ -14,7 +14,7 @@ class SimpleTableDataSource<Row, Cell>: NSObject, UITableViewDataSource, UITable
 
     var rows: [Row] = [] {
         didSet {
-            sections = mergingRules(rows.filter(filter).sorted(by: sorter))
+            sections = mergingRules(rows.filter(filter).sorted(by: rowSorter)).sorted(by: sectionSorter)
         }
     }
 
@@ -22,15 +22,17 @@ class SimpleTableDataSource<Row, Cell>: NSObject, UITableViewDataSource, UITable
 
     var filter: (Row) -> Bool = { _ in return true } {
         didSet {
-            sections = mergingRules(rows.filter(filter).sorted(by: sorter))
+            sections = mergingRules(rows.filter(filter).sorted(by: rowSorter)).sorted(by: sectionSorter)
         }
     }
 
-    var sorter: (Row, Row) -> Bool = { _, _ in true }
+    var rowSorter: (Row, Row) -> Bool = { _, _ in true }
+
+    var sectionSorter: (Section<Row>, Section<Row>) -> Bool = { _, _ in true }
 
     var mergingRules: ([Row]) -> [Section<Row>] = { [Section<Row>(rows: $0, title: "")] } {
         didSet {
-            sections = mergingRules(rows.filter(filter).sorted(by: sorter))
+            sections = mergingRules(rows.filter(filter).sorted(by: rowSorter)).sorted(by: sectionSorter)
         }
     }
 

@@ -10,7 +10,7 @@ import Foundation
 
 struct RestRequestAuthorizationDecorator: RestRequestDecorator {
 
-	private static let clientID: String = "Client-ID c3ec644b502b9aeca525652e967d8488fc50a449e773b2cef85f6f9e08b329cb"
+	private static let clientID: String = ""
 	
 	let baseRequest: RestRequest
 

@@ -26,6 +26,9 @@ extension UIView {
 
         let stateLabel = UILabel()
         stateLabel.tag = stateLabelTag
+        stateLabel.numberOfLines = 0
+        stateLabel.lineBreakMode = .byWordWrapping
+        stateLabel.textAlignment = .center
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
         coverView.addSubview(stateLabel)
 
@@ -36,6 +39,8 @@ extension UIView {
 
             stateLabel.centerXAnchor.constraint(equalTo: coverView.centerXAnchor),
             stateLabel.centerYAnchor.constraint(equalTo: coverView.centerYAnchor),
+            stateLabel.leadingAnchor.constraint(equalTo: coverView.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stateLabel.trailingAnchor.constraint(equalTo: coverView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
             coverView.leadingAnchor.constraint(equalTo: leadingAnchor),
             coverView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -77,7 +82,7 @@ extension UIView {
 
     private func setStateViewWithText(_ text: String?) {
         let stateLabel = stateView
-        text.map { stateLabel.text = $0 }
+        stateLabel.text = text
         stateLabel.isHidden = text == nil
     }
 
@@ -89,11 +94,11 @@ extension UIView {
     private func showContent(_ content: Content) {
         setIndicatorView(started: false)
         switch content {
-        case .empty:
-            setStateViewWithText("There's nothing to display 🔭")
+        case .empty(let message):
+            setStateViewWithText(message ?? "There's nothing to display 🔭")
             bringSubviewToFront(coverView)
-        case .error:
-            setStateViewWithText("There's an error 🎭")
+        case .error(let message):
+            setStateViewWithText(message ?? "There's an error 🎭")
             bringSubviewToFront(coverView)
         case .data:
             setStateViewWithText(nil)
@@ -112,8 +117,8 @@ extension UIView {
     }
 
     enum Content {
-        case error
+        case error(message: String?)
         case data
-        case empty
+        case empty(message: String?)
     }
 }

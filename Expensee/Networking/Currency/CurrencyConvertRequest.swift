@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct XRequest: RestRequest {
+struct CurrencyConvertRequest: RestRequest {
     
-    private static let baseURL = "https://api.spacexdata.com"
+    private static let baseURL = "http://apilayer.net/api/"
     
     private let path: String
     
@@ -19,7 +19,7 @@ struct XRequest: RestRequest {
     }
     
     func request() -> URLRequest? {
-        guard let url = URL(string: XRequest.baseURL) else { return nil }
+        guard let url = URL(string: CurrencyConvertRequest.baseURL) else { return nil }
         guard let pathURL = URL(string: path, relativeTo: url) else { return nil }
         return URLRequest(url: pathURL)
     }

@@ -14,32 +14,51 @@ protocol CategoriesRouting: class {
     func routeToAddCategory(completion: @escaping () -> Void)
 
     func routeToUpdateCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void)
+
+    func routeBack(with sceneModel:SelectCategorySceneModel)
 }
 
 final class CategoriesRouter: CategoriesRouting {
 
-    private var navigationController: UINavigationController
+    private let navigationController: UINavigationController
 
-    private var factory: DependencyInjecting
+    private let factory: DependencyInjecting
 
-    init(navigationController: UINavigationController, factory: DependencyInjecting) {
+    private let completion: ((SelectCategorySceneModel) -> Void)?
+
+    init(navigationController: UINavigationController,
+         completion: ((SelectCategorySceneModel) -> Void)? = nil,
+         factory: DependencyInjecting) {
         self.factory = factory
         self.navigationController = navigationController
+        self.completion = completion
     }
 
     func routeToAddCategory(completion: @escaping () -> Void) {
         let nextViewController = factory.createAddCategoryScene(from: navigationController, sceneModel: nil, completion: completion)
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
     }
 
     func routeToUpdateCategory(with sceneModel: AddCategorySceneModel, completion: @escaping () -> Void) {
         let nextViewController = factory.createAddCategoryScene(from: navigationController, sceneModel: sceneModel, completion: completion)
-        navigationController.show(nextViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController.show(nextViewController, sender: nil)
+        }
+    }
+
+    func routeBack(with sceneModel: SelectCategorySceneModel) {
+        DispatchQueue.main.async { [weak self] in
+            self?.completion?(sceneModel)
+            self?.navigationController.popViewController(animated: true)
+        }
     }
 }
 
-struct AddCategorySceneModel {
-    let category: Category?
+struct SelectCategorySceneModel {
+
+    let category: Category
 
     struct Category {
         let uid: UUID

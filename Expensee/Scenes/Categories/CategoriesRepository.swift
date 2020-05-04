@@ -33,7 +33,11 @@ protocol CategoriesRepositoryProtocol: RepositoryProtocol {
 
     func fetchAll() -> Future<[CategoryDTO]>
 
+    func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]>
+
     func fetch(by id: UUID) -> Future<CategoryDTO?>
+
+    func update(by categoryDTO: CategoryDTO) -> Future<CategoryDTO>
 }
 
 final class CategoriesRepository: CategoriesRepositoryProtocol {
@@ -53,7 +57,7 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
         }
 
         perform {
-            let inserted = try! ExpenseCategory.insert(category: category, into: context)
+            let inserted = ExpenseCategory.insert(category: category, into: context)
             let categoryDTO = CategoryDTO(name: inserted.name, color: inserted.color, budget: inserted.budget.map {
                 BudgetDTO(currency: $0.currency, limit: $0.limit)
             }, uid: category.uid)
@@ -80,6 +84,42 @@ final class CategoriesRepository: CategoriesRepositoryProtocol {
                 }, uid: $0.uid)
             }
             future.resolve(with: categoriesDTO)
+        } catch {
+            future.reject(with: error)
+        }
+
+        return future
+    }
+
+    func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]> {
+        let future = Future<[CategoryDTO: [TransactionDTO]]>()
+
+        guard let context = context else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        do {
+            let fetched = try ExpenseCategory.fetchAll(from: context)
+            let result = fetched.map { category -> (CategoryDTO, [TransactionDTO]) in
+                let categoryDTO = CategoryDTO(name: category.name,
+                                           color: category.color,
+                                           budget: category.budget.map { BudgetDTO(currency: $0.currency, limit: $0.limit) },
+                                           uid: category.uid)
+
+                let transactionsDTO = category.transactions?.map {
+                    TransactionDTO(amount: $0.amount,
+                                   date: $0.date,
+                                   currency: $0.currency,
+                                   uid: $0.uid,
+                                   originalAmount: $0.originalAmount,
+                                   originalCurrency: $0.originalCurrency)
+                } ?? []
+
+                return (categoryDTO, transactionsDTO)
+            }
+
+            future.resolve(with: Dictionary(uniqueKeysWithValues: result))
         } catch {
             future.reject(with: error)
         }

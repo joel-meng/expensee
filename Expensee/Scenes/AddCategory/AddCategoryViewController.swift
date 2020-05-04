@@ -88,7 +88,7 @@ class AddCategoryViewController: UIViewController {
             return cell
         }
 
-        dataSource.sorter = { $0.color < $1.color }
+        dataSource.rowSorter = { $0.color < $1.color }
 
         return dataSource
     }()
@@ -120,6 +120,14 @@ extension AddCategoryViewController: AddCategoryPresenting {
     
     func setSaveButtonEnable(_ enabled: Bool) {
         saveButton.isEnabled = enabled
+    }
+
+    func displayError(_ message: String) {
+        DispatchQueue.main.async { [weak self] in
+            let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
+            self?.present(alertController, animated: true, completion: nil)
+        }
     }
 }
 

@@ -10,9 +10,20 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="budget" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ExpenseBudget" inverseName="category" inverseEntity="ExpenseBudget"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExpenseTransaction" inverseName="category" inverseEntity="ExpenseTransaction"/>
+    </entity>
+    <entity name="ExpenseTransaction" representedClassName=".ExpenseTransaction" syncable="YES">
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="currency" attributeType="String"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="originalAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="originalCurrency" optional="YES" attributeType="String"/>
+        <attribute name="uid" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseCategory" inverseName="transactions" inverseEntity="ExpenseCategory"/>
     </entity>
     <elements>
-        <element name="ExpenseBudget" positionX="-60.84375" positionY="21.0546875" width="128" height="88"/>
-        <element name="ExpenseCategory" positionX="-269.8828125" positionY="22.94921875" width="128" height="103"/>
+        <element name="ExpenseBudget" positionX="-60.84375" positionY="22.47265625" width="128" height="88"/>
+        <element name="ExpenseCategory" positionX="-269.8828125" positionY="22.94921875" width="128" height="118"/>
+        <element name="ExpenseTransaction" positionX="-459.94921875" positionY="37.13671875" width="128" height="148"/>
     </elements>
 </model>

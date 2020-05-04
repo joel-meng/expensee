@@ -10,23 +10,32 @@ import UIKit
 
 protocol DependencyInjecting {
 
-    func createCategoryScene(from navigation: UINavigationController) -> UIViewController
+    func createCategoryListScene(from navigation: UINavigationController) -> UIViewController
+
+    func createCategoryListSceneForSelection(from navigation: UINavigationController,
+                                             completion: @escaping (SelectCategorySceneModel) -> Void) -> UIViewController
 
     func createAddCategoryScene(from navigation: UINavigationController,
                                 sceneModel: AddCategorySceneModel?,
+                                completion: @escaping () -> Void) -> UIViewController
+
+    func createTransactionListScene(from navigation: UINavigationController) -> UIViewController
+
+    func createTransactionScene(from navigation: UINavigationController,
+                                sceneModel: TransactionSceneModel?,
                                 completion: @escaping () -> Void) -> UIViewController
 }
 
 final class DependencyInjection: DependencyInjecting {
 
-    func createCategoryScene(from navigation: UINavigationController) -> UIViewController {
+    // MARK: - Category List Scene
+
+    func createCategoryListScene(from navigation: UINavigationController) -> UIViewController {
         let router = CategoriesRouter(navigationController: navigation, factory: self)
         let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
-        let budgetRepository = BudgetRepository(context: CoreDataStore.shared?.context)
-        let categoryUseCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository,
-                                                    budgetRepository: budgetRepository)
+        let categoryUseCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository)
         let interactor = CategoriesInteractor(categoriesUseCase: categoryUseCase)
-        let presenter = CategoriesPresenter(interactor: interactor, router: router)
+        let presenter = CategoriesPresenter(interactor: interactor, router: router, flavor: .display)
 
         let categoriesViewController = CategoriesViewController(nibName: nil, bundle: nil)
         presenter.view = categoriesViewController
@@ -34,6 +43,23 @@ final class DependencyInjection: DependencyInjecting {
 
         return categoriesViewController
     }
+
+    func createCategoryListSceneForSelection(from navigation: UINavigationController,
+                                             completion: @escaping (SelectCategorySceneModel) -> Void) -> UIViewController {
+        let router = CategoriesRouter(navigationController: navigation, completion: completion, factory: self)
+        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
+        let categoryUseCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository)
+        let interactor = CategoriesInteractor(categoriesUseCase: categoryUseCase)
+        let presenter = CategoriesPresenter(interactor: interactor, router: router, flavor: .selection)
+
+        let categoriesViewController = CategoriesViewController(nibName: nil, bundle: nil)
+        presenter.view = categoriesViewController
+        categoriesViewController.presenter = presenter
+
+        return categoriesViewController
+    }
+
+    // MARK: - Category Add Scene
 
     func createAddCategoryScene(from navigation: UINavigationController,
                                 sceneModel: AddCategorySceneModel? = nil,
@@ -62,5 +88,57 @@ final class DependencyInjection: DependencyInjecting {
         addCategoryViewController.presenter = presenter
 
         return addCategoryViewController
+    }
+
+    func createTransactionListScene(from navigation: UINavigationController) -> UIViewController {
+        let router = TransactionListRouter(navigationController: navigation, factory: self)
+        let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
+        let transactionRepository = TransactionRepository(context: CoreDataStore.shared?.context)
+        let useCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository)
+        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: StubCurrencyLayerService())
+        let transactionBudgetingUsecase = TransactionCategoryBudgetCase(currencyUseCase: currencyConvertingUseCase)
+        let loadTransactionUseCase = TransactionLoadUseCase(transactionRepository: transactionRepository)
+        let interactor = TransactionListInteractor(categoryLoadUseCase: useCase,
+                                                   transactionBudgetingUsecase: transactionBudgetingUsecase,
+                                                   transactionLoadUseCase: loadTransactionUseCase)
+        let viewController = TransactionListViewController()
+        let presenter = TransactionListPresenter(view: viewController, interactor: interactor, router: router)
+        viewController.presenter = presenter
+
+        return viewController
+    }
+
+    func createTransactionScene(from navigation: UINavigationController,
+                                sceneModel: TransactionSceneModel?,
+                                completion: @escaping () -> Void) -> UIViewController {
+
+        let transaction = sceneModel.map {
+            TransactionPresenter.Transaction(amount: $0.transaction.originalAmount,
+                                             date: $0.transaction.date,
+                                             currency: $0.transaction.originalCurrency,
+                                             uid: $0.transaction.id)
+        }
+
+        let category = sceneModel.map {
+            TransactionPresenter.Category(id: $0.transaction.category.id,
+                                          name: $0.transaction.category.name,
+                                          color: $0.transaction.category.color)
+        }
+
+        let router = TransactionRouter(navigationController: navigation, factory: self, routeBackToTransactionListCompletion: completion)
+        let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: StubCurrencyLayerService())
+        let saveTransactionUseCase = SaveTransactionUseCase(transactionRepository:
+            TransactionRepository(context: CoreDataStore.shared?.context))
+        let interactor = TransactionInteractor(currencyConversionUseCase: currencyConvertingUseCase,
+                                               saveTransactionUseCase: saveTransactionUseCase)
+        let viewController = TransactionViewController()
+        let presenter = TransactionPresenter(view: viewController,
+                                             interactor: interactor,
+                                             router: router,
+                                             transaction: transaction,
+                                             category: category)
+        viewController.presenter = presenter
+
+        return viewController
     }
 }

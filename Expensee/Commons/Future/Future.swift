@@ -135,4 +135,18 @@ public class Future<Value>: FutureUpdater, FutureObserver {
 		})
 		return newFuture
 	}
+
+    func flatMap<U>(_ f: @escaping (Value) -> Future<U>) -> Future<U> {
+        let newFuture = Future<U>()
+        on(success: { value in
+            f(value).on(success: { (nextValue) in
+                newFuture.resolve(with: nextValue)
+            }, failure: { error in
+                newFuture.reject(with: error)
+            })
+        }, failure: { error in
+            newFuture.reject(with: error)
+        })
+        return newFuture
+    }
 }
