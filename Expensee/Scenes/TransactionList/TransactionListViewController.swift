@@ -62,11 +62,15 @@ class TransactionListViewController: UIViewController {
         }()
 
         dataSource.binder = { (row: TransactionCellModel, cell: TransactionTableViewCell) in
+            let textColor = UIColor.contrast(hex: row.categoryColor, lightColor: .white, darkColor: .black)
             cell.amountLabel.text = row.amount.description
             cell.categoryLabel.text = row.categoryName
-            cell.categoryColorLabel.backgroundColor = UIColor(row.categoryColor)
+            cell.backgroundColor = UIColor(row.categoryColor)
             cell.datatimeLabel.text = row.date.description
             cell.overBudgetLabel.isHidden = !row.overBudget
+            cell.amountLabel.textColor = textColor
+            cell.categoryLabel.textColor = textColor
+            cell.datatimeLabel.textColor = textColor
         }
 
         dataSource.cellProvider = { tableView, indexPath in

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension UIColor {
+extension UIColor {
     typealias Hex = String
 
     convenience init?(_ hex: Hex, alpha: CGFloat? = nil) {
@@ -22,6 +22,20 @@ public extension UIColor {
         #else
             self.init(calibratedRed: components.red, green: components.green, blue: components.blue, alpha: alpha ?? components.alpha)
         #endif
+    }
+
+    static func contrast(hex: String, lightColor: UIColor, darkColor: UIColor) -> UIColor {
+        guard let hexType = Type(from: hex), let components = hexType.components() else {
+            return lightColor
+        }
+
+        let luminance: [CGFloat] = [components.red, components.green, components.blue].map {
+            if $0 <= 0.03928 { return $0 / 12.92 }
+            return pow(($0 + 0.055) / 1.055, 2.4)
+        }
+
+        let luminanceContrast = (0.2126 * luminance[0]) + (0.7152 * luminance[1]) + (0.0722 * luminance[2])
+        return (luminanceContrast > 0.179) ? darkColor : lightColor
     }
 
     /// The string hex value representation of the current color
