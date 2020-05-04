@@ -11,78 +11,8 @@ import UIKit
 protocol TransactionListPresenting: class {
 
     func display(transactions: [TransactionCellModel])
-}
 
-protocol TransactionListControlling: class {
-
-    func viewIsReady()
-
-    func didTapAdd()
-}
-
-final class TransactionListPresenter {
-
-    private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
-        return dateFormatter
-    }()
-
-    private let currencyFormatter: NumberFormatter = {
-        let currencyFormatter = NumberFormatter()
-        currencyFormatter.numberStyle = .currency
-        return currencyFormatter
-    }()
-
-    private weak var view: TransactionListPresenting?
-
-    private let router: TransactionListRouting
-
-    private let interactor: TransactionListInteracting
-
-    init(view: TransactionListPresenting, interactor: TransactionListInteracting, router: TransactionListRouting) {
-        self.view = view
-        self.router = router
-        self.interactor = interactor
-    }
-}
-
-// MARK: - TransactionListControlling
-
-extension TransactionListPresenter: TransactionListControlling {
-
-    // MARK: - TransactionListControlling
-
-    func viewIsReady() {
-        loadTransactions()
-    }
-
-    func didTapAdd() {
-        router.routeToAddTransaction { [weak self] in
-            self?.loadTransactions()
-        }
-    }
-
-    func loadTransactions() {
-        interactor.loadTransactions(with: ListTransactionInteractionRequest())
-            .on(success: { [weak view, currencyFormatter, dateFormatter] (response) in
-                let transactionCellModels = response.transactions.map { tx -> TransactionCellModel in
-                    currencyFormatter.currencyCode = tx.originalCurrency
-                    let amount = currencyFormatter.string(from: NSNumber(value: tx.originalAmount)) ?? "?"
-                    return TransactionCellModel(currency: tx.originalCurrency,
-                                                amount: amount,
-                                                date: dateFormatter.string(from: tx.date),
-                                                categoryName: tx.category.name,
-                                                categoryColor: tx.category.color,
-                                                overBudget: tx.overBudget,
-                                                timestamp: tx.date)
-                }
-                view?.display(transactions: transactionCellModels)
-            }, failure: { error in
-                print(error)
-            })
-    }
+    func showError(_ error: String)
 }
 
 class TransactionListViewController: UIViewController {
@@ -161,7 +91,9 @@ class TransactionListViewController: UIViewController {
     private lazy var provider: TableViewProvider<TransactionCellModel, TransactionTableViewCell> = { [weak dataSource] in
         let provider = TableViewProvider<TransactionCellModel, TransactionTableViewCell>(tableView: tableView)
         provider.dataSource = dataSource
-        provider.dataSource?.tapAction = { [weak presenter] selected in }
+        provider.dataSource?.tapAction = { [weak presenter] selected in
+            presenter?.didSelectTransaction(selected.transactionId)
+        }
 
         return provider
      }()
@@ -170,6 +102,14 @@ class TransactionListViewController: UIViewController {
 // MARK: - TransactionsPresenting
 
 extension TransactionListViewController: TransactionListPresenting {
+
+    func showError(_ message: String) {
+        DispatchQueue.main.async { [weak self] in
+            let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
+            self?.present(alertController, animated: true, completion: nil)
+        }
+    }
 
     func display(transactions: [TransactionCellModel]) {
         DispatchQueue.main.async { [weak self] in

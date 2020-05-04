@@ -12,6 +12,8 @@ protocol TransactionListInteracting {
 
     func loadTransactions(with request: ListTransactionInteractionRequest)
         -> Future<ListTransactionInteractionResponse>
+
+    func fetchTransaction(with request: FetchTransactionInteractionRequest) -> Future<FetchTransactionInteractionResponse>
 }
 
 final class TransactionListInteractor: TransactionListInteracting {
@@ -20,12 +22,16 @@ final class TransactionListInteractor: TransactionListInteracting {
 
     private let transactionBudgetingUsecase: TransactionCategoryBudgetCaseProtocol
 
+    private let transactionLoadUseCase: TransactionLoadUseCaseProtocol
+
     private var categories: [Category] = []
 
     init(categoryLoadUseCase: CategoriesLoadUseCaseProtocol,
-         transactionBudgetingUsecase: TransactionCategoryBudgetCaseProtocol) {
+         transactionBudgetingUsecase: TransactionCategoryBudgetCaseProtocol,
+         transactionLoadUseCase: TransactionLoadUseCaseProtocol) {
         self.categoryLoadUseCase = categoryLoadUseCase
         self.transactionBudgetingUsecase = transactionBudgetingUsecase
+        self.transactionLoadUseCase = transactionLoadUseCase
     }
 
     func loadTransactions(with request: ListTransactionInteractionRequest)
@@ -50,13 +56,30 @@ final class TransactionListInteractor: TransactionListInteracting {
         }
     }
 
-    func transactionsBudgetize(_ transactions: [CategoryDTO: [TransactionDTO]])
+    private func transactionsBudgetize(_ transactions: [CategoryDTO: [TransactionDTO]])
         -> Future<TransactionCategoryBudgetResponse> {
         transactions.forEach { (key, value) in
             print(key, value)
         }
         return transactionBudgetingUsecase.transactionBudgetLimitCalculating(request:
             TransactionCategoryBudgetRequest(categorizedTransactions: transactions))
+    }
+
+    func fetchTransaction(with request: FetchTransactionInteractionRequest) -> Future<FetchTransactionInteractionResponse> {
+        return transactionLoadUseCase.fetchTransaction(with:
+            TransactionLoadUseCaseRequest(transactionId: request.transactionId)).map {
+                guard let result = $0.result else { return FetchTransactionInteractionResponse(transaction: nil) }
+                return FetchTransactionInteractionResponse(transaction:
+                    FetchTransactionInteractionResponse
+                        .Transaction(id: result.transaction.uid,
+                                     amount: result.transaction.amount,
+                                     date: result.transaction.date,
+                                     currency: result.transaction.currency,
+                                     originalAmount: result.transaction.originalAmount,
+                                     originalCurrency: result.transaction.originalCurrency,
+                                     category: FetchTransactionInteractionResponse.Category(id: result.category.uid,
+                                                                                            name: result.category.name,
+                                                                                            color: result.category.color)))}
     }
 }
 
@@ -77,6 +100,41 @@ struct ListTransactionInteractionResponse {
         let currency: String
 
         let overBudget: Bool
+
+        let originalAmount: Double
+
+        let originalCurrency: String
+
+        let category: Category
+    }
+
+    struct Category {
+
+        let id: UUID
+
+        let name: String
+
+        let color: String
+    }
+}
+
+struct FetchTransactionInteractionRequest {
+    let transactionId: UUID
+}
+
+struct FetchTransactionInteractionResponse {
+
+    let transaction: Transaction?
+
+    struct Transaction {
+
+        let id: UUID
+
+        let amount: Double
+
+        let date: Date
+
+        let currency: String
 
         let originalAmount: Double
 

@@ -56,22 +56,6 @@ final class CategoriesRouter: CategoriesRouting {
     }
 }
 
-struct AddCategorySceneModel {
-    let category: Category?
-
-    struct Category {
-        let uid: UUID
-        let name: String
-        let color: String
-        let budget: Budget?
-    }
-
-    struct Budget {
-        let currency: String
-        let limit: Double
-    }
-}
-
 struct SelectCategorySceneModel {
 
     let category: Category

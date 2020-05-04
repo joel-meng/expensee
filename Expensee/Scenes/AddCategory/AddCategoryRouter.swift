@@ -32,3 +32,19 @@ final class AddCategoriesRouter: AddCategoriesRouting {
         }
     }
 }
+
+struct AddCategorySceneModel {
+    let category: Category?
+
+    struct Category {
+        let uid: UUID
+        let name: String
+        let color: String
+        let budget: Budget?
+    }
+
+    struct Budget {
+        let currency: String
+        let limit: Double
+    }
+}

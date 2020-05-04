@@ -93,11 +93,14 @@ final class DependencyInjection: DependencyInjecting {
     func createTransactionListScene(from navigation: UINavigationController) -> UIViewController {
         let router = TransactionListRouter(navigationController: navigation, factory: self)
         let categoryRepository = CategoriesRepository(context: CoreDataStore.shared?.context)
+        let transactionRepository = TransactionRepository(context: CoreDataStore.shared?.context)
         let useCase = CategoriesLoadUseCase(categoriesRepository: categoryRepository)
         let currencyConvertingUseCase = CurrencyConvertingUseCase(currencyService: StubCurrencyLayerService())
         let transactionBudgetingUsecase = TransactionCategoryBudgetCase(currencyUseCase: currencyConvertingUseCase)
+        let loadTransactionUseCase = TransactionLoadUseCase(transactionRepository: transactionRepository)
         let interactor = TransactionListInteractor(categoryLoadUseCase: useCase,
-                                                   transactionBudgetingUsecase: transactionBudgetingUsecase)
+                                                   transactionBudgetingUsecase: transactionBudgetingUsecase,
+                                                   transactionLoadUseCase: loadTransactionUseCase)
         let viewController = TransactionListViewController()
         let presenter = TransactionListPresenter(view: viewController, interactor: interactor, router: router)
         viewController.presenter = presenter

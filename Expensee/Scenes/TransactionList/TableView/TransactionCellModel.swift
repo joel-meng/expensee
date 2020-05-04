@@ -23,4 +23,6 @@ struct TransactionCellModel {
     let overBudget: Bool
 
     let timestamp: Date
+
+    let transactionId: UUID
 }

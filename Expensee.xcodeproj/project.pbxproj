@@ -21,6 +21,8 @@
 		7E679460245E8AA70079BCC0 /* TransactionListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */; };
 		7E679462245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */; };
 		7E679464245F0E740079BCC0 /* StubCurrencyLayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */; };
+		7E679466245F9BF80079BCC0 /* LoadTransactionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679465245F9BF80079BCC0 /* LoadTransactionUseCase.swift */; };
+		7E679468245FA4150079BCC0 /* TransactionListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679467245FA4150079BCC0 /* TransactionListPresenter.swift */; };
 		7EAA477B2459609A005565C1 /* ExpenseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477A2459609A005565C1 /* ExpenseCategory.swift */; };
 		7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477C24596169005565C1 /* ManagedObject.swift */; };
 		7EAA477F24599DC6005565C1 /* ExpenseeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */; };
@@ -133,6 +135,8 @@
 		7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListInteractor.swift; sourceTree = "<group>"; };
 		7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCategoryBudgetCase.swift; sourceTree = "<group>"; };
 		7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubCurrencyLayerService.swift; sourceTree = "<group>"; };
+		7E679465245F9BF80079BCC0 /* LoadTransactionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadTransactionUseCase.swift; sourceTree = "<group>"; };
+		7E679467245FA4150079BCC0 /* TransactionListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListPresenter.swift; sourceTree = "<group>"; };
 		7EAA477A2459609A005565C1 /* ExpenseCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCategory.swift; sourceTree = "<group>"; };
 		7EAA477C24596169005565C1 /* ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
 		7EAA477E24599DC6005565C1 /* ExpenseeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseeContainer.swift; sourceTree = "<group>"; };
@@ -327,7 +331,9 @@
 				7EAA47C4245D061C005565C1 /* TableView */,
 				7EAA47C1245D03E7005565C1 /* TransactionListViewController.xib */,
 				7EAA47D0245D177C005565C1 /* TransactionListViewController.swift */,
+				7E679467245FA4150079BCC0 /* TransactionListPresenter.swift */,
 				7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */,
+				7E679465245F9BF80079BCC0 /* LoadTransactionUseCase.swift */,
 				7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */,
 				7EAA47D2245D2A80005565C1 /* TransactionListRouter.swift */,
 			);
@@ -746,6 +752,7 @@
 				7ED5CEEA245927AD00E5D454 /* DescriptibleByType.swift in Sources */,
 				7EAA47AB245BD318005565C1 /* AnyValidator.swift in Sources */,
 				7E41B9EC245E6A0E005155BA /* TransactionRepository.swift in Sources */,
+				7E679466245F9BF80079BCC0 /* LoadTransactionUseCase.swift in Sources */,
 				7ED5CEC1245910B400E5D454 /* RequestCreator.swift in Sources */,
 				7EAA477D24596169005565C1 /* ManagedObject.swift in Sources */,
 				7ED5CEEC2459288800E5D454 /* NSObject+Descriptible.swift in Sources */,
@@ -783,6 +790,7 @@
 				7EAA47A9245BD2D0005565C1 /* AnyTextFieldDelegation.swift in Sources */,
 				7EAA47872459A67A005565C1 /* CategoriesRepository.swift in Sources */,
 				7EAA47B5245C3F5A005565C1 /* CategoriesRouter.swift in Sources */,
+				7E679468245FA4150079BCC0 /* TransactionListPresenter.swift in Sources */,
 				7ED5CE2F24590A7C00E5D454 /* AppDelegate.swift in Sources */,
 				7E679462245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift in Sources */,
 				7ED5CE5724590F5C00E5D454 /* LaunchDetailsInteractor.swift in Sources */,

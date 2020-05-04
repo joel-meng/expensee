@@ -44,29 +44,10 @@ class ExpenseTransaction: NSManagedObject {
         try context.execute(delete)
     }
 
-    /*
-    static func fetchAll(from context: NSManagedObjectContext) throws -> [ExpenseCategory] {
-
-        let fetchRequest = ExpenseCategory.fetchRequest()
-
-        let fetched = try context.fetch(fetchRequest)
-
-        guard let fetchedCategories = fetched as? [ExpenseCategory] else { return [] }
-
-        return fetchedCategories
-    }
-
-    static func delete(from context: NSManagedObjectContext) throws {
-        let fetchAll = ExpenseCategory.fetchRequest()
-        let delete = NSBatchDeleteRequest(fetchRequest: fetchAll)
-        try context.execute(delete)
-    }
-
-    static func find(by id: UUID, in context: NSManagedObjectContext) -> ExpenseCategory? {
+    static func find(by id: UUID, in context: NSManagedObjectContext) -> ExpenseTransaction? {
         let predicate = NSPredicate(format:"%K == %@", #keyPath(uid), id as CVarArg)
         return findOrFetch(in: context, matching: predicate)
     }
-     */
 }
 
 extension ExpenseTransaction: Managed {

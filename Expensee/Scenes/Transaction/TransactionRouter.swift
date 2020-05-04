@@ -69,3 +69,22 @@ struct TransactionRouterSceneModel {
         let limit: Double
     }
 }
+
+struct TransactionSceneModel {
+
+    struct Transaction {
+        let id: UUID
+    }
+
+    struct Category {
+        let uid: UUID
+        let name: String
+        let color: String
+        let budget: Budget?
+    }
+
+    struct Budget {
+        let currency: String
+        let limit: Double
+    }
+}

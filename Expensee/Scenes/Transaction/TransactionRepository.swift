@@ -15,7 +15,7 @@ protocol TransactionRepositoryProtocol: RepositoryProtocol {
 
     func fetchAll() -> Future<[TransactionDTO]>
 
-    func fetch(by id: UUID) -> Future<TransactionDTO?>
+    func fetch(by id: UUID) -> Future<(TransactionDTO, CategoryDTO)?>
 }
 
 final class TransactionRepository: TransactionRepositoryProtocol {
@@ -66,8 +66,32 @@ final class TransactionRepository: TransactionRepositoryProtocol {
         fatalError()
     }
 
-    func fetch(by id: UUID) -> Future<TransactionDTO?> {
-        fatalError()
+    func fetch(by id: UUID) -> Future<(TransactionDTO, CategoryDTO)?> {
+        let future = Future<(TransactionDTO, CategoryDTO)?>()
+
+        guard let context = context else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        let fetched = ExpenseTransaction.find(by: id, in: context).map { tx -> (TransactionDTO, CategoryDTO) in
+            let transaction = TransactionDTO(amount: tx.amount,
+                           date: tx.date,
+                           currency: tx.currency,
+                           uid: tx.uid,
+                           originalAmount: tx.originalAmount,
+                           originalCurrency: tx.originalCurrency)
+
+            let category = CategoryDTO(name: tx.category.name,
+                        color: tx.category.color,
+                        budget: tx.category.budget.map {
+                            BudgetDTO(currency: $0.currency, limit: $0.limit)
+            }, uid: tx.category.uid)
+            return (transaction, category)
+        }
+
+        future.resolve(with: fetched)
+        return future
     }
 }
 
