@@ -79,8 +79,7 @@ extension TransactionPresenter: TransactionControlling {
     private func setupInitialState(flavor: SceneFlavor) {
         switch flavor {
         case .save: displayCurrentState()
-        case .update:
-            break
+        case .update: displayCurrentState()
         }
     }
 
@@ -89,7 +88,7 @@ extension TransactionPresenter: TransactionControlling {
                         currency: transaction.currency,
                         date: transaction.date ?? Date(),
                         categoryName: category.name ?? "Select Category",
-                        categoryColor: category.color ?? "#EEEEFF")
+                        categoryColor: category.color ?? "#336699")
     }
 
     // MARK: - TransactionControlling

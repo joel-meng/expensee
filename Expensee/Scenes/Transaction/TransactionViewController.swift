@@ -153,23 +153,27 @@ class TransactionViewController: UIViewController {
 extension TransactionViewController: TransactionPresenting {
 
     func showState(amount: Double?, currency: String?, date: Date?, categoryName: String?, categoryColor: String?) {
-        transactionAmountTextField.text = amount.map(String.init(describing:))
-        if let currency = currency {
-            currencySegmentControl.selectedSegmentIndex = segmentControlIndex(ofCurrency: currency)
-        }
-        if let date = date {
-            dateButton.setTitle(dateFormatter.string(from: date), for: .normal)
-        }
-        if let categoryName = categoryName {
-            categoryButton.setTitle(categoryName, for: .normal)
-        }
-        if let categoryColor = categoryColor {
-            categoryButton.backgroundColor = UIColor(categoryColor)
+        DispatchQueue.main.async { [weak self, dateFormatter] in
+            self?.transactionAmountTextField.text = amount.map(String.init(describing:))
+            if let currency = currency, let index = self?.segmentControlIndex(ofCurrency: currency) {
+                self?.currencySegmentControl.selectedSegmentIndex = index
+            }
+            if let date = date {
+                self?.dateButton.setTitle(dateFormatter.string(from: date), for: .normal)
+            }
+            if let categoryName = categoryName {
+                self?.categoryButton.setTitle(categoryName, for: .normal)
+            }
+            if let categoryColor = categoryColor {
+                self?.categoryButton.backgroundColor = UIColor(categoryColor)
+            }
         }
     }
 
     func handleSaveReady(_ enabled: Bool) {
-        saveButton.isEnabled = enabled
+        DispatchQueue.main.async { [weak self] in
+            self?.saveButton.isEnabled = enabled
+        }
     }
 
     func displayError(_ message: String) {

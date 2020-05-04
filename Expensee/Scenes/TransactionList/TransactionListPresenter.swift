@@ -94,7 +94,7 @@ extension TransactionListPresenter: TransactionListControlling {
                                                   date: tx.date,
                                                   currency: tx.currency,
                                                   originalAmount: tx.originalAmount,
-                                                  originalCurrency: tx.currency,
+                                                  originalCurrency: tx.originalCurrency,
                                                   category: TransactionSceneModel.Category(id: category.id,
                                                                                            name: category.name,
                                                                                            color: category.color)))
