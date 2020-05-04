@@ -89,7 +89,7 @@ extension TransactionPresenter: TransactionControlling {
                         currency: transaction.currency,
                         date: transaction.date ?? Date(),
                         categoryName: category.name ?? "Select Category",
-                        categoryColor: category.color ?? "#336699")
+                        categoryColor: category.color ?? "#647687")
     }
 
     // MARK: - TransactionControlling

@@ -166,6 +166,10 @@ extension TransactionViewController: TransactionPresenting {
             }
             if let categoryColor = categoryColor {
                 self?.categoryButton.backgroundColor = UIColor(categoryColor)
+                self?.categoryButton.setTitleColor(UIColor.contrast(hex: categoryColor,
+                                                                    lightColor: .white,
+                                                                    darkColor: .darkGray),
+                                             for: .normal)
             }
         }
     }
