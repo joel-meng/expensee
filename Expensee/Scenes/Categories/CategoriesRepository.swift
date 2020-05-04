@@ -36,6 +36,8 @@ protocol CategoriesRepositoryProtocol: RepositoryProtocol {
     func fetchAllWithTransactions() -> Future<[CategoryDTO: [TransactionDTO]]>
 
     func fetch(by id: UUID) -> Future<CategoryDTO?>
+
+    func update(by categoryDTO: CategoryDTO) -> Future<CategoryDTO>
 }
 
 final class CategoriesRepository: CategoriesRepositoryProtocol {

@@ -15,6 +15,8 @@ protocol AddCategoryPresenting: class {
     func setSaveButtonEnable(_ enabled: Bool)
     
     func displayCategory(name: String, monthlyBudget: (Double, String)?)
+
+    func displayError(_ message: String)
 }
 
 protocol AddCategoryControlling: class {
@@ -131,7 +133,7 @@ extension AddCategoryPresenter: AddCategoryControlling {
 
     func saveCategory() {
         guard let name = category?.name, let color = category?.color else {
-            // TODO: - display error
+            view?.displayError("Oops, must have category name and color")
             return
         }
 
@@ -151,12 +153,12 @@ extension AddCategoryPresenter: AddCategoryControlling {
 
     func updateCategory() {
         guard let name = category?.name, let color = category?.color else {
-            // TODO: - display error
+            view?.displayError("Oops, must have category name and color.")
             return
         }
 
         guard let id = category?.id else {
-            // TODO: - error
+            view?.displayError("Oops, something went wrong.")
             return
         }
 

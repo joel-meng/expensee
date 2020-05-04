@@ -17,9 +17,9 @@ protocol AddCategoryUseCaseProtocol {
 
 final class AddCategoryUseCase: AddCategoryUseCaseProtocol {
 
-    private let categoryRepositoy: CategoriesRepository
+    private let categoryRepositoy: CategoriesRepositoryProtocol
 
-    init(categoryRepositoy: CategoriesRepository) {
+    init(categoryRepositoy: CategoriesRepositoryProtocol) {
         self.categoryRepositoy = categoryRepositoy
     }
 
@@ -28,7 +28,6 @@ final class AddCategoryUseCase: AddCategoryUseCaseProtocol {
     }
 
     func updateCategory(request: UpdateCategoryUseCaseRequest) -> Future<UpdateCategoryUseCaseResponse> {
-//        categoryRepositoy.fetch(by: request.category.uid).on
         return categoryRepositoy.update(by: request.category).map {
             UpdateCategoryUseCaseResponse(category: $0)
         }

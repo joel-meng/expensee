@@ -48,6 +48,7 @@ final class TransactionPresenter {
          category: Category?) {
         self.transaction = transaction ?? Transaction(amount: nil, date: Date(), currency: "NZD")
         self.category = category ?? Category(id: nil, name: nil, color: nil)
+        self.flavor = transaction != nil && category != nil ? .update : .save
         self.view = view
         self.interactor = interactor
         self.router = router
@@ -124,14 +125,32 @@ extension TransactionPresenter: TransactionControlling {
     }
 
     func didTapSave() {
-        saveTransaction()
-    }
-
-    private func saveTransaction() {
         guard let amount = transaction.amount, let date = transaction.date else { return }
         guard let categoryId = category.id else { return }
-
         let currency = transaction.currency ?? "NZD"
+
+        switch flavor {
+        case .save: saveTransaction(amount: amount, date: date, categoryId: categoryId, currency: currency)
+        case .update: updateTransaction(amount: amount, date: date, categoryId: categoryId, currency: currency)
+        }
+    }
+
+    private func updateTransaction(amount: Double, date: Date, categoryId: UUID, currency: String) {
+        let result = interactor.updateTransaction(with:
+            UpdateTransactionRequest(transaction:
+                UpdateTransactionRequest.Transaction(amount: amount,
+                                                     date: date,
+                                                     currency: currency), categoryId: categoryId))
+
+        result.on(success: { [weak router] (response) in
+            print(response)
+            router?.routeBackToTransactionList()
+        }, failure: { [weak view] error in
+            view?.displayError("Oops, something went wrong.")
+        })
+    }
+
+    private func saveTransaction(amount: Double, date: Date, categoryId: UUID, currency: String) {
         let result = interactor.saveTransaction(with:
             SaveTransactionRequest(transaction:
                 SaveTransactionRequest.Transaction(amount: amount,

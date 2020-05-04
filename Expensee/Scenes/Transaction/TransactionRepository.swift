@@ -16,6 +16,8 @@ protocol TransactionRepositoryProtocol: RepositoryProtocol {
     func fetchAll() -> Future<[TransactionDTO]>
 
     func fetch(by id: UUID) -> Future<(TransactionDTO, CategoryDTO)?>
+
+    func update(by categoryDTO: TransactionDTO, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)>
 }
 
 final class TransactionRepository: TransactionRepositoryProtocol {
@@ -91,6 +93,38 @@ final class TransactionRepository: TransactionRepositoryProtocol {
         }
 
         future.resolve(with: fetched)
+        return future
+    }
+
+    func update(by transactionDTO: TransactionDTO, categoryId: UUID) -> Future<(TransactionDTO, CategoryDTO)> {
+        let future = Future<(TransactionDTO, CategoryDTO)>()
+        guard let context = context else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        guard let foundCategory = ExpenseCategory.find(by: categoryId, in: context) else {
+            future.reject(with: NSError())
+            return future
+        }
+
+        let categoryDTO = CategoryDTO(name: foundCategory.name, color: foundCategory.color, budget: foundCategory.budget.map {
+            BudgetDTO(currency: $0.currency, limit: $0.limit)
+        }, uid: foundCategory.uid)
+
+        let foundTransaction = ExpenseTransaction.find(by: transactionDTO.uid, in: context)
+
+        perform {
+            foundTransaction?.setValue(transactionDTO.amount, forKey: "amount")
+            foundTransaction?.setValue(transactionDTO.currency, forKey: "currency")
+            foundTransaction?.setValue(transactionDTO.date, forKey: "date")
+            foundTransaction?.setValue(transactionDTO.originalAmount, forKey: "originalAmount")
+            foundTransaction?.setValue(transactionDTO.originalCurrency, forKey: "originalCurrency")
+            foundTransaction?.setValue(transactionDTO.uid, forKey: "uid")
+            foundTransaction?.setValue(foundCategory, forKey: "category")
+            future.resolve(with: (transactionDTO, categoryDTO))
+        }
+
         return future
     }
 }
