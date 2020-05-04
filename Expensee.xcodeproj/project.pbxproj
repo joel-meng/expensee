@@ -18,6 +18,7 @@
 		7E41B9E8245E58A8005155BA /* CurrencyConvertResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */; };
 		7E41B9EA245E697A005155BA /* SaveTransactionUserCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9E9245E697A005155BA /* SaveTransactionUserCase.swift */; };
 		7E41B9EC245E6A0E005155BA /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */; };
+		7E532CEB245FFA7F008A4E96 /* TransactionPresenterTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E532CEA245FFA7F008A4E96 /* TransactionPresenterTestCase.swift */; };
 		7E679460245E8AA70079BCC0 /* TransactionListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */; };
 		7E679462245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */; };
 		7E679464245F0E740079BCC0 /* StubCurrencyLayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */; };
@@ -128,6 +129,7 @@
 		7E41B9E7245E58A8005155BA /* CurrencyConvertResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertResponse.swift; sourceTree = "<group>"; };
 		7E41B9E9245E697A005155BA /* SaveTransactionUserCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTransactionUserCase.swift; sourceTree = "<group>"; };
 		7E41B9EB245E6A0E005155BA /* TransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
+		7E532CEA245FFA7F008A4E96 /* TransactionPresenterTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPresenterTestCase.swift; sourceTree = "<group>"; };
 		7E67945F245E8AA70079BCC0 /* TransactionListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListInteractor.swift; sourceTree = "<group>"; };
 		7E679461245EC4480079BCC0 /* TransactionCategoryBudgetCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCategoryBudgetCase.swift; sourceTree = "<group>"; };
 		7E679463245F0E740079BCC0 /* StubCurrencyLayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubCurrencyLayerService.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				7E679475245FEBD90079BCC0 /* TransactionInteractorTestCase.swift */,
+				7E532CEA245FFA7F008A4E96 /* TransactionPresenterTestCase.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -552,7 +555,6 @@
 			isa = PBXGroup;
 			children = (
 				7ED5CEE12459236D00E5D454 /* TableView */,
-				7ED5CEDC24591E6000E5D454 /* ViewModel */,
 				7ED5CECB2459125200E5D454 /* CategoriesViewController.swift */,
 				7EAA47B4245C3F5A005565C1 /* CategoriesRouter.swift */,
 				7ED5CECC2459125200E5D454 /* CategoriesViewController.xib */,
@@ -593,17 +595,10 @@
 			path = TableViewHandling;
 			sourceTree = "<group>";
 		};
-		7ED5CEDC24591E6000E5D454 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				7ED5CEDD24591E6E00E5D454 /* CategoryCellModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		7ED5CEE12459236D00E5D454 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				7ED5CEDD24591E6E00E5D454 /* CategoryCellModel.swift */,
 				7ED5CEE22459238500E5D454 /* CategoryTableViewCell.swift */,
 				7ED5CEE32459238500E5D454 /* CategoryTableViewCell.xib */,
 			);
@@ -833,6 +828,7 @@
 			files = (
 				7E679471245FE2370079BCC0 /* AtomicTestCase.swift in Sources */,
 				7E67946F245FE1C90079BCC0 /* FutureTestCase.swift in Sources */,
+				7E532CEB245FFA7F008A4E96 /* TransactionPresenterTestCase.swift in Sources */,
 				7ED5CE4924590A8000E5D454 /* ExpenseeTests.swift in Sources */,
 				7E679476245FEBD90079BCC0 /* TransactionInteractorTestCase.swift in Sources */,
 			);

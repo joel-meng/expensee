@@ -25,6 +25,13 @@ protocol TransactionControlling: class {
 
 final class TransactionPresenter {
 
+    private var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
+        return dateFormatter
+    }()
+
     private weak var view: TransactionPresenting?
 
     private var router: TransactionRouting
@@ -87,7 +94,7 @@ extension TransactionPresenter: TransactionControlling {
     private func displayCurrentState() {
         view?.showState(amount: transaction.amount,
                         currency: transaction.currency,
-                        date: transaction.date ?? Date(),
+                        date: transaction.date.map(dateFormatter.string(from:)) ?? dateFormatter.string(from: Date()),
                         categoryName: category.name ?? "Select Category",
                         categoryColor: category.color ?? "#647687")
     }
@@ -111,6 +118,7 @@ extension TransactionPresenter: TransactionControlling {
 
     func didSelectDate(_ date: Date) {
         transaction = Transaction(amount: transaction.amount, date: date, currency: transaction.currency, uid: transaction.uid)
+        view?.updateDateButton(with: dateFormatter.string(from: date))
         view?.handleSaveReady(isDateValidForSaving())
     }
 
